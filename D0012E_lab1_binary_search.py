@@ -26,6 +26,6 @@ def binary_search(lst, key):
       lst.insert(mid, key)
       return lst
 
-
-print(binary_search([1,2,4,7,8,9,10,10,15,19,26,73,89],7))
+# Testing:
+#print(binary_search([1,2,4,7,8,9,10,10,15,19,26,73,89],7))
 
