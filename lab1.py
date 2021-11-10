@@ -18,6 +18,7 @@ import sys, os
 """
 
 """
+  (not used?)
   binary_search(list, key):
   int mid = len(list)//2
   // check middle
@@ -28,11 +29,30 @@ import sys, os
 """
 
 """
-  bSort(list)
-    for index from 1 to length of list
-      key = list[index]
-      
-      
+def bSort(lst, key):
+  low = 0
+  high = lst.length - 1
+  mid = 0
+
+  while low <= high
+    mid = (low + high)/2
+    if low = high
+      if key > lst[mid]
+        INSERT(lst, mid + 1, key)
+        return lst
+      else
+        INSERT(lst, mid, key)
+        return lst
+    else if lst[mid] > key
+      high = mid - 1
+    else if lst[mid] < key
+      if mid = lst.length - 1
+        INSERT(lst, mid + 1, key)
+        return lst
+      low = mid + 1
+    else
+      INSERT(lst, mid, key)
+      return lst
 """
 
 """
@@ -165,7 +185,7 @@ def merge(L1, L2):
     return merged
 
 
-def binary_search(lst, key):
+def bSort(lst, key):
   os.system('cls')
   low = 0
   high = len(lst) - 1
