@@ -194,6 +194,14 @@ def binary_search(lst, key):
       lst.insert(mid, key)
       return lst
 
+def merge_sort_b(list,n,k):
+  if len(list) < n/k:       # We have reached the botom of the tree, where we have k lists
+    return bSort(list)
+  middle = len(list)/2
+  
+  right = merge_sort_b(list[middle:],n,k)
+  left  = merge_sort_b(list[:middle],n,k)
+  return merge(left,right)
 
 # ================= Testing ==================
 # verify that a list is sorted
