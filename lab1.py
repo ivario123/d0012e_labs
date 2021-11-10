@@ -164,65 +164,6 @@ def merge(L1, L2):
     merged += L2
     return merged
 
-# verify that a list is sorted
-is_sorted = lambda l: all(l[i] <= l[i+1] for i in range(len(l)-1))
-
-
-def test_merge_sort():
-    i_range = (5,7)
-    j_range = (1,100)
-    optimal_k = []
-    for i in range(i_range[0],i_range[1]):
-      merge_sort_1 = []
-      merge_sort_2 = []
-      delta_time = []
-      # Track the best K val
-      max_diff = 0
-      max_diff_k = 0
-      # Keep the distrobition consitant between K changes
-      nums = numpy.random.random_integers(0, 100, 10**i).tolist()
-      x_values = []
-      # this should be the optimal size
-      print(f"log2({10**i}) = {log2(10**i)}")
-      for j in range(j_range[0],j_range[1]):
-        x_values.append(j)
-        # generate a random list of integers
-        # check how long time the default merge sort takes
-        t1 = time.time()
-        l = merge_sort(nums)
-        t2 = time.time()
-        dt = t2-t1
-        merge_sort_1.append(dt)
-
-        # decalare the number of elements in lists
-        n = 10**i
-        k = j
-        # check how long time it takes to run our merge sort
-        t1 = time.time()
-        l = merge_sort_l(nums, n, k)
-        t2 = time.time()
-        if dt-(t2-t1) > max_diff:
-          print(f"Found a better alternative !!! : \nThe normal_sort took = {dt}s\nlinear implementation took = {t2-t1}s \nfor k = {k}")
-          max_diff_k=k
-          max_diff = dt-(t2-t1)
-        delta_time.append(dt-(t2-t1))
-        merge_sort_2.append(t2-t1)
-        progress(100*((i-i_range[0])*(j_range[1]-j_range[0])+j-j_range[0])/((i_range[1]-i_range[0])*j_range[1]-j_range[0]))
-      optimal_k.append(max_diff_k)
-      print(f"Optimal K for N = {10**i} is {max_diff_k}",end = '\r')
-      plt.plot(merge_sort_1,x_values,label = "merge_standard")
-      plt.plot(merge_sort_2,x_values,label = "merge_linear")
-      plt.legend()
-      plt.title("Merge sort time effeciency")
-      plt.ylabel("delta t")
-      plt.xlabel("K")
-      plt.show()
-    plt.plot(optimal_k, list(range(i_range[0],i_range[1])))
-    plt.show()
-
-def progress(percent:int):
-  percent = int(percent)
-  print(f"[{'='*percent}{' '*(100-percent)}] {percent}%",end = '\r')
 
 def binary_search(lst, key):
   os.system('cls')
@@ -252,6 +193,78 @@ def binary_search(lst, key):
     else:
       lst.insert(mid, key)
       return lst
+
+
+# ================= Testing ==================
+# verify that a list is sorted
+is_sorted = lambda l: all(l[i] <= l[i+1] for i in range(len(l)-1))
+
+
+def test_merge_sort():
+    # log_10(n)
+    i_range = (2,15)
+    # k values to test
+    j_range = (1,100)
+    # plot optimal k values for different n
+    optimal_k = []
+    for i in range(i_range[0],i_range[1]):
+      # Store the execution times for the 2 implementations
+      merge_sort_1 = []
+      merge_sort_2 = []
+      # Store difference between implementations
+      delta_time = []
+      # Track the best K val
+      max_diff = 0
+      max_diff_k = 0
+      # Keep the distrobition consitant between K changes
+      nums = numpy.random.random_integers(0, 100, 2**i).tolist()
+      x_values = []
+      # this should be the optimal size
+      print(f"log2({2**i}) = {log2(2**i)}")
+      for j in range(j_range[0],j_range[1]):
+        x_values.append(j)
+        # generate a random list of integers
+        # check how long time the default merge sort takes
+        t1 = time.time()
+        merge_sort(nums)
+        t2 = time.time()
+        dt = t2-t1
+        merge_sort_1.append(dt)
+
+        # decalare the number of elements in lists
+        n = 2**i
+        k = j
+        # check how long time it takes to run our merge sort
+        t1 = time.time()
+        merge_sort_l(nums, n, k)
+        t2 = time.time()
+        if dt-(t2-t1) > max_diff:
+          max_diff_k=k
+          max_diff = dt-(t2-t1)
+        delta_time.append(dt-(t2-t1))
+        merge_sort_2.append(t2-t1)
+        progress(100*((i-i_range[0])*(j_range[1]-j_range[0])+j-j_range[0])/((i_range[1]-i_range[0])*j_range[1]-j_range[0]))
+      optimal_k.append(max_diff_k)
+      print(f"Optimal K for N = {2**i} is {max_diff_k}",end = '\r')
+
+
+      # Plot the measured values
+      plt.plot(merge_sort_1,x_values,label = "merge_standard")
+      plt.plot(merge_sort_2,x_values,label = "merge_linear")
+      plt.legend()
+      plt.title("Merge sort time effeciency")
+      plt.xlabel("delta t")
+      plt.ylabel("K")
+      plt.show()
+    #plt.plot(list(range(i_range[0],i_range[1]),optimal_k))
+    #plt.xlabel("Input range")
+    #plt.ylabel("Optimal K value")
+    #plt.show()
+
+def progress(percent:int):
+  percent = int(percent)
+  print(f"[{'='*percent}{' '*(100-percent)}] {percent}%",end = '\r')
+
 if __name__ == "__main__":
   print("Started the tests")
   test_merge_sort()
