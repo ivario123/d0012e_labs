@@ -18,41 +18,29 @@ import sys, os
 """
 
 """
-  (not used?)
-  binary_search(list, key):
-  int mid = len(list)//2
-  // check middle
-  if(list[mid] < list[mid-1])
-    binary_search(list[mid//2], key)
-  
-  // divide by 2 if key can't be placed
-"""
-
-"""
-def bSort(lst, key):
+def binary_search(list, length, key):
   low = 0
-  high = lst.length - 1
-  mid = 0
-
-  while low <= high
-    mid = (low + high)/2
-    if low = high
-      if key > lst[mid]
-        INSERT(lst, mid + 1, key)
-        return lst
-      else
-        INSERT(lst, mid, key)
-        return lst
-    else if lst[mid] > key
-      high = mid - 1
-    else if lst[mid] < key
-      if mid = lst.length - 1
-        INSERT(lst, mid + 1, key)
-        return lst
+  high = length
+  while low < high
+    mid = (low + high) / 2
+    if list[mid] <= key
       low = mid + 1
     else
-      INSERT(lst, mid, key)
-      return lst
+      high = mid
+  return low
+"""
+
+"""
+def bSort(list):
+  for i = 1 to list.length
+    key = list[i]
+    position = binary_search(list, i, key)
+    j = i
+    while j > position
+      lst[j] = list[j-1]
+      j = j - 1
+    lst[position] = key
+  return list
 """
 
 """
@@ -184,35 +172,27 @@ def merge(L1, L2):
     merged += L2
     return merged
 
-
-def bSort(lst, key):
-  os.system('cls')
+def binary_search(lst, length, key):
   low = 0
-  high = len(lst) - 1
-  mid = 0
-
-  while(low <= high):
-    mid = (low + high) // 2
-    if(low == high):
-      # if low == high, but the key is larger than the middle number,
-      # insert it to the right.
-      if(key > lst[mid]):
-        lst.insert(mid + 1, key)
-        return lst
-      else:
-        lst.insert(mid, key)
-        return lst
-    elif(lst[mid] > key):
-      high = mid - 1
-    elif(lst[mid] < key):
-      # inserts the key last if the key is the largest number
-      if(mid == len(lst) - 1):
-        lst.insert(mid+1, key)
-        return lst
+  high = length
+  while(low < high):
+    mid = (low + high)//2
+    if(lst[mid] <= key):
       low = mid + 1
     else:
-      lst.insert(mid, key)
-      return lst
+      high = mid
+  return low
+
+def bSort(lst):
+  for i in range(1, len(lst)):
+    key = lst[i]
+    position = binary_search(lst, i, key)
+    j = i
+    while(j > position):
+      lst[j] = lst[j-1]
+      j = j - 1
+    lst[position] = key
+  return lst
 
 def merge_sort_b(list,n,k):
   if len(list) < n/k:       # We have reached the botom of the tree, where we have k lists
