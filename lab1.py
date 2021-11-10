@@ -37,9 +37,9 @@ def bSort(list):
     position = binary_search(list, i, key)
     j = i
     while j > position
-      lst[j] = list[j-1]
+      list[j] = list[j-1]
       j = j - 1
-    lst[position] = key
+    list[position] = key
   return list
 """
 
