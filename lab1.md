@@ -57,3 +57,26 @@ Final formula:
 $
   T(n) = c + \frac{n\cdot T(k)}{k} + (log(n)-log(k))\cdot n
 $
+
+Optimal K value dependent on $T(k)$ since if $T(k)<log(k)\cdot k$ then $k=n$ is optimal but if $T(k)>log(k)\cdot k$ then we need to solve:
+
+$
+ \frac{n\cdot T(k)}{k} < (log(n)-log(k))\cdot n\\
+ \text{where~} k < n \text{~and~} T(k) > log(k)\cdot k\\
+ T(k) < (log(n)-log(k))\cdot k\\
+$
+For insertion sort the $T(k)$ is $O(k^2)$ so:
+$
+  O(k^2) < (log(n)-log(k))\cdot k\\
+  k < log(n)-log(k)\\
+  k + log(k) < log(n)\\
+  2^k +k < n\\
+$
+For bSort the $T(k)$ is $O(n⋅log(n))$ so:
+$
+  O(k⋅log(k)) < (log(n)-log(k))\cdot k\\
+  log(k) < log(n)-log(k)\\
+  log(k)+log(k) < log(n)\\
+  log(k^2) < log(n)\\
+  k <  sqrt(n)\\
+$
