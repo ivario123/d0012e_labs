@@ -7,7 +7,7 @@ import sys, os
 
 """
   insertion_sort(list):
-  for j = 2 to list.length
+  for j = 2 to list.length                              
     key = list[j]
     //Insert n[j] into the sorted sequence list[1..j-1]
     i = j-1
@@ -110,7 +110,7 @@ def merge(L1, L2):
     return merged
   #T(n) = f_5*C5+f_4*C6+1\sum_1^(2*n) (f_1*(C1+C2)+f_2*(C3+C4)+1) = f_5*C5+f_4*C6+1 + (2*n-1)*(f_1*(C1+C2)+f_2*(C3+C5)+1) = 
   #      
-  #      O(n)
+  #      O(n)   Will be used for merge sort calculations, since the  constants and factors won't matter much
   #
   #
   #where f_1 = percentage of L1 that is larger than L2
