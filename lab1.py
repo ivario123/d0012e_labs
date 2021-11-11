@@ -309,15 +309,80 @@ def test_big_boy():
   df = pd.DataFrame(ret)
   df.to_csv('big_boy.csv', index=False)
   return ret
-      
-    
+def medium_sorted_case():
+  ret = [
+    ["merge_l"],
+    ["merge_b"],
+    ["merge"],
+    ["n"]
+  ]
+  
+  for n in range( 10**5,10**6,10**4):
+      print(f"testing for n = {n}", end ='\r' )
+      vals = merge_sort_l(list(numpy.random.randint(0,100,n)),n,50)
+      vals[:len(vals)//2],vals[len(vals)//2:] = vals[len(vals)//2:],vals[:len(vals)//2]
+      # Testing merge sort with insertion sort
+      t1 = time.time()
+      merge_sort_l(vals,n,50)
+      t2 = time.time()
+      ret[0].append(t2-t1)
 
+      # Testing merge sort with bSort
+      t1 = time.time()
+      merge_sort_b(vals,n,50)
+      t2 = time.time()
+      ret[1].append(t2-t1)
+      # Testing merge
+      t1 = time.time()
+      merge_sort(vals)
+      t2 = time.time()
+      ret[2].append(t2-t1)
+      
+      ret[3].append(n)
+  df = pd.DataFrame(ret)
+  df.to_csv('med_sort.csv', index=False)
+  return ret
+    
+def test_best_case():
+  ret = [
+    ["merge_l"],
+    ["merge_b"],
+    ["merge"],
+    ["n"]
+  ]
+  
+  for n in range( 10**5,10**6,10**4):
+      print(f"testing for n = {n}", end ='\r' )
+      vals = list(range(0,n))
+      # Testing merge sort with insertion sort
+      t1 = time.time()
+      merge_sort_l(vals,n,50)
+      t2 = time.time()
+      ret[0].append(t2-t1)
+
+      # Testing merge sort with bSort
+      t1 = time.time()
+      merge_sort_b(vals,n,50)
+      t2 = time.time()
+      ret[1].append(t2-t1)
+      # Testing merge
+      t1 = time.time()
+      merge_sort(vals)
+      t2 = time.time()
+      ret[2].append(t2-t1)
+      
+      ret[3].append(n)
+  df = pd.DataFrame(ret)
+  df.to_csv('small_boy.csv', index=False)
+  return ret
 def progress(percent:int):
   percent = int(percent)
   print(f"[{'='*percent}{' '*(100-percent)}] {percent}%",end = '\r')
 
 if __name__ == "__main__":
   print("Started the tests")
+  print(test_best_case())
   print(test_big_boy())
+  print(medium_sorted_case())
   print(test_merge_sort(n_range = (1000,100000),n_step = 5000,
   k_range=(26,80),k_step = 1))
