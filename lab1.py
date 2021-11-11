@@ -20,7 +20,7 @@ import sys, os
 
     Best case:  (C1 + C2 + C4 + C5 + C8) n – (C2 + C4 + C5 + C8)    O(n)
     Worst case: (C4/2 + C5/2 + C6/2)n^2 + (C1+ C2 + C3 + C4/2 - C5/2 - C6/2 + C7)n 
-                - (C2 + C3 + C4 + C7)
+                - (C2 + C3 + C4 + C7)   O(n^2)
 """
 
 """                                              costs           times
