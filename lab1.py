@@ -59,31 +59,6 @@ Best case:  T(n) = O(n*log(n))
 """
 
 """
-Spiffis take on binary search doing binary sort.
-
-binarySearch(list, n, key)
-    L = 0
-    R = n
-    while L < R
-        mid = (L + R)/2
-        if list[mid] <= key:
-            L = mid + 1
-        else:
-            R = mid
-    return L
-
-binaryInsertionSort(list)
-    for i = 1 to list.length
-        key = list[i]
-        pos = binarySearch(list, key, 0, i-1)
-        j = i
-        while j > pos
-            Array[j] = Array[j-1]
-            j = j-1
-        list[pos] = key
-"""
-
-"""
   def merge_sort_b(list,n,k):
     if len(list) < n/k:       # We have reached the botom of the tree, where we have k lists
       return bSort(list)
