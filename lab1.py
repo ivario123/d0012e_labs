@@ -17,30 +17,39 @@ import sys, os
     list[i+1] = key
 """
 
-"""
-def binary_search(list, length, key):
-  low = 0
-  high = length
-  while low < high
-    mid = (low + high) / 2
-    if list[mid] <= key
-      low = mid + 1
+"""                                              costs           times
+def binary_search(list, length, key):            
+  low = 0                                        c1              O(1)
+  high = length                                  c2              O(1)
+  while low < high                               c3              log(n)
+    mid = (low + high) / 2                       c4              log(n)*O(1)
+    if list[mid] <= key                          c5              log(n)*O(1)
+      low = mid + 1                              c6              log(n)*O(1)
     else
-      high = mid
-  return low
-"""
+      high = mid                                 c7              log(n)*O(1)
+  return low                                     c8              O(1)
+
+
+T(n) = O(log(n))
 
 """
+
+"""                                              costs           times
 def bSort(list):
-  for i = 1 to list.length
-    key = list[i]
-    position = binary_search(list, i, key)
-    j = i
-    while j > position
-      list[j] = list[j-1]
-      j = j - 1
-    list[position] = key
-  return list
+  for i = 1 to list.length                       c1              O(n)
+    key = list[i]                                c2              n*O(1)
+    position = binary_search(list, i, key)       c3              n*log(n)
+    j = i                                        c4              n*O(1)
+    while j > position                           c5              n*n       (n*O(1) if sorted) (O(n^2) if sorted in descending order)
+      list[j] = list[j-1]                        c6              n*n*O(1)  (0      if sorted) (O(n^2) if sorted in descending order)
+      j = j - 1                                  c7              n*n*O(1)  (0      if sorted) (O(n^2) if sorted in descending order)
+    list[position] = key                         c8              n*O(1)
+  return list                                    c9              O(1)
+
+
+Worst case: T(n) = O(n^2)
+Best case:  T(n) = O(n*log(n))
+
 """
 
 """
