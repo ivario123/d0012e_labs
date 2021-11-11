@@ -1,4 +1,5 @@
 
+import math
 import time
 from matplotlib import pyplot as plt
 import numpy
@@ -198,66 +199,72 @@ def merge_sort_b(list,n,k):
 is_sorted = lambda l: all(l[i] <= l[i+1] for i in range(len(l)-1))
 
 
-def test_merge_sort():
-    # log_10(n)
-    i_range = (2,15)
-    # k values to test
-    j_range = (1,100)
-    # plot optimal k values for different n
-    optimal_k = []
-    for i in range(i_range[0],i_range[1]):
-      # Store the execution times for the 2 implementations
-      merge_sort_1 = []
-      merge_sort_2 = []
-      # Store difference between implementations
-      delta_time = []
-      # Track the best K val
-      max_diff = 0
-      max_diff_k = 0
-      # Keep the distrobition consitant between K changes
-      nums = numpy.random.random_integers(0, 100, 2**i).tolist()
-      x_values = []
-      # this should be the optimal size
-      print(f"log2({2**i}) = {log2(2**i)}")
-      for j in range(j_range[0],j_range[1]):
-        x_values.append(j)
-        # generate a random list of integers
-        # check how long time the default merge sort takes
-        t1 = time.time()
-        merge_sort(nums)
-        t2 = time.time()
-        dt = t2-t1
-        merge_sort_1.append(dt)
 
-        # decalare the number of elements in lists
-        n = 2**i
-        k = j
-        # check how long time it takes to run our merge sort
-        t1 = time.time()
-        merge_sort_l(nums, n, k)
-        t2 = time.time()
-        if dt-(t2-t1) > max_diff:
-          max_diff_k=k
-          max_diff = dt-(t2-t1)
-        delta_time.append(dt-(t2-t1))
-        merge_sort_2.append(t2-t1)
-        progress(100*((i-i_range[0])*(j_range[1]-j_range[0])+j-j_range[0])/((i_range[1]-i_range[0])*j_range[1]-j_range[0]))
-      optimal_k.append(max_diff_k)
-      print(f"Optimal K for N = {2**i} is {max_diff_k}",end = '\r')
+def test_merge_sort(n_range:tuple = (1,2),n_step:int = 1,k_range:tuple = (1,2),k_step:int = 1)->list(list()):
+    
+  """
+    Tests the different merge sort implementations, the first four fields in
+    each list of integers are :
+    [0] -> function name
+    [1] -> n 
+    [2] -> k (-1 if NA)
+    [3] -> random, sorted, half sorted
+  """
+  ret = []
 
+  for n in range( n_range[0],n_range[1],n_step):
+    progress((n-n_range[0])/n_range[1]*100)
+    # Generating the values
+    vals = numpy.random.randint(0,100,n)
 
-      # Plot the measured values
-      plt.plot(merge_sort_1,x_values,label = "merge_standard")
-      plt.plot(merge_sort_2,x_values,label = "merge_linear")
-      plt.legend()
-      plt.title("Merge sort time effeciency")
-      plt.xlabel("delta t")
-      plt.ylabel("K")
-      plt.show()
-    #plt.plot(list(range(i_range[0],i_range[1]),optimal_k))
-    #plt.xlabel("Input range")
-    #plt.ylabel("Optimal K value")
-    #plt.show()
+    # Testing the standard merge sort
+    ret.extend(["merge_std",n,-1,"random"])
+    t1 = time.time()
+    merge_sort(vals)
+    t2 = time.time()
+    ret[len(ret)-1].append(t2-t1)
+    for k in range(k_range[0],k_range[1],k_step):    
+
+      # Testing merge sort with insertion sort
+      ret.extend(["merge_linear",n,k,"random"])
+      t1 = time.time()
+      merge_sort_l(vals,n,k)
+      t2 = time.time()
+      ret[len(ret)-1].append(t2-t1)
+
+      # Testing merge sort with bSort
+      ret.extend(["merge_binary",n,k,"random"])
+      t1 = time.time()
+      merge_sort_b(vals,n,k)
+      t2 = time.time()
+      ret[len(ret)-1].append(t2-t1)
+      progress(((n-n_range[0])*(k_range[1]-k_range[0])+k-k_range[0])/(n_range[1]-n_range[0])*(k_range[1]-k_range[0])*100)
+  # generating an almost sorted list
+  vals = numpy.random.randint(0,100,n)
+  vals = list(vals).sorted()
+  vals[:len(vals)//2],vals[len(vals)//2:] = vals[len(vals)//2:],vals[:len(vals)//2]
+  # Testing the standard merge sort
+  ret.extend(["merge_std",n,-1,"half sorted"])
+  t1 = time.time()
+  merge_sort(vals)
+  t2 = time.time()
+  ret[len(ret)-1].append(t2-t1)
+  # Testing merge sort with insertion
+  ret.extend(["merge_linear",n,math.sqrt(n),"half sorted"])
+  t1 = time.time()
+  merge_sort_l(vals,n,math.sqrt(n))
+  t2 = time.time()
+  ret[len(ret)-1].append(t2-t1)
+  # Testing merge sort with bSort
+  ret.extend(["merge_binary",n,math.sqrt(n),"half sorted"])
+  t1 = time.time()
+  merge_sort_b(vals,n,math.sqrt(n))
+  t2 = time.time()
+  ret[len(ret)-1].append(t2-t1)
+  return ret
+      
+    
+    
 
 def progress(percent:int):
   percent = int(percent)
@@ -265,4 +272,5 @@ def progress(percent:int):
 
 if __name__ == "__main__":
   print("Started the tests")
-  test_merge_sort()
+  test_merge_sort(n_range = (1000,10000),n_step = 100,
+  k_range=(1,100),k_step=2)
