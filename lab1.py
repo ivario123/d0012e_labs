@@ -6,15 +6,21 @@ from math import log2
 import sys, os
 
 """
-  insertion_sort(list):
-  for j = 2 to list.length                              
-    key = list[j]
-    //Insert n[j] into the sorted sequence list[1..j-1]
-    i = j-1
-    while i > 0 and list[i] > key
-      list[i+1] = list[i]
-      i = i-1
-    list[i+1] = key
+  insertion_sort(list):                                     #     
+  for j = 2 to list.length                                  # C1    (n)
+    key = list[j]                                           # C2    (n-1)
+    //Insert n[j] into the sorted sequence list[1..j-1]     
+    i = j-1                                                 # C3    (n-1)
+    while i > 0 and list[i] > key                           # C4    ((n(n+1)/2)-1)
+      list[i+1] = list[i]                                   # C5    (n(n-1)/2)
+      i = i-1                                               # C6    (n(n-1)/2)
+    list[i+1] = key                                         # C7    (n-1)
+
+    T(n)= C1(n) + C2(n-1) + C3(n-1) + C4((n(n+1)/2)-1) + C5(n(n-1)/2) + C6(n(n-1)/2) + C7(n-1)
+
+    Best case:  (C1 + C2 + C4 + C5 + C8) n – (C2 + C4 + C5 + C8)    O(n)
+    Worst case: (C4/2 + C5/2 + C6/2)n^2 + (C1+ C2 + C3 + C4/2 - C5/2 - C6/2 + C7)n 
+                - (C2 + C3 + C4 + C7)
 """
 
 """                                              costs           times
