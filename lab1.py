@@ -4,8 +4,9 @@ import time
 from matplotlib import pyplot as plt
 import numpy
 from math import log2
-import sys, os
-import pandas as pd 
+import sys
+import os
+import pandas as pd
 
 """
   insertion_sort(list):                                     #     
@@ -164,225 +165,236 @@ def merge(L1, L2):
     merged += L2
     return merged
 
+
 def binary_search(lst, length, key):
-  low = 0
-  high = length
-  while(low < high):
-    mid = (low + high)//2
-    if(lst[mid] <= key):
-      low = mid + 1
-    else:
-      high = mid
-  return low
+    low = 0
+    high = length
+    while(low < high):
+        mid = (low + high)//2
+        if(lst[mid] <= key):
+            low = mid + 1
+        else:
+            high = mid
+    return low
+
 
 def bSort(lst):
-  for i in range(1, len(lst)):
-    key = lst[i]
-    position = binary_search(lst, i, key)
-    j = i
-    while(j > position):
-      lst[j] = lst[j-1]
-      j = j - 1
-    lst[position] = key
-  return lst
+    for i in range(1, len(lst)):
+        key = lst[i]
+        position = binary_search(lst, i, key)
+        j = i
+        while(j > position):
+            lst[j] = lst[j-1]
+            j = j - 1
+        lst[position] = key
+    return lst
 
-def merge_sort_b(list,n,k):
-  if len(list) < n/k:       # We have reached the botom of the tree, where we have k lists
-    return bSort(list)
-  middle = len(list)//2
-  
-  right = merge_sort_b(list[middle:],n,k)
-  left  = merge_sort_b(list[:middle],n,k)
-  return merge(left,right)
+
+def merge_sort_b(list, n, k):
+    if len(list) < n/k:       # We have reached the botom of the tree, where we have k lists
+        return bSort(list)
+    middle = len(list)//2
+
+    right = merge_sort_b(list[middle:], n, k)
+    left = merge_sort_b(list[:middle], n, k)
+    return merge(left, right)
+
 
 # ================= Testing ==================
 # verify that a list is sorted
-is_sorted = lambda l: all(l[i] <= l[i+1] for i in range(len(l)-1))
+def is_sorted(l): return all(l[i] <= l[i+1] for i in range(len(l)-1))
 
 
+def test_merge_sort(n_range: tuple = (1, 2), n_step: int = 1, k_range: tuple = (1, 2), k_step: int = 1) -> list(list()):
+    """
+      Tests the different merge sort implementations, the first four fields in
+      each list of integers are :
+      [0] -> test_type
+      [1] -> function name
 
-def test_merge_sort(n_range:tuple = (1,2),n_step:int = 1,k_range:tuple = (1,2),k_step:int = 1)->list(list()):
-    
-  """
-    Tests the different merge sort implementations, the first four fields in
-    each list of integers are :
-    [0] -> test_type
-    [1] -> function name
+    """
+    ret = [
+        ["k_test", "merge_b"],       # 0-2 k_test
+        ["k_test", "merge_l"],
+        ["k_test", "k_values"],
+        ["complexity", "merge_b"],   # 3 - 5 complexity
+        ["complexity", "merge_l"],
+        ["complexity", "merge"],
+        ["semi_sorted", "merge_b"],  # 6 - 9 semi_sorted
+        ["semi_sorted", "merge_l"],
+        ["semi_sorted", "merge"],
+        ["semi_sorted", "n_values"],
+        ["sorted", "merge_b"],       # 10 - 12 sorted
+        ["sorted", "merge_l"],
+        ["sorted", "merge"],
+        ["base_case", "merge"]
+    ]
 
-  """
-  ret = [
-    ["k_test","merge_b"],       # 0-2 k_test
-    ["k_test","merge_l"],
-    ["k_test","k_values"],
-    ["complexity","merge_b"],   # 3 - 5 complexity
-    ["complexity","merge_l"],
-    ["complexity","merge"],
-    ["semi_sorted","merge_b"],  # 6 - 9 semi_sorted
-    ["semi_sorted","merge_l"],
-    ["semi_sorted","merge"],
-    ["semi_sorted","n_values"],
-    ["sorted","merge_b"],       # 10 - 12 sorted
-    ["sorted","merge_l"],
-    ["sorted","merge"],
-    ["base_case","merge"]
-  ]
+    for n in range(n_range[0], n_range[1], n_step):
+        # progress((n-n_range[0])/n_range[1]*100)
+        # Generating the values
 
-  for n in range( n_range[0],n_range[1],n_step):
-    #progress((n-n_range[0])/n_range[1]*100)
-    # Generating the values
+        vals = list(numpy.random.randint(0, 100, n))
 
-    vals = list(numpy.random.randint(0,100,n))
-    
-    t1 = time.time()
-    merge_sort(vals)
-    t2 = time.time()
-    ret[13].append(t2-t1)
-    print(f"Running tests for n = {n}", end  = '\r')
-    for k in range(k_range[0],k_range[1],k_step):    
-      ret[2].append(k)
-      # Testing merge sort with insertion sort
-      t1 = time.time()
-      merge_sort_l(vals,n,k)
-      t2 = time.time()
-      ret[1].append(t2-t1)
+        t1 = time.time()
+        merge_sort(vals)
+        t2 = time.time()
+        ret[13].append(t2-t1)
+        print(f"Running tests for n = {n}", end='\r')
+        for k in range(k_range[0], k_range[1], k_step):
+            ret[2].append(k)
+            # Testing merge sort with insertion sort
+            t1 = time.time()
+            merge_sort_l(vals, n, k)
+            t2 = time.time()
+            ret[1].append(t2-t1)
 
-      # Testing merge sort with bSort
-      t1 = time.time()
-      merge_sort_b(vals,n,k)
-      t2 = time.time()
-      ret[0].append(t2-t1)
-    # generating an almost sorted list
+            # Testing merge sort with bSort
+            t1 = time.time()
+            merge_sort_b(vals, n, k)
+            t2 = time.time()
+            ret[0].append(t2-t1)
+        # generating an almost sorted list
 
-    vals = numpy.random.randint(0,100,n)
-    vals = merge_sort_l(list(vals),n,math.sqrt(n))
-    vals[:len(vals)//2],vals[len(vals)//2:] = vals[len(vals)//2:],vals[:len(vals)//2]
-    # Testing the standard merge sort
-    t1 = time.time()
-    merge_sort(vals)
-    t2 = time.time()
-    ret[8].append(t2-t1)
-    # Testing merge sort with insertion
-    t1 = time.time()
-    merge_sort_l(vals,n,math.sqrt(n))
-    t2 = time.time()
-    ret[7].append(t2-t1)
-    # Testing merge sort with bSort
-    t1 = time.time()
-    merge_sort_b(vals,n,math.sqrt(n))
-    t2 = time.time()
-    ret[6].append(t2-t1)
-    ret[9].append(n)
-  df = pd.DataFrame(ret)
-  df.to_csv('lab1.csv', index=False)
+        vals = numpy.random.randint(0, 100, n)
+        vals = merge_sort_l(list(vals), n, math.sqrt(n))
+        vals[:len(vals)//2], vals[len(vals) //
+                                  2:] = vals[len(vals)//2:], vals[:len(vals)//2]
+        # Testing the standard merge sort
+        t1 = time.time()
+        merge_sort(vals)
+        t2 = time.time()
+        ret[8].append(t2-t1)
+        # Testing merge sort with insertion
+        t1 = time.time()
+        merge_sort_l(vals, n, math.sqrt(n))
+        t2 = time.time()
+        ret[7].append(t2-t1)
+        # Testing merge sort with bSort
+        t1 = time.time()
+        merge_sort_b(vals, n, math.sqrt(n))
+        t2 = time.time()
+        ret[6].append(t2-t1)
+        ret[9].append(n)
+    df = pd.DataFrame(ret)
+    df.to_csv('lab1.csv', index=False)
 
-  return ret
-      
+    return ret
+
+
 def test_big_boy():
-  ret = [
-    ["merge_l"],
-    ["merge_b"],
-    ["merge"],
-    ["n"]
-  ]
-  
-  for n in range( 10**5,10**6,10**4):
-      print(f"testing for n = {n}", end ='\r' )
-      vals = list(numpy.random.randint(0,100,n))
-      # Testing merge sort with insertion sort
-      t1 = time.time()
-      merge_sort_l(vals,n,50)
-      t2 = time.time()
-      ret[0].append(t2-t1)
+    ret = [
+        ["merge_l"],
+        ["merge_b"],
+        ["merge"],
+        ["n"]
+    ]
 
-      # Testing merge sort with bSort
-      t1 = time.time()
-      merge_sort_b(vals,n,50)
-      t2 = time.time()
-      ret[1].append(t2-t1)
-      # Testing merge
-      t1 = time.time()
-      merge_sort(vals)
-      t2 = time.time()
-      ret[2].append(t2-t1)
-      
-      ret[3].append(n)
-  df = pd.DataFrame(ret)
-  df.to_csv('big_boy.csv', index=False)
-  return ret
+    for n in range(10**5, 4*10**5, 2*10**3):
+        print(f"testing for n = {n}", end='\r')
+        vals = list(numpy.random.randint(0, 100, n))
+        # Testing merge sort with insertion sort
+        t1 = time.time()
+        merge_sort_l(vals, n, 50)
+        t2 = time.time()
+        ret[0].append(t2-t1)
+
+        # Testing merge sort with bSort
+        t1 = time.time()
+        merge_sort_b(vals, n, 50)
+        t2 = time.time()
+        ret[1].append(t2-t1)
+        # Testing merge
+        t1 = time.time()
+        merge_sort(vals)
+        t2 = time.time()
+        ret[2].append(t2-t1)
+
+        ret[3].append(n)
+    df = pd.DataFrame(ret)
+    df.to_csv('big_boy.csv', index=False)
+    return ret
+
+
 def medium_sorted_case():
-  ret = [
-    ["merge_l"],
-    ["merge_b"],
-    ["merge"],
-    ["n"]
-  ]
-  
-  for n in range( 10**5,10**6,10**4):
-      print(f"testing for n = {n}", end ='\r' )
-      vals = merge_sort_l(list(numpy.random.randint(0,100,n)),n,50)
-      vals[:len(vals)//2],vals[len(vals)//2:] = vals[len(vals)//2:],vals[:len(vals)//2]
-      # Testing merge sort with insertion sort
-      t1 = time.time()
-      merge_sort_l(vals,n,50)
-      t2 = time.time()
-      ret[0].append(t2-t1)
+    ret = [
+        ["merge_l"],
+        ["merge_b"],
+        ["merge"],
+        ["n"]
+    ]
 
-      # Testing merge sort with bSort
-      t1 = time.time()
-      merge_sort_b(vals,n,50)
-      t2 = time.time()
-      ret[1].append(t2-t1)
-      # Testing merge
-      t1 = time.time()
-      merge_sort(vals)
-      t2 = time.time()
-      ret[2].append(t2-t1)
-      
-      ret[3].append(n)
-  df = pd.DataFrame(ret)
-  df.to_csv('med_sort.csv', index=False)
-  return ret
-    
+    for n in range(10**5, 4*10**5, 2*10**3):
+        print(f"testing for n = {n}", end='\r')
+        vals = merge_sort_l(list(numpy.random.randint(0, 100, n)), n, 50)
+        vals[:len(vals)//2], vals[len(vals) //
+                                  2:] = vals[len(vals)//2:], vals[:len(vals)//2]
+        # Testing merge sort with insertion sort
+        t1 = time.time()
+        merge_sort_l(vals, n, 50)
+        t2 = time.time()
+        ret[0].append(t2-t1)
+
+        # Testing merge sort with bSort
+        t1 = time.time()
+        merge_sort_b(vals, n, 50)
+        t2 = time.time()
+        ret[1].append(t2-t1)
+        # Testing merge
+        t1 = time.time()
+        merge_sort(vals)
+        t2 = time.time()
+        ret[2].append(t2-t1)
+
+        ret[3].append(n)
+    df = pd.DataFrame(ret)
+    df.to_csv('med_sort.csv', index=False)
+    return ret
+
+
 def test_best_case():
-  ret = [
-    ["merge_l"],
-    ["merge_b"],
-    ["merge"],
-    ["n"]
-  ]
-  
-  for n in range( 10**5,10**6,10**4):
-      print(f"testing for n = {n}", end ='\r' )
-      vals = list(range(0,n))
-      # Testing merge sort with insertion sort
-      t1 = time.time()
-      merge_sort_l(vals,n,50)
-      t2 = time.time()
-      ret[0].append(t2-t1)
+    ret = [
+        ["merge_l"],
+        ["merge_b"],
+        ["merge"],
+        ["n"]
+    ]
 
-      # Testing merge sort with bSort
-      t1 = time.time()
-      merge_sort_b(vals,n,50)
-      t2 = time.time()
-      ret[1].append(t2-t1)
-      # Testing merge
-      t1 = time.time()
-      merge_sort(vals)
-      t2 = time.time()
-      ret[2].append(t2-t1)
-      
-      ret[3].append(n)
-  df = pd.DataFrame(ret)
-  df.to_csv('small_boy.csv', index=False)
-  return ret
-def progress(percent:int):
-  percent = int(percent)
-  print(f"[{'='*percent}{' '*(100-percent)}] {percent}%",end = '\r')
+    for n in range(10**5, 4*10**5, 2*10**3):
+        print(f"testing for n = {n}", end='\r')
+        vals = list(range(0, n))
+        # Testing merge sort with insertion sort
+        t1 = time.time()
+        merge_sort_l(vals, n, 50)
+        t2 = time.time()
+        ret[0].append(t2-t1)
+
+        # Testing merge sort with bSort
+        t1 = time.time()
+        merge_sort_b(vals, n, 50)
+        t2 = time.time()
+        ret[1].append(t2-t1)
+        # Testing merge
+        t1 = time.time()
+        merge_sort(vals)
+        t2 = time.time()
+        ret[2].append(t2-t1)
+
+        ret[3].append(n)
+    df = pd.DataFrame(ret)
+    df.to_csv('small_boy.csv', index=False)
+    return ret
+
+
+def progress(percent: int):
+    percent = int(percent)
+    print(f"[{'='*percent}{' '*(100-percent)}] {percent}%", end='\r')
+
 
 if __name__ == "__main__":
-  print("Started the tests")
-  print(test_best_case())
-  print(test_big_boy())
-  print(medium_sorted_case())
-  print(test_merge_sort(n_range = (1000,100000),n_step = 5000,
-  k_range=(26,80),k_step = 1))
+    print("Started the tests")
+    print(test_best_case())
+    print(test_big_boy())
+    print(medium_sorted_case())
+    print(test_merge_sort(n_range=(1000, 100000), n_step=5000,
+                          k_range=(26, 80), k_step=1))
