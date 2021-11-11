@@ -223,13 +223,20 @@ def test_merge_sort(n_range:tuple = (1,2),n_step:int = 1,k_range:tuple = (1,2),k
     ["semi_sorted","n_values"],
     ["sorted","merge_b"],       # 10 - 12 sorted
     ["sorted","merge_l"],
-    ["sorted","merge"]
+    ["sorted","merge"],
+    ["base_case","merge"]
   ]
 
   for n in range( n_range[0],n_range[1],n_step):
     #progress((n-n_range[0])/n_range[1]*100)
     # Generating the values
+
     vals = list(numpy.random.randint(0,100,n))
+    
+    t1 = time.time()
+    merge_sort(vals)
+    t2 = time.time()
+    ret[13].append(t2-t1)
     print(f"Running tests for n = {n}", end  = '\r')
     for k in range(k_range[0],k_range[1],k_step):    
       ret[2].append(k)
@@ -280,4 +287,4 @@ def progress(percent:int):
 if __name__ == "__main__":
   print("Started the tests")
   print(test_merge_sort(n_range = (1000,100000),n_step = 5000,
-  k_range=(1,100),k_step = 5))
+  k_range=(26,80),k_step = 1))
