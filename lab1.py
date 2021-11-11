@@ -258,8 +258,7 @@ def test_merge_sort(n_range: tuple = (1, 2), n_step: int = 1, k_range: tuple = (
 
         vals = numpy.random.randint(0, 100, n)
         vals = merge_sort_l(list(vals), n, math.sqrt(n))
-        vals[:len(vals)//2], vals[len(vals) //
-                                  2:] = vals[len(vals)//2:], vals[:len(vals)//2]
+        vals[:len(vals)//2], vals[len(vals) //2:] = vals[len(vals)//2:], vals[:len(vals)//2]
         # Testing the standard merge sort
         t1 = time.time()
         merge_sort(vals)
@@ -267,12 +266,12 @@ def test_merge_sort(n_range: tuple = (1, 2), n_step: int = 1, k_range: tuple = (
         ret[8].append(t2-t1)
         # Testing merge sort with insertion
         t1 = time.time()
-        merge_sort_l(vals, n, math.sqrt(n))
+        merge_sort_l(vals, n, 50)
         t2 = time.time()
         ret[7].append(t2-t1)
         # Testing merge sort with bSort
         t1 = time.time()
-        merge_sort_b(vals, n, math.sqrt(n))
+        merge_sort_b(vals, n, 70)
         t2 = time.time()
         ret[6].append(t2-t1)
         ret[9].append(n)
@@ -301,7 +300,7 @@ def test_big_boy():
 
         # Testing merge sort with bSort
         t1 = time.time()
-        merge_sort_b(vals, n, 50)
+        merge_sort_b(vals, n, 70)
         t2 = time.time()
         ret[1].append(t2-t1)
         # Testing merge
@@ -337,7 +336,7 @@ def medium_sorted_case():
 
         # Testing merge sort with bSort
         t1 = time.time()
-        merge_sort_b(vals, n, 50)
+        merge_sort_b(vals, n, 70)
         t2 = time.time()
         ret[1].append(t2-t1)
         # Testing merge
@@ -371,7 +370,7 @@ def test_best_case():
 
         # Testing merge sort with bSort
         t1 = time.time()
-        merge_sort_b(vals, n, 50)
+        merge_sort_b(vals, n, 70)
         t2 = time.time()
         ret[1].append(t2-t1)
         # Testing merge
