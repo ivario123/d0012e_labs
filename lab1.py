@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 import numpy
 from math import log2
 import sys, os
+import pandas as pd 
 
 """
   insertion_sort(list):                                     #     
@@ -188,7 +189,7 @@ def bSort(lst):
 def merge_sort_b(list,n,k):
   if len(list) < n/k:       # We have reached the botom of the tree, where we have k lists
     return bSort(list)
-  middle = len(list)/2
+  middle = len(list)//2
   
   right = merge_sort_b(list[middle:],n,k)
   left  = merge_sort_b(list[:middle],n,k)
@@ -205,62 +206,68 @@ def test_merge_sort(n_range:tuple = (1,2),n_step:int = 1,k_range:tuple = (1,2),k
   """
     Tests the different merge sort implementations, the first four fields in
     each list of integers are :
-    [0] -> function name
-    [1] -> n 
-    [2] -> k (-1 if NA)
-    [3] -> random, sorted, half sorted
+    [0] -> test_type
+    [1] -> function name
+
   """
-  ret = []
+  ret = [
+    ["k_test","merge_b"],       # 0-2 k_test
+    ["k_test","merge_l"],
+    ["k_test","k_values"],
+    ["complexity","merge_b"],   # 3 - 5 complexity
+    ["complexity","merge_l"],
+    ["complexity","merge"],
+    ["semi_sorted","merge_b"],  # 6 - 9 semi_sorted
+    ["semi_sorted","merge_l"],
+    ["semi_sorted","merge"],
+    ["semi_sorted","n_values"],
+    ["sorted","merge_b"],       # 10 - 12 sorted
+    ["sorted","merge_l"],
+    ["sorted","merge"]
+  ]
 
   for n in range( n_range[0],n_range[1],n_step):
-    progress((n-n_range[0])/n_range[1]*100)
+    #progress((n-n_range[0])/n_range[1]*100)
     # Generating the values
-    vals = numpy.random.randint(0,100,n)
-
-    # Testing the standard merge sort
-    ret.extend(["merge_std",n,-1,"random"])
-    t1 = time.time()
-    merge_sort(vals)
-    t2 = time.time()
-    ret[len(ret)-1].append(t2-t1)
+    vals = list(numpy.random.randint(0,100,n))
+    print(f"Running tests for n = {n}", end  = '\r')
     for k in range(k_range[0],k_range[1],k_step):    
-
+      ret[2].append(k)
       # Testing merge sort with insertion sort
-      ret.extend(["merge_linear",n,k,"random"])
       t1 = time.time()
       merge_sort_l(vals,n,k)
       t2 = time.time()
-      ret[len(ret)-1].append(t2-t1)
+      ret[1].append(t2-t1)
 
       # Testing merge sort with bSort
-      ret.extend(["merge_binary",n,k,"random"])
       t1 = time.time()
       merge_sort_b(vals,n,k)
       t2 = time.time()
-      ret[len(ret)-1].append(t2-t1)
-      progress(((n-n_range[0])*(k_range[1]-k_range[0])+k-k_range[0])/(n_range[1]-n_range[0])*(k_range[1]-k_range[0])*100)
-  # generating an almost sorted list
-  vals = numpy.random.randint(0,100,n)
-  vals = list(vals).sorted()
-  vals[:len(vals)//2],vals[len(vals)//2:] = vals[len(vals)//2:],vals[:len(vals)//2]
-  # Testing the standard merge sort
-  ret.extend(["merge_std",n,-1,"half sorted"])
-  t1 = time.time()
-  merge_sort(vals)
-  t2 = time.time()
-  ret[len(ret)-1].append(t2-t1)
-  # Testing merge sort with insertion
-  ret.extend(["merge_linear",n,math.sqrt(n),"half sorted"])
-  t1 = time.time()
-  merge_sort_l(vals,n,math.sqrt(n))
-  t2 = time.time()
-  ret[len(ret)-1].append(t2-t1)
-  # Testing merge sort with bSort
-  ret.extend(["merge_binary",n,math.sqrt(n),"half sorted"])
-  t1 = time.time()
-  merge_sort_b(vals,n,math.sqrt(n))
-  t2 = time.time()
-  ret[len(ret)-1].append(t2-t1)
+      ret[0].append(t2-t1)
+    # generating an almost sorted list
+
+    vals = numpy.random.randint(0,100,n)
+    vals = bSort(list(vals))
+    vals[:len(vals)//2],vals[len(vals)//2:] = vals[len(vals)//2:],vals[:len(vals)//2]
+    # Testing the standard merge sort
+    t1 = time.time()
+    merge_sort(vals)
+    t2 = time.time()
+    ret[8].append(t2-t1)
+    # Testing merge sort with insertion
+    t1 = time.time()
+    merge_sort_l(vals,n,math.sqrt(n))
+    t2 = time.time()
+    ret[7].append(t2-t1)
+    # Testing merge sort with bSort
+    t1 = time.time()
+    merge_sort_b(vals,n,math.sqrt(n))
+    t2 = time.time()
+    ret[6].append(t2-t1)
+    ret[9].append(n)
+  df = pd.DataFrame(ret)
+  df.to_csv('lab1.csv', index=False)
+
   return ret
       
     
@@ -272,5 +279,5 @@ def progress(percent:int):
 
 if __name__ == "__main__":
   print("Started the tests")
-  test_merge_sort(n_range = (1000,10000),n_step = 100,
-  k_range=(1,100),k_step=2)
+  print(test_merge_sort(n_range = (1000,100000),n_step = 5000,
+  k_range=(1,100),k_step = 5))
