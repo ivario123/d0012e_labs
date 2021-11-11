@@ -247,7 +247,7 @@ def test_merge_sort(n_range:tuple = (1,2),n_step:int = 1,k_range:tuple = (1,2),k
     # generating an almost sorted list
 
     vals = numpy.random.randint(0,100,n)
-    vals = bSort(list(vals))
+    vals = merge_sort_l(list(vals))
     vals[:len(vals)//2],vals[len(vals)//2:] = vals[len(vals)//2:],vals[:len(vals)//2]
     # Testing the standard merge sort
     t1 = time.time()
