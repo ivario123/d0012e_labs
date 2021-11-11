@@ -277,7 +277,39 @@ def test_merge_sort(n_range:tuple = (1,2),n_step:int = 1,k_range:tuple = (1,2),k
 
   return ret
       
-    
+def test_big_boy():
+  ret = [
+    ["merge_l"],
+    ["merge_b"],
+    ["merge"],
+    ["n"]
+  ]
+  
+  for n in range( 10**5,10**6,10**4):
+      print(f"testing for n = {n}", end ='\r' )
+      vals = list(numpy.random.randint(0,100,n))
+      # Testing merge sort with insertion sort
+      t1 = time.time()
+      merge_sort_l(vals,n,50)
+      t2 = time.time()
+      ret[0].append(t2-t1)
+
+      # Testing merge sort with bSort
+      t1 = time.time()
+      merge_sort_b(vals,n,50)
+      t2 = time.time()
+      ret[1].append(t2-t1)
+      # Testing merge
+      t1 = time.time()
+      merge_sort(vals)
+      t2 = time.time()
+      ret[2].append(t2-t1)
+      
+      ret[3].append(n)
+  df = pd.DataFrame(ret)
+  df.to_csv('big_boy.csv', index=False)
+  return ret
+      
     
 
 def progress(percent:int):
@@ -286,5 +318,6 @@ def progress(percent:int):
 
 if __name__ == "__main__":
   print("Started the tests")
+  print(test_big_boy())
   print(test_merge_sort(n_range = (1000,100000),n_step = 5000,
   k_range=(26,80),k_step = 1))
