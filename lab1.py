@@ -7,6 +7,7 @@ from math import log2
 import sys
 import os
 import pandas as pd
+import threading
 
 """
   insertion_sort(list):                                     #     
@@ -380,8 +381,11 @@ if __name__ == "__main__":
     #print(test_merge_sort(n_range=(1000, 30000), n_step=5000,
     #                      k_range=(1, 100), k_step=1))
     print("Testing best case")
-    print(test_best_case())
+    t1 = threading.Thread(target = test_best_case)
+    t1.start()
     print("Testing worst case")
-    print(test_big_boy())
+    t2 = threading.Thread(target = test_big_boy)
+    t2.start()
     print("Testing semi sorted")
-    print(medium_sorted_case())
+    t3 = threading.Thread(target = medium_sorted_case)
+    t3.start()
