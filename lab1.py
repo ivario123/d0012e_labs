@@ -132,7 +132,7 @@ def insertion_sort(list):
 def merge_sort(lista):
     l = len(lista)
     if l == 1:
-        return l
+        return lista
 
     # Dela listan i två delar
     mitten = len(lista)//2
@@ -154,7 +154,7 @@ def merge_sort_l(list, n, k):
     return merge(left, right)
 
 
-def merge(L1, L2):
+def merge(L1:list, L2:list):
     merged = []  # O(1)
     while(len(L1) and len(L2)):  # T1(n*2)
         if L1[0] > L2[0]:  # O(1)
