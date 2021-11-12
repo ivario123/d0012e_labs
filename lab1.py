@@ -180,15 +180,16 @@ def binary_search(lst, length, key):
 
 def bSort(lst):
     for i in range(1, len(lst)):
+        list_passed = lst[:i]
         key = lst[i]
-        position = binary_search(lst, i, key)
-        j = i
-        while(j > position):
-            lst[j] = lst[j-1]
-            j = j - 1
-        lst[position] = key
+        position = binary_search(list_passed, i, key)
+        #j = i
+        #while(j > position):
+        #    lst[j] = lst[j-1]
+        #    j = j - 1
+        del lst[i]
+        lst.insert(position,key) 
     return lst
-
 
 def merge_sort_b(list, n, k):
     if len(list) < n/k:       # We have reached the botom of the tree, where we have k lists
