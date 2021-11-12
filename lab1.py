@@ -275,8 +275,8 @@ def test_big_boy():
         ["n"]
     ]
 
-    for n in range(10**5, 4*10**5, 2*10**3):
-        print(f"testing for n = {n}", end='\r')
+    for n in range(10**5, 4*10**5, 10**4):
+        print(f"random : testing for n = {n}")
         vals = list(numpy.random.randint(0, 100, n))
         # Testing merge sort with insertion sort
         t1 = time.time()
@@ -309,9 +309,9 @@ def medium_sorted_case():
         ["n"]
     ]
 
-    for n in range(10**5, 4*10**5, 2*10**3):
-        print(f"testing for n = {n}", end='\r')
-        vals = merge_sort_l(list(numpy.random.randint(0, 100, n)), n, 50)
+    for n in range(10**5, 4*10**5, 10**4):
+        print(f"medium sorted : testing for n = {n}")
+        vals = list(range(0,n))
         vals[:len(vals)//2], vals[len(vals) //
                                   2:] = vals[len(vals)//2:], vals[:len(vals)//2]
         # Testing merge sort with insertion sort
@@ -335,8 +335,38 @@ def medium_sorted_case():
     df = pd.DataFrame(ret)
     df.to_csv('med_sort.csv', index=False)
     return ret
+def test_big_random_case():
+    ret = [
+        ["merge_l"],
+        ["merge_b"],
+        ["merge"],
+        ["n"]
+    ]
 
+    for n in range(10**5, 2*10**6, 10**5):
+        print(f"big random : testing for n = {n}")
+        vals = list(numpy.random.randint(0, 100, n))
+        # Testing merge sort with insertion sort
+        t1 = time.time()
+        merge_sort_l(vals, n, 50)
+        t2 = time.time()
+        ret[0].append(t2-t1)
 
+        # Testing merge sort with bSort
+        t1 = time.time()
+        merge_sort_b(vals, n, 50)
+        t2 = time.time()
+        ret[1].append(t2-t1)
+        # Testing merge
+        t1 = time.time()
+        merge_sort(vals)
+        t2 = time.time()
+        ret[2].append(t2-t1)
+
+        ret[3].append(n)
+    df = pd.DataFrame(ret)
+    df.to_csv('random.csv', index=False)
+    return ret
 def test_best_case():
     ret = [
         ["merge_l"],
@@ -345,8 +375,8 @@ def test_best_case():
         ["n"]
     ]
 
-    for n in range(10**5, 4*10**5, 2*10**3):
-        print(f"testing for n = {n}", end='\r')
+    for n in range(10**5, 4*10**5, 10**4):
+        print(f"bestcase : testing for n = {n}")
         vals = list(range(0, n))
         # Testing merge sort with insertion sort
         t1 = time.time()
@@ -389,3 +419,6 @@ if __name__ == "__main__":
     print("Testing semi sorted")
     t3 = threading.Thread(target = medium_sorted_case)
     t3.start()
+    print("Testing big random")
+    t4 = threading.Thread(target = test_big_random_case)
+    t4.start()
