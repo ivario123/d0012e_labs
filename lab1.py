@@ -183,16 +183,15 @@ def bSort(lst):
         list_passed = lst[:i]
         key = lst[i]
         position = binary_search(list_passed, i, key)
-        #j = i
-        #while(j > position):
-        #    lst[j] = lst[j-1]
-        #    j = j - 1
-        del lst[i]
-        lst.insert(position,key) 
+        j = i
+        while(j > position):
+            lst[j] = lst[j-1]
+            j = j - 1
+        lst[position] = key
     return lst
 
 def merge_sort_b(list, n, k):
-    if len(list) < n/k:       # We have reached the botom of the tree, where we have k lists
+    if len(list) <=  k:       # We have reached the botom of the tree, where we have k lists
         return bSort(list)
     middle = len(list)//2
 
@@ -255,27 +254,6 @@ def test_merge_sort(n_range: tuple = (1, 2), n_step: int = 1, k_range: tuple = (
             merge_sort_b(vals, n, k)
             t2 = time.time()
             ret[0].append(t2-t1)
-        # generating an almost sorted list
-
-        vals = numpy.random.randint(0, 100, n)
-        vals = merge_sort_l(list(vals), n, math.sqrt(n))
-        vals[:len(vals)//2], vals[len(vals) //2:] = vals[len(vals)//2:], vals[:len(vals)//2]
-        # Testing the standard merge sort
-        t1 = time.time()
-        merge_sort(vals)
-        t2 = time.time()
-        ret[8].append(t2-t1)
-        # Testing merge sort with insertion
-        t1 = time.time()
-        merge_sort_l(vals, n, 50)
-        t2 = time.time()
-        ret[7].append(t2-t1)
-        # Testing merge sort with bSort
-        t1 = time.time()
-        merge_sort_b(vals, n, 70)
-        t2 = time.time()
-        ret[6].append(t2-t1)
-        ret[9].append(n)
     df = pd.DataFrame(ret)
     df.to_csv('lab1.csv', index=False)
 
@@ -393,8 +371,11 @@ def progress(percent: int):
 
 if __name__ == "__main__":
     print("Started the tests")
-    print(test_best_case())
-    print(test_big_boy())
-    print(medium_sorted_case())
     print(test_merge_sort(n_range=(1000, 100000), n_step=5000,
                           k_range=(26, 80), k_step=1))
+    print("Testing best case")
+    print(test_best_case())
+    print("Testing worst case")
+    print(test_big_boy())
+    print("Testing semi sorted")
+    print(medium_sorted_case())
