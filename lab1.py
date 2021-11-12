@@ -203,6 +203,20 @@ def merge_sort_b(list, n, k):
     return merge(left, right)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ================= Testing ==================
 # verify that a list is sorted
 def is_sorted(l): return all(l[i] <= l[i+1] for i in range(len(l)-1))
@@ -259,7 +273,7 @@ def test_big_boy():
         ["n"]
     ]
 
-    for n in range(10**5, 4*10**5, 10**4):
+    for n in range(10**5, 4*10**5, 5*10**4):
         print(f"random : testing for n = {n}")
         vals = list(numpy.random.randint(0, 100, n))
         # Testing merge sort with insertion sort
@@ -293,7 +307,7 @@ def medium_sorted_case():
         ["n"]
     ]
 
-    for n in range(10**5, 4*10**5, 10**4):
+    for n in range(10**5, 4*10**5, 5*10**4):
         print(f"medium sorted : testing for n = {n}")
         vals = list(range(0,n))
         vals[:len(vals)//2], vals[len(vals) //
@@ -327,7 +341,7 @@ def test_big_random_case():
         ["n"]
     ]
 
-    for n in range(10**5, 2*10**6, 10**5):
+    for n in range(10**5, 2*10**6, 5*10**4):
         print(f"big random : testing for n = {n}")
         vals = list(numpy.random.randint(0, 100, n))
         # Testing merge sort with insertion sort
