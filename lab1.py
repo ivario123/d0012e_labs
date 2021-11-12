@@ -208,7 +208,7 @@ def merge_sort_b(list, n, k):
 def is_sorted(l): return all(l[i] <= l[i+1] for i in range(len(l)-1))
 
 
-def test_merge_sort(n_range: tuple = (1, 2), n_step: int = 1, k_range: tuple = (1, 2), k_step: int = 1) -> list(list()):
+def test_k():
     """
       Tests the different merge sort implementations, the first four fields in
       each list of integers are :
@@ -217,23 +217,11 @@ def test_merge_sort(n_range: tuple = (1, 2), n_step: int = 1, k_range: tuple = (
 
     """
     ret = [
-        ["k_test", "merge_b"],       # 0-2 k_test
-        ["k_test", "merge_l"],
-        ["k_test", "k_values"],
-        ["complexity", "merge_b"],   # 3 - 5 complexity
-        ["complexity", "merge_l"],
-        ["complexity", "merge"],
-        ["semi_sorted", "merge_b"],  # 6 - 9 semi_sorted
-        ["semi_sorted", "merge_l"],
-        ["semi_sorted", "merge"],
-        ["semi_sorted", "n_values"],
-        ["sorted", "merge_b"],       # 10 - 12 sorted
-        ["sorted", "merge_l"],
-        ["sorted", "merge"],
-        ["base_case", "merge"]
+        ["merge_b"],
+        ["merge_l"]
     ]
 
-    for n in range(n_range[0], n_range[1], n_step):
+    for n in [10**5]:
         # progress((n-n_range[0])/n_range[1]*100)
         # Generating the values
 
@@ -243,22 +231,22 @@ def test_merge_sort(n_range: tuple = (1, 2), n_step: int = 1, k_range: tuple = (
         merge_sort(vals)
         t2 = time.time()
         ret[13].append(t2-t1)
-        print(f"Running tests for n = {n}", end='\r')
-        for k in range(k_range[0], k_range[1], k_step):
+        print(f"k test : Running tests for n = {n}")
+        for k in range(1,10**3):
             ret[2].append(k)
-            # Testing merge sort with insertion sort
-            t1 = time.time()
-            merge_sort_l(vals, n, k)
-            t2 = time.time()
-            ret[1].append(t2-t1)
-
-            # Testing merge sort with bSort
+            # Testing merge sort with b sort
             t1 = time.time()
             merge_sort_b(vals, n, k)
             t2 = time.time()
             ret[0].append(t2-t1)
+
+            # Testing merge sort with insertion
+            t1 = time.time()
+            merge_sort_l(vals, n, k)
+            t2 = time.time()
+            ret[1].append(t2-t1)
     df = pd.DataFrame(ret)
-    df.to_csv('lab1.csv', index=False)
+    df.to_csv('k_test.csv', index=False)
 
     return ret
 
@@ -404,6 +392,10 @@ def progress(percent: int):
 
 if __name__ == "__main__":
     print("Started the tests")
+    print("asserting that the functions work")
+    print(is_sorted(merge_sort(list(range(0, 10)))))
+    print(is_sorted(merge_sort_l(list(range(0, 10)),10,3)))
+    print(is_sorted(merge_sort_b(list(range(0, 10)),10,3)))
     #print(test_merge_sort(n_range=(1000, 30000), n_step=5000,
     #                      k_range=(1, 100), k_step=1))
     print("Testing best case")
@@ -417,4 +409,6 @@ if __name__ == "__main__":
     t3.start()
     print("Testing big random")
     t4 = threading.Thread(target = test_big_random_case)
+    t4.start()
+    t5 = threading.Thread(target = test_k)
     t4.start()
