@@ -232,7 +232,8 @@ def test_k():
     """
     ret = [
         ["merge_b"],
-        ["merge_l"]
+        ["merge_l"],
+        ["k"]
     ]
 
     for n in [10**5]:
