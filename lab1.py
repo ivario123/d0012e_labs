@@ -130,8 +130,9 @@ def insertion_sort(list):
 
 
 def merge_sort(lista):
-    if len(lista) == 1:
-        return lista
+    l = len(lista)
+    if l == 1:
+        return l
 
     # Dela listan i två delar
     mitten = len(lista)//2
@@ -143,9 +144,10 @@ def merge_sort(lista):
 
 
 def merge_sort_l(list, n, k):
-    if len(list) <= k:       # We have reached the botom of the tree, where we have k lists
+    l = len(list)
+    if l <= k:       # We have reached the botom of the tree, where we have k lists
         return insertion_sort(list)
-    middle = len(list)//2
+    middle = l//2
 
     right = merge_sort_l(list[middle:], n, k)
     left = merge_sort_l(list[:middle], n, k)
@@ -169,6 +171,7 @@ def merge(L1, L2):
 
 
 
+
 def binary_search(lst, length, key):
     low = 0
     high = length
@@ -183,9 +186,8 @@ def binary_search(lst, length, key):
 
 def bSort(lst):
     for i in range(1, len(lst)):
-        list_passed = lst[:i]
         key = lst[i]
-        position = binary_search(list_passed, i, key)
+        position = binary_search(lst, i, key)
         j = i
         while(j > position):
             lst[j] = lst[j-1]
@@ -194,9 +196,10 @@ def bSort(lst):
     return lst
 
 def merge_sort_b(list, n, k):
-    if len(list) <=  k:       # We have reached the botom of the tree, where we have k lists
+    l = len(list)
+    if l <=  k:       # We have reached the botom of the tree, where we have k lists
         return bSort(list)
-    middle = len(list)//2
+    middle = l//2
 
     right = merge_sort_b(list[middle:], n, k)
     left = merge_sort_b(list[:middle], n, k)
@@ -374,8 +377,8 @@ def progress(percent: int):
 
 if __name__ == "__main__":
     print("Started the tests")
-    print(test_merge_sort(n_range=(1000, 100000), n_step=5000,
-                          k_range=(26, 80), k_step=1))
+    #print(test_merge_sort(n_range=(1000, 30000), n_step=5000,
+    #                      k_range=(1, 100), k_step=1))
     print("Testing best case")
     print(test_best_case())
     print("Testing worst case")
