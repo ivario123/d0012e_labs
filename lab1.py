@@ -341,7 +341,7 @@ def test_big_random_case():
         ["n"]
     ]
 
-    for n in range(10**5, 1.1*10**6, 10**5):
+    for n in range(10**5, 10**6, 10**5):
         print(f"big random : testing for n = {n}")
         vals = list(numpy.random.randint(0, 100, n))
         # Testing merge sort with insertion sort
