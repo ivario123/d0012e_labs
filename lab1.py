@@ -184,16 +184,12 @@ def binary_search(lst, length, key):
             high = mid
     return low
 
-
 def bSort(lst):
     for i in range(1, len(lst)):
         key = lst[i]
         position = binary_search(lst, i, key)
-        j = i
-        while(j > position):
-            lst[j] = lst[j-1]
-            j = j - 1
-        lst[position] = key
+        lst.insert(position, key)
+        del lst[i]
     return lst
 
 def merge_sort_b(list, n, k):
