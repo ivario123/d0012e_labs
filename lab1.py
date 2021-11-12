@@ -425,4 +425,4 @@ if __name__ == "__main__":
     t4 = threading.Thread(target = test_big_random_case)
     t4.start()
     t5 = threading.Thread(target = test_k)
-    t4.start()
+    t5.start()
