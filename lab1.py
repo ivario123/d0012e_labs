@@ -166,6 +166,9 @@ def merge(L1, L2):
     return merged
 
 
+
+
+
 def binary_search(lst, length, key):
     low = 0
     high = length
@@ -279,7 +282,7 @@ def test_big_boy():
 
         # Testing merge sort with bSort
         t1 = time.time()
-        merge_sort_b(vals, n, 70)
+        merge_sort_b(vals, n, 50)
         t2 = time.time()
         ret[1].append(t2-t1)
         # Testing merge
@@ -315,7 +318,7 @@ def medium_sorted_case():
 
         # Testing merge sort with bSort
         t1 = time.time()
-        merge_sort_b(vals, n, 70)
+        merge_sort_b(vals, n, 50)
         t2 = time.time()
         ret[1].append(t2-t1)
         # Testing merge
@@ -349,7 +352,7 @@ def test_best_case():
 
         # Testing merge sort with bSort
         t1 = time.time()
-        merge_sort_b(vals, n, 70)
+        merge_sort_b(vals, n, 50)
         t2 = time.time()
         ret[1].append(t2-t1)
         # Testing merge
