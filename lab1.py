@@ -245,8 +245,8 @@ def test_k():
         t1 = time.time()
         merge_sort(vals)
         t2 = time.time()
-        print(f"k test : Running tests for k = {k}")
         for k in range(1,10**3):
+            print(f"k test : Running tests for k = {k}")
             ret[2].append(k)
             # Testing merge sort with b sort
             t1 = time.time()
