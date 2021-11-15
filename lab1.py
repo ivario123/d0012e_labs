@@ -194,7 +194,11 @@ def bSort(lst):
 
 def merge_sort_b(list, k):
     l = len(list)
+    if l == 1 :
+        return list
     if l <= k:       # We have reached the botom of the tree, where we have k lists
+        if(k-l <= 0):
+            print(k,l)
         return bSort(list)
     middle = l//2
 
@@ -229,7 +233,17 @@ def test_k():
     vals = list(numpy.random.randint(0, n, n))
     vals_sorted = sorted(vals)
     vals_almost_sorted = vals_sorted[:len(vals_sorted)//2]+vals[len(vals)//2::-1]
-    for k in range(1, 10**5+1,100):
+    for i in range(1,1000):
+        if is_sorted(vals):
+            vals = list(numpy.random.randint(0, n, n))
+        print(f"k test : Running tests for k = {i}",end = '\r')
+        # Testing merge sort with b sort
+        t1 = time.time()
+        merge_sort_b(vals, i)
+        t2 = time.time()
+        ret[0].append(t2-t1)
+        ret[6].append(i)
+    for k in range(1001, 10**5+1,100):
         if is_sorted(vals):
             vals = list(numpy.random.randint(0, n, n))
         print(f"k test : Running tests for k = {k}",end = '\r')
