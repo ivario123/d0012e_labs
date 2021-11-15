@@ -26,7 +26,7 @@ def test_k():
     vals = list(numpy.random.randint(0, n, n))
     vals_sorted = sorted(vals)
     vals_almost_sorted = vals_sorted[:len(vals_sorted)//2]+vals[len(vals)//2::-1]
-    for i in range(1,1000,10):
+    for i in range(1,1000,5):
         if is_sorted(vals):
             vals = list(numpy.random.randint(0, n, n))
         print(f"k test : Running tests for k = {i}",end = '\r')
