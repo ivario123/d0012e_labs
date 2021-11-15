@@ -225,11 +225,13 @@ def test_k():
         ["merge_l_almost_sorted"],
         ["k"]
     ]
-    n = 10**5
+    n = 5*10**4
     vals = list(numpy.random.randint(0, n, n))
     vals_sorted = sorted(vals)
     vals_almost_sorted = vals_sorted[:len(vals_sorted)//2]+vals[len(vals)//2::-1]
     for k in range(1, 10**5+1,100):
+        if is_sorted(vals):
+            vals = list(numpy.random.randint(0, n, n))
         print(f"k test : Running tests for k = {k}",end = '\r')
         # Testing merge sort with b sort
         t1 = time.time()
