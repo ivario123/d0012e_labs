@@ -201,7 +201,7 @@ def merge_sort_b(list, n, k):
     return merge(left, right)
 
 
-# ================= Testing ==================
+""" ================= Testing =================="""
 # verify that a list is sorted
 def is_sorted(l): return all(l[i] <= l[i+1] for i in range(len(l)-1))
 
@@ -215,12 +215,18 @@ def test_k():
 
     """
     ret = [
-        ["merge_b"],
-        ["merge_l"],
+        ["merge_b_random"],
+        ["merge_l_random"],
+        ["merge_b_sorted"],
+        ["merge_l_sorted"],
+        ["merge_b_almost_sorted"],
+        ["merge_l_almost_sorted"],
         ["k"]
     ]
     n = 2*10**3
     vals = list(numpy.random.randint(0, n, n))
+    vals_sorted = sorted(vals)
+    vals_almost_sorted = vals_sorted[:len(vals_sorted)//2]+vals[len(vals)//2::-1]
     for k in range(1, 10**5):
         print(f"k test : Running tests for k = {k}",end = '\r')
         # Testing merge sort with b sort
@@ -234,7 +240,31 @@ def test_k():
         merge_sort_l(vals, n, k)
         t2 = time.time()
         ret[1].append(t2-t1)
-        ret[2].append(k)
+
+        # Testing merge sort with b sort
+        t1 = time.time()
+        merge_sort_b(vals, n, k)
+        t2 = time.time()
+        ret[2].append(t2-t1)
+
+        # Testing merge sort with insertion
+        t1 = time.time()
+        merge_sort_l(vals, n, k)
+        t2 = time.time()
+        ret[3].append(t2-t1)
+
+        # Testing merge sort with b sort
+        t1 = time.time()
+        merge_sort_b(vals, n, k)
+        t2 = time.time()
+        ret[4].append(t2-t1)
+
+        # Testing merge sort with insertion
+        t1 = time.time()
+        merge_sort_l(vals, n, k)
+        t2 = time.time()
+        ret[5].append(t2-t1)
+        ret[6].append(k)
     df = pd.DataFrame(ret)
     df.to_csv('k_test.csv', index=False)
 
