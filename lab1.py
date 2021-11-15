@@ -182,6 +182,8 @@ def binary_search(lst, length, key):
 
 
 def bSort(lst):
+    if len(lst) == 1:
+        return lst
     for i in range(1, len(lst)):
         key = lst[i]
         position = binary_search(lst, i, key)
@@ -413,6 +415,80 @@ def progress(percent: int):
     print(f"[{'='*percent}{' '*(100-percent)}] {percent}%", end='\r')
 
 
+def test_best_case_insert():
+    ret = [
+        ["b_sort"],
+        ["insertion"],
+        ["n"]
+    ]
+    for n in range(1,10**4+1,10):
+        nums = list(range(0,n))
+        t1 = time.time()
+        bSort(nums)
+        t2 = time.time()
+        ret[0].append(t2-t1)
+
+        t1 = time.time()
+        insertion_sort(nums)
+        t2 = time.time()
+        ret[1].append(t2-t1)
+
+        ret[2].append(n)
+    df = pd.DataFrame(ret)
+    df.to_csv('best_case_only_insert.csv', index=False)
+    print("Done with test_best_case")
+    return ret
+
+def test_medium_case_insert():
+    ret = [
+        ["b_sort"],
+        ["insertion"],
+        ["n"]
+    ]
+    for n in range(1,10**4+1,10):
+        nums = list(range(0,n))
+        nums[n//2-1:] = nums[n//2-1::-1] 
+        t1 = time.time()
+        bSort(nums)
+        t2 = time.time()
+        ret[0].append(t2-t1)
+
+        t1 = time.time()
+        insertion_sort(nums)
+        t2 = time.time()
+        ret[1].append(t2-t1)
+
+        ret[2].append(n)
+    df = pd.DataFrame(ret)
+    df.to_csv('test_medium_case_insert.csv', index=False)
+    print("Done with test_medium_case_insert")
+    return ret
+def test_big_case_insert():
+    ret = [
+        ["b_sort"],
+        ["insertion"],
+        ["n"]
+    ]
+    for n in range(1,10**4+1,10):
+        nums = list(numpy.random.randint(0, n, n))
+        t1 = time.time()
+        bSort(nums)
+        t2 = time.time()
+        ret[0].append(t2-t1)
+
+        t1 = time.time()
+        insertion_sort(nums)
+        t2 = time.time()
+        ret[1].append(t2-t1)
+
+        ret[2].append(n)
+    df = pd.DataFrame(ret)
+    df.to_csv('test_big_case_insert.csv', index=False)
+    print("Done with test_big_case_insert")
+    return ret
+
+
+
 if __name__ == "__main__":
     print("Started the tests")
     print("asserting that the functions work")
@@ -421,7 +497,13 @@ if __name__ == "__main__":
     print(is_sorted(merge_sort_b(list(range(0, 10)), 10, 3)))
     # print(test_merge_sort(n_range=(1000, 30000), n_step=5000,
     #                      k_range=(1, 100), k_step=1))
-    k = test_k()
+    print(test_best_case_insert())
+    print(test_medium_case_insert())
+    print(test_big_case_insert())
+    print("bruh")
+
+
+    """k = test_k()
     k_1,k_2 = 70,380#k[2][1:][k[0][1:].index(min(k[0][1:]))],k[2][1:][k[1][1:].index(min(k[1][1:]))]
     print(f"\n\nk for merge_l is {k_1}\nk for merge_b is {k_2}\n\n")
     print("Testing best case")
@@ -431,4 +513,4 @@ if __name__ == "__main__":
     print("Testing semi sorted")
     medium_sorted_case(k_1,k_2)
     print("Testing big random")
-    test_big_random_case(k_1,k_2)
+    test_big_random_case(k_1,k_2)"""
