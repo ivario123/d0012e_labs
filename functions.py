@@ -1,17 +1,4 @@
-import math
-import time
-from matplotlib import pyplot as plt
-import numpy
-from math import log2
-import sys
-import os
-import pandas as pd
-
-
-""" ====================== Actual code ====================== """
-
-
-def insertion_sort(list):
+def insertion_sort(list:list)->list:
     """
     Sorts a list using insertion sort.
     """
@@ -26,7 +13,7 @@ def insertion_sort(list):
     return list
 
 
-def merge_sort(list):
+def merge_sort(list:list)->list:
     """
     Sorts a list using merge sort.
     """
@@ -43,7 +30,7 @@ def merge_sort(list):
     # Slå samman de sorterade listorna (härska)
 
 
-def merge_sort_l(list, n, k):
+def merge_sort_l(list:list, n:int, k:int)->list:
     """
     Sorts a list using merge sort.
     but sorts the sublists of length k with insertion sort
@@ -75,7 +62,7 @@ def merge(L1: list, L2: list):
     return merged
 
 
-def binary_search(lst, length, key):
+def binary_search(lst:list, length:int, key:int)->int:
     """
     Searches for a key in a list using binary search.
     """
@@ -93,7 +80,7 @@ def binary_search(lst, length, key):
     return low
 
 
-def bSort(lst):
+def bSort(lst:list) -> list:
     """
       Sorts a list using binary search.
     """
@@ -107,7 +94,7 @@ def bSort(lst):
     return lst
 
 
-def merge_sort_b(list, k):
+def merge_sort_b(list:list, k:int) -> list:
     """
       Sorts a list using binary search.
       but sorts the sublists of length k with bSort instead of insertion sort

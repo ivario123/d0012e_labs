@@ -1,4 +1,7 @@
 
+import time
+import numpy
+import pandas as pd
 from functions import *
 """ ================= Testing =================="""
 # verify that a list is sorted
@@ -125,7 +128,7 @@ def test_medium_sorted_case(k_1: int = 1, k_2: int = 1) -> list:
     return ret
 
 
-def test_big_random_case(k_1, k_2):
+def test_big_random_case(k_1:int, k_2:int)->list:
     """
         Tests the different merge sort implementations based on a static K value
         and a range of n values.
@@ -165,7 +168,7 @@ def test_big_random_case(k_1, k_2):
     return ret
 
 
-def test_presorted_case(k_1, k_2):
+def test_presorted_case(k_1:int, k_2:int) -> list:
     """
         Tests the different merge sort implementations based on a static K value
         and a range of n values.
@@ -204,12 +207,12 @@ def test_presorted_case(k_1, k_2):
     return ret
 
 
-def progress(percent: int):
+def progress(percent: int) -> None:
     percent = int(percent)
     print(f"[{'='*percent}{' '*(100-percent)}] {percent}%", end='\r')
 
 
-def test_presorted_case_insert():
+def test_presorted_case_insert() -> list:
     """
         Tests the different insertion sort implementations for 
         a range of n values.
@@ -246,7 +249,7 @@ def test_presorted_case_insert():
     return ret
 
 
-def test_medium_case_insert():
+def test_medium_case_insert() -> list:
     """
         Tests the different insertion sort implementations for
         a range of n values.
@@ -284,7 +287,7 @@ def test_medium_case_insert():
     return ret
 
 
-def test_random_case_insert():
+def test_random_case_insert() -> list:
     """
         Tests the different insertion sort implementations for
         a range of n values.
@@ -323,19 +326,19 @@ def test_random_case_insert():
 if __name__ == "__main__":
     print("Started the tests")
     print("asserting that the functions work")
+    """ Assertions to ensure that the code still works """
     print(is_sorted(merge_sort(list(range(0, 10)))))
     print(is_sorted(merge_sort_l(list(range(0, 10)), 10, 3)))
     print(is_sorted(merge_sort_b(list(range(0, 10)), 3)))
-    # print(test_merge_sort(n_range=(1000, 30000), n_step=5000,
-    #                      k_range=(1, 100), k_step=1))
+    """ Testing the elementary functions """
     print(test_presorted_case_insert())
     print(test_medium_case_insert())
     print(test_random_case_insert())
     print("Done with elementary tests")
 
     k = test_k()
-    # print("bruh")
     k_1, k_2 = 20, 786
+    """ Testing the extended algorithms """
     print("Testing best case")
     test_presorted_case(k_1, k_2)
     print("Testing worst case")
