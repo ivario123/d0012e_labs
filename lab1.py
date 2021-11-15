@@ -32,7 +32,7 @@ def test_k():
         print(f"k test : Running tests for k = {i}",end = '\r')
         # Testing merge sort with b sort
         t1 = time.time()
-        merge_sort_l(vals, i)
+        merge_sort_l(vals, n, i)
         t2 = time.time()
         ret[0].append(t2-t1)
         ret[6].append(i)
