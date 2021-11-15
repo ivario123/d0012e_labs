@@ -32,7 +32,7 @@ def test_k():
         print(f"k test : Running tests for k = {i}",end = '\r')
         # Testing merge sort with b sort
         t1 = time.time()
-        merge_sort_l(vals, n, i)
+        merge_sort_b(vals, i)
         t2 = time.time()
         ret[0].append(t2-t1)
         ret[6].append(i)
@@ -296,10 +296,9 @@ if __name__ == "__main__":
     #print("bruh")
 
 
-    #k = test_k()
+    k = test_k()
     #print("bruh")
-    k_1,k_2 = 20,786#k[2][1:][k[0][1:].index(min(k[0][1:]))],k[2][1:][k[1][1:].index(min(k[1][1:]))]
-    #print(f"\n\nk for merge_l is {k_1}\nk for merge_b is {k_2}\n\n")
+    k_1,k_2 = 20,786
     print("Testing best case")
     test_best_case(k_1,k_2)
     print("Testing worst case")
