@@ -145,7 +145,7 @@ def test_big_random_case(k_1:int, k_2:int)->list:
         vals = list(numpy.random.randint(0, n, n))
         """ Testing merge sort with insertion sort """
         t1 = time.time()
-        merge_sort_l(vals, k_1)
+        merge_sort_l(vals, n, k_1)
         t2 = time.time()
         ret[0].append(t2-t1)
 
