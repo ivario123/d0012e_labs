@@ -22,11 +22,11 @@ def test_k():
         ["merge_l_almost_sorted"],
         ["k"]
     ]
-    n = 5*10**4
+    n = 2*10**4
     vals = list(numpy.random.randint(0, n, n))
     vals_sorted = sorted(vals)
     vals_almost_sorted = vals_sorted[:len(vals_sorted)//2]+vals[len(vals)//2::-1]
-    for i in range(1,1000):
+    for i in range(1,1000,10):
         if is_sorted(vals):
             vals = list(numpy.random.randint(0, n, n))
         print(f"k test : Running tests for k = {i}",end = '\r')
@@ -36,7 +36,7 @@ def test_k():
         t2 = time.time()
         ret[0].append(t2-t1)
         ret[6].append(i)
-    for k in range(1001, 10**5+1,100):
+    for k in range(1001, 10**5+1,1000):
         if is_sorted(vals):
             vals = list(numpy.random.randint(0, n, n))
         print(f"k test : Running tests for k = {k}",end = '\r')

@@ -167,16 +167,18 @@ def merge(L1: list, L2: list):
     merged += L2
     return merged
 
-
 def binary_search(lst, length, key):
     low = 0
     high = length
-    while(low < high):
+    while(low <= high):
         mid = (low + high)//2
-        if(lst[mid] <= key):
+        if(lst[mid] < key):
             low = mid + 1
+        elif lst[mid]>key:
+            high = mid-1
         else:
-            high = mid
+            return mid
+          
     return low
 
 
