@@ -26,7 +26,7 @@ def test_k():
     vals = list(numpy.random.randint(0, n, n))
     vals_sorted = sorted(vals)
     vals_almost_sorted = vals_sorted[:len(vals_sorted)//2]+vals[len(vals)//2::-1]
-    for i in range(1,1000,5):
+    for i in range(1,3000,10):
         if is_sorted(vals):
             vals = list(numpy.random.randint(0, n, n))
         print(f"k test : Running tests for k = {i}",end = '\r')
@@ -36,46 +36,7 @@ def test_k():
         t2 = time.time()
         ret[0].append(t2-t1)
         ret[6].append(i)
-    for k in range(1001, 10**5+1,1000):
-        if is_sorted(vals):
-            vals = list(numpy.random.randint(0, n, n))
-        print(f"k test : Running tests for k = {k}",end = '\r')
-        # Testing merge sort with b sort
-        t1 = time.time()
-        merge_sort_b(vals, k)
-        t2 = time.time()
-        ret[0].append(t2-t1)
-
-        # Testing merge sort with insertion
-        #t1 = time.time()
-        #merge_sort_l(vals , k)
-        #t2 = time.time()
-        #ret[1].append(t2-t1)
-        """
-        # Testing merge sort with b sort
-        t1 = time.time()
-        merge_sort_b(vals , k)
-        t2 = time.time()
-        ret[2].append(t2-t1)
-
-        # Testing merge sort with insertion
-        t1 = time.time()
-        merge_sort_l(vals , k)
-        t2 = time.time()
-        ret[3].append(t2-t1)
-
-        # Testing merge sort with b sort
-        t1 = time.time()
-        merge_sort_b(vals , k)
-        t2 = time.time()
-        ret[4].append(t2-t1)
-
-        # Testing merge sort with insertion
-        t1 = time.time()
-        merge_sort_l(vals , k)
-        t2 = time.time()
-        ret[5].append(t2-t1)"""
-        ret[6].append(k)
+    
     df = pd.DataFrame(ret)
     df.to_csv('k_test.csv', index=False)
 
@@ -337,7 +298,7 @@ if __name__ == "__main__":
 
     k = test_k()
     print("bruh")
-    """k_1,k_2 = 70,380#k[2][1:][k[0][1:].index(min(k[0][1:]))],k[2][1:][k[1][1:].index(min(k[1][1:]))]
+    k_1,k_2 = 70,380#k[2][1:][k[0][1:].index(min(k[0][1:]))],k[2][1:][k[1][1:].index(min(k[1][1:]))]
     print(f"\n\nk for merge_l is {k_1}\nk for merge_b is {k_2}\n\n")
     print("Testing best case")
     test_best_case(k_1,k_2)
@@ -346,4 +307,4 @@ if __name__ == "__main__":
     print("Testing semi sorted")
     medium_sorted_case(k_1,k_2)
     print("Testing big random")
-    test_big_random_case(k_1,k_2)"""
+    test_big_random_case(k_1,k_2)
