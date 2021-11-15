@@ -229,7 +229,7 @@ def test_k():
     vals = list(numpy.random.randint(0, n, n))
     vals_sorted = sorted(vals)
     vals_almost_sorted = vals_sorted[:len(vals_sorted)//2]+vals[len(vals)//2::-1]
-    for k in range(500, 10**4+1,100):
+    for k in range(1, 10**5+1,100):
         print(f"k test : Running tests for k = {k}",end = '\r')
         # Testing merge sort with b sort
         t1 = time.time()
