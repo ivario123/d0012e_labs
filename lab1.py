@@ -225,11 +225,11 @@ def test_k():
         ["merge_l_almost_sorted"],
         ["k"]
     ]
-    n = 2*10**3
+    n = 5*10**4
     vals = list(numpy.random.randint(0, n, n))
     vals_sorted = sorted(vals)
     vals_almost_sorted = vals_sorted[:len(vals_sorted)//2]+vals[len(vals)//2::-1]
-    for k in range(1, 10**5):
+    for k in range(500, 10**4+1,100):
         print(f"k test : Running tests for k = {k}",end = '\r')
         # Testing merge sort with b sort
         t1 = time.time()
@@ -238,11 +238,11 @@ def test_k():
         ret[0].append(t2-t1)
 
         # Testing merge sort with insertion
-        t1 = time.time()
-        merge_sort_l(vals, n, k)
-        t2 = time.time()
-        ret[1].append(t2-t1)
-
+        #t1 = time.time()
+        #merge_sort_l(vals, n, k)
+        #t2 = time.time()
+        #ret[1].append(t2-t1)
+        """
         # Testing merge sort with b sort
         t1 = time.time()
         merge_sort_b(vals, n, k)
@@ -265,7 +265,7 @@ def test_k():
         t1 = time.time()
         merge_sort_l(vals, n, k)
         t2 = time.time()
-        ret[5].append(t2-t1)
+        ret[5].append(t2-t1)"""
         ret[6].append(k)
     df = pd.DataFrame(ret)
     df.to_csv('k_test.csv', index=False)
@@ -520,14 +520,15 @@ if __name__ == "__main__":
     print(is_sorted(merge_sort_b(list(range(0, 10)), 10, 3)))
     # print(test_merge_sort(n_range=(1000, 30000), n_step=5000,
     #                      k_range=(1, 100), k_step=1))
-    print(test_best_case_insert())
-    print(test_medium_case_insert())
-    print(test_big_case_insert())
+    #print(test_best_case_insert())
+    #print(test_medium_case_insert())
+    #print(test_big_case_insert())
+    #print("bruh")
+
+
+    k = test_k()
     print("bruh")
-
-
-    """k = test_k()
-    k_1,k_2 = 70,380#k[2][1:][k[0][1:].index(min(k[0][1:]))],k[2][1:][k[1][1:].index(min(k[1][1:]))]
+    """k_1,k_2 = 70,380#k[2][1:][k[0][1:].index(min(k[0][1:]))],k[2][1:][k[1][1:].index(min(k[1][1:]))]
     print(f"\n\nk for merge_l is {k_1}\nk for merge_b is {k_2}\n\n")
     print("Testing best case")
     test_best_case(k_1,k_2)
