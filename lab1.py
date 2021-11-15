@@ -52,10 +52,10 @@ def test_big_boy(k_1, k_2):
     ]
 
     for n in range(10**5, 10**6+1, 5*10**4):
-        vals = list(numpy.random.randint(0 , n))
+        vals = list(numpy.random.randint(0, n, n))
         # Testing merge sort with insertion sort
         t1 = time.time()
-        merge_sort_l(vals, k_1)
+        merge_sort_l(vals,n, k_1)
         t2 = time.time()
         ret[0].append(t2-t1)
 
@@ -90,7 +90,7 @@ def medium_sorted_case(k_1, k_2):
         vals[n//2:] = vals[n//2-1::-1] 
         # Testing merge sort with insertion sort
         t1 = time.time()
-        merge_sort_l(vals, k_1)
+        merge_sort_l(vals, n, k_1)
         t2 = time.time()
         ret[0].append(t2-t1)
 
@@ -158,7 +158,7 @@ def test_best_case(k_1, k_2):
         vals = list(range(0, n))
         # Testing merge sort with insertion sort
         t1 = time.time()
-        merge_sort_l(vals, k_1)
+        merge_sort_l(vals, n, k_1)
         t2 = time.time()
         ret[0].append(t2-t1)
 
@@ -290,21 +290,21 @@ if __name__ == "__main__":
     print(is_sorted(merge_sort_b(list(range(0, 10)), 3)))
     # print(test_merge_sort(n_range=(1000, 30000), n_step=5000,
     #                      k_range=(1, 100), k_step=1))
-    print(test_best_case_insert())
-    print(test_medium_case_insert())
-    print(test_big_case_insert())
-    print("bruh")
+    #print(test_best_case_insert())
+    #print(test_medium_case_insert())
+    #print(test_big_case_insert())
+    #print("bruh")
 
 
-    k = test_k()
-    print("bruh")
+    #k = test_k()
+    #print("bruh")
     k_1,k_2 = 70,380#k[2][1:][k[0][1:].index(min(k[0][1:]))],k[2][1:][k[1][1:].index(min(k[1][1:]))]
-    print(f"\n\nk for merge_l is {k_1}\nk for merge_b is {k_2}\n\n")
-    print("Testing best case")
-    test_best_case(k_1,k_2)
-    print("Testing worst case")
-    test_big_boy(k_1,k_2)
+    #print(f"\n\nk for merge_l is {k_1}\nk for merge_b is {k_2}\n\n")
+    #print("Testing best case")
+    #test_best_case(k_1,k_2)
+    #print("Testing worst case")
+    #test_big_boy(k_1,k_2)
     print("Testing semi sorted")
     medium_sorted_case(k_1,k_2)
-    print("Testing big random")
-    test_big_random_case(k_1,k_2)
+    #print("Testing big random")
+    #test_big_random_case(k_1,k_2)
