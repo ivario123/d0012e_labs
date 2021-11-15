@@ -315,8 +315,7 @@ def medium_sorted_case(k_1, k_2):
 
     for n in range(10**5, 10**6+1, 5*10**4):
         vals = list(range(0, n))
-        vals[:len(vals)//2], vals[len(vals) //
-                                  2:] = vals[len(vals)//2:], vals[:len(vals)//2]
+        vals[n//2:] = vals[n//2-1::-1] 
         # Testing merge sort with insertion sort
         t1 = time.time()
         merge_sort_l(vals, n, k_1)
@@ -426,14 +425,10 @@ if __name__ == "__main__":
     k_1,k_2 = 70,380#k[2][1:][k[0][1:].index(min(k[0][1:]))],k[2][1:][k[1][1:].index(min(k[1][1:]))]
     print(f"\n\nk for merge_l is {k_1}\nk for merge_b is {k_2}\n\n")
     print("Testing best case")
-    t1 = threading.Thread(target=test_best_case,args=[k_1,k_2])
-    t1.start()
+    test_best_case(k_1,k_2)
     print("Testing worst case")
-    t2 = threading.Thread(target=test_big_boy,args=[k_1,k_2])
-    t2.start()
+    test_big_boy(k_1,k_2)
     print("Testing semi sorted")
-    t3 = threading.Thread(target=medium_sorted_case,args=[k_1,k_2])
-    t3.start()
+    medium_sorted_case(k_1,k_2)
     print("Testing big random")
-    t4 = threading.Thread(target=test_big_random_case,args=[k_1,k_2])
-    t4.start()
+    test_big_random_case(k_1,k_2)
