@@ -192,14 +192,14 @@ def bSort(lst):
     return lst
 
 
-def merge_sort_b(list, n, k):
+def merge_sort_b(list, k):
     l = len(list)
     if l <= k:       # We have reached the botom of the tree, where we have k lists
         return bSort(list)
     middle = l//2
 
-    right = merge_sort_b(list[middle:], n, k)
-    left = merge_sort_b(list[:middle], n, k)
+    right = merge_sort_b(list[middle:], k)
+    left = merge_sort_b(list[:middle], k)
     return merge(left, right)
 
 
@@ -233,37 +233,37 @@ def test_k():
         print(f"k test : Running tests for k = {k}",end = '\r')
         # Testing merge sort with b sort
         t1 = time.time()
-        merge_sort_b(vals, n, k)
+        merge_sort_b(vals, k)
         t2 = time.time()
         ret[0].append(t2-t1)
 
         # Testing merge sort with insertion
         #t1 = time.time()
-        #merge_sort_l(vals, n, k)
+        #merge_sort_l(vals , k)
         #t2 = time.time()
         #ret[1].append(t2-t1)
         """
         # Testing merge sort with b sort
         t1 = time.time()
-        merge_sort_b(vals, n, k)
+        merge_sort_b(vals , k)
         t2 = time.time()
         ret[2].append(t2-t1)
 
         # Testing merge sort with insertion
         t1 = time.time()
-        merge_sort_l(vals, n, k)
+        merge_sort_l(vals , k)
         t2 = time.time()
         ret[3].append(t2-t1)
 
         # Testing merge sort with b sort
         t1 = time.time()
-        merge_sort_b(vals, n, k)
+        merge_sort_b(vals , k)
         t2 = time.time()
         ret[4].append(t2-t1)
 
         # Testing merge sort with insertion
         t1 = time.time()
-        merge_sort_l(vals, n, k)
+        merge_sort_l(vals , k)
         t2 = time.time()
         ret[5].append(t2-t1)"""
         ret[6].append(k)
@@ -282,16 +282,16 @@ def test_big_boy(k_1, k_2):
     ]
 
     for n in range(10**5, 10**6+1, 5*10**4):
-        vals = list(numpy.random.randint(0, n, n))
+        vals = list(numpy.random.randint(0 , n))
         # Testing merge sort with insertion sort
         t1 = time.time()
-        merge_sort_l(vals, n, k_1)
+        merge_sort_l(vals, k_1)
         t2 = time.time()
         ret[0].append(t2-t1)
 
         # Testing merge sort with bSort
         t1 = time.time()
-        merge_sort_b(vals, n, k_2)
+        merge_sort_b(vals, k_2)
         t2 = time.time()
         ret[1].append(t2-t1)
         # Testing merge
@@ -320,13 +320,13 @@ def medium_sorted_case(k_1, k_2):
         vals[n//2:] = vals[n//2-1::-1] 
         # Testing merge sort with insertion sort
         t1 = time.time()
-        merge_sort_l(vals, n, k_1)
+        merge_sort_l(vals, k_1)
         t2 = time.time()
         ret[0].append(t2-t1)
 
         # Testing merge sort with bSort
         t1 = time.time()
-        merge_sort_b(vals, n, k_2)
+        merge_sort_b(vals, k_2)
         t2 = time.time()
         ret[1].append(t2-t1)
         # Testing merge
@@ -354,13 +354,13 @@ def test_big_random_case(k_1, k_2):
         vals = list(numpy.random.randint(0, n, n))
         # Testing merge sort with insertion sort
         t1 = time.time()
-        merge_sort_l(vals, n, k_1)
+        merge_sort_l(vals, k_1)
         t2 = time.time()
         ret[0].append(t2-t1)
 
         # Testing merge sort with bSort
         t1 = time.time()
-        merge_sort_b(vals, n, k_2)
+        merge_sort_b(vals, k_2)
         t2 = time.time()
         ret[1].append(t2-t1)
         # Testing merge
@@ -388,13 +388,13 @@ def test_best_case(k_1, k_2):
         vals = list(range(0, n))
         # Testing merge sort with insertion sort
         t1 = time.time()
-        merge_sort_l(vals, n, k_1)
+        merge_sort_l(vals, k_1)
         t2 = time.time()
         ret[0].append(t2-t1)
 
         # Testing merge sort with bSort
         t1 = time.time()
-        merge_sort_b(vals, n, k_2)
+        merge_sort_b(vals, k_2)
         t2 = time.time()
         ret[1].append(t2-t1)
         # Testing merge
@@ -516,8 +516,8 @@ if __name__ == "__main__":
     print("Started the tests")
     print("asserting that the functions work")
     print(is_sorted(merge_sort(list(range(0, 10)))))
-    print(is_sorted(merge_sort_l(list(range(0, 10)), 10, 3)))
-    print(is_sorted(merge_sort_b(list(range(0, 10)), 10, 3)))
+    print(is_sorted(merge_sort_l(list(range(0, 10)),10, 3)))
+    print(is_sorted(merge_sort_b(list(range(0, 10)), 3)))
     # print(test_merge_sort(n_range=(1000, 30000), n_step=5000,
     #                      k_range=(1, 100), k_step=1))
     #print(test_best_case_insert())
