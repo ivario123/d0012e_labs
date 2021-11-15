@@ -329,10 +329,10 @@ if __name__ == "__main__":
     print(is_sorted(merge_sort_b(list(range(0, 10)), 3)))
     # print(test_merge_sort(n_range=(1000, 30000), n_step=5000,
     #                      k_range=(1, 100), k_step=1))
-    #print(test_best_case_insert())
-    #print(test_medium_case_insert())
-    #print(test_big_case_insert())
-    #print("bruh")
+    print(test_best_case_insert())
+    print(test_medium_case_insert())
+    print(test_big_case_insert())
+    print("bruh")
 
 
     k = test_k()
