@@ -225,7 +225,7 @@ def test_k():
         ["merge_l_almost_sorted"],
         ["k"]
     ]
-    n = 5*10**4
+    n = 9*10**4
     vals = list(numpy.random.randint(0, n, n))
     vals_sorted = sorted(vals)
     vals_almost_sorted = vals_sorted[:len(vals_sorted)//2]+vals[len(vals)//2::-1]
