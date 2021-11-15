@@ -421,7 +421,7 @@ def test_best_case_insert():
         ["insertion"],
         ["n"]
     ]
-    for n in range(1,10**4+1,10):
+    for n in range(1,10**4+1,100):
         nums = list(range(0,n))
         t1 = time.time()
         bSort(nums)
@@ -445,7 +445,7 @@ def test_medium_case_insert():
         ["insertion"],
         ["n"]
     ]
-    for n in range(1,10**4+1,10):
+    for n in range(1,10**4+1,100):
         nums = list(range(0,n))
         nums[n//2-1:] = nums[n//2-1::-1] 
         t1 = time.time()
@@ -469,7 +469,7 @@ def test_big_case_insert():
         ["insertion"],
         ["n"]
     ]
-    for n in range(1,10**4+1,10):
+    for n in range(1,10**4+1,100):
         nums = list(numpy.random.randint(0, n, n))
         t1 = time.time()
         bSort(nums)
