@@ -419,9 +419,11 @@ def test_best_case_insert():
     ret = [
         ["b_sort"],
         ["insertion"],
+        ["merge"],
         ["n"]
     ]
-    for n in range(1,10**4+1,100):
+    for n in range(1,2*10**4+1,500):
+        print(f"Testing best for {n}", end='\r')
         nums = list(range(0,n))
         t1 = time.time()
         bSort(nums)
@@ -432,8 +434,14 @@ def test_best_case_insert():
         insertion_sort(nums)
         t2 = time.time()
         ret[1].append(t2-t1)
+        
+        t1 = time.time()
+        merge_sort(nums)
+        t2 = time.time()
+        ret[2].append(t2-t1)
 
-        ret[2].append(n)
+
+        ret[3].append(n)
     df = pd.DataFrame(ret)
     df.to_csv('best_case_only_insert.csv', index=False)
     print("Done with test_best_case")
@@ -443,9 +451,11 @@ def test_medium_case_insert():
     ret = [
         ["b_sort"],
         ["insertion"],
+        ["merge"],
         ["n"]
     ]
-    for n in range(1,10**4+1,100):
+    for n in range(1,2*10**4+1,500):
+        print(f"testing medium for {n}",end = '\r')
         nums = list(range(0,n))
         nums[n//2-1:] = nums[n//2-1::-1] 
         t1 = time.time()
@@ -458,7 +468,13 @@ def test_medium_case_insert():
         t2 = time.time()
         ret[1].append(t2-t1)
 
-        ret[2].append(n)
+        t1 = time.time()
+        merge_sort(nums)
+        t2 = time.time()
+        ret[2].append(t2-t1)
+
+
+        ret[3].append(n)
     df = pd.DataFrame(ret)
     df.to_csv('test_medium_case_insert.csv', index=False)
     print("Done with test_medium_case_insert")
@@ -467,9 +483,11 @@ def test_big_case_insert():
     ret = [
         ["b_sort"],
         ["insertion"],
+        ["merge"],
         ["n"]
     ]
-    for n in range(1,10**4+1,100):
+    for n in range(1,2*10**4+1,500):
+        print(f"testing random for {n}", end = '\r')
         nums = list(numpy.random.randint(0, n, n))
         t1 = time.time()
         bSort(nums)
@@ -481,7 +499,12 @@ def test_big_case_insert():
         t2 = time.time()
         ret[1].append(t2-t1)
 
-        ret[2].append(n)
+
+        t1 = time.time()
+        merge_sort(nums)
+        t2 = time.time()
+        ret[2].append(t2-t1)
+        ret[3].append(n)
     df = pd.DataFrame(ret)
     df.to_csv('test_big_case_insert.csv', index=False)
     print("Done with test_big_case_insert")
