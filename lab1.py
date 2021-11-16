@@ -42,7 +42,7 @@ def test_k() -> list:
         ret[2].append(i)
 
     df = pd.DataFrame(ret)
-    df.to_csv('test_k.csv', index=False)
+    df.to_csv('data/test_k.csv', index=False)
     print("Done with test_k")
     return ret
 
@@ -81,7 +81,7 @@ def test_random_case(k_1: int = 1, k_2: int = 1) -> list:
         ret[3].append(n)
     print("Done with test_random_case")
     df = pd.DataFrame(ret)
-    df.to_csv('test_random_case.csv', index=False)
+    df.to_csv('data/test_random_case.csv', index=False)
     return ret
 
 
@@ -123,7 +123,7 @@ def test_medium_sorted_case(k_1: int = 1, k_2: int = 1) -> list:
         """ Storing current n """
         ret[3].append(n)
     df = pd.DataFrame(ret)
-    df.to_csv('test_medium_sorted_case.csv', index=False)
+    df.to_csv('data/test_medium_sorted_case.csv', index=False)
     print("Done with test_medium_sorted_case")
     return ret
 
@@ -163,7 +163,7 @@ def test_big_random_case(k_1:int, k_2:int)->list:
 
         ret[3].append(n)
     df = pd.DataFrame(ret)
-    df.to_csv('test_big_random_case.csv', index=False)
+    df.to_csv('data/test_big_random_case.csv', index=False)
     print("Done with test_big_random_case")
     return ret
 
@@ -202,7 +202,7 @@ def test_presorted_case(k_1:int, k_2:int) -> list:
 
         ret[3].append(n)
     df = pd.DataFrame(ret)
-    df.to_csv('test_presorted_case.csv', index=False)
+    df.to_csv('data/test_presorted_case.csv', index=False)
     print("Done with test_presorted_case")
     return ret
 
@@ -244,7 +244,7 @@ def test_presorted_case_insert() -> list:
 
         ret[3].append(n)
     df = pd.DataFrame(ret)
-    df.to_csv('test_presorted_case_insert.csv', index=False)
+    df.to_csv('data/test_presorted_case_insert.csv', index=False)
     print("Done with test_presorted_case_insert")
     return ret
 
@@ -282,7 +282,7 @@ def test_medium_case_insert() -> list:
 
         ret[3].append(n)
     df = pd.DataFrame(ret)
-    df.to_csv('test_medium_case_insert.csv', index=False)
+    df.to_csv('data/test_medium_case_insert.csv', index=False)
     print("Done with test_medium_case_insert")
     return ret
 
@@ -318,7 +318,7 @@ def test_random_case_insert() -> list:
         ret[2].append(t2-t1)
         ret[3].append(n)
     df = pd.DataFrame(ret)
-    df.to_csv('test_random_case_insert.csv', index=False)
+    df.to_csv('data/test_random_case_insert.csv', index=False)
     print("Done with test_random_case_insert")
     return ret
 
