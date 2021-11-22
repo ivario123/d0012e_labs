@@ -72,26 +72,19 @@ n=2k for some positive integer k.
 """
 
 
-def max_subarray(L: list) -> tuple:
+def max_subarray(L: list) -> list:
     """
       Finds the maximum sum of a subarray in the list L
       ### param L: list of elements
       ### return : sum of largest sublist and wether it chose left, right or middle
     """
     if len(L) == 1:
-        return (L[0],0)
+        return (L[0], 0)
     mid = len(L) // 2
-    left, l_choise = max_subarray(L[:mid])
-    right, r_choise = max_subarray(L[mid:])
-
-    if (r_choise == 0 or r_choise == -1) and (l_choise == 1 or l_choise == 0):
-        # Checking if left sum is greater than right sum or if sum of left and right is greater than left and right
-        if left + right > left and left + right > right:
-          return (left + right, 0)
-    if right > left:
-        return (right, 1)
-    else:
-        return (left, -1)
+    left = max_subarray(L[:mid])
+    right = max_subarray(L[mid:])
+    center = 0;
+    
 
 
 if __name__ == "__main__":
@@ -100,14 +93,14 @@ if __name__ == "__main__":
     def assert_smallest_three_divide_and_conquer(
         L, ans): return smallest_three_divide_and_conquer(L) == ans
 
-    def assert_max_subarray(L, ans): return max_subarray(L)[0] == ans
+    def assert_max_subarray(L, ans): return max_subarray(L) == ans
     print(
         f'Incremental approch to three smallest gave the ouput : {smallest_three_incremental([11,-2,1,2,3,4,5,6,7,8,9,10])}')
     print(
         f'Incremental approch to three smallest works : {assert_three_smallest_incremental([11,-2,1,2,3,4,5,6,7,8,9,10], [-2,1,2])}')
     """
     Testing the min array
-  """
+    """
     print(
         f'Divide and conquer approch to three smallest gave the output : {smallest_three_divide_and_conquer([11,-2,1,2,3,4,5,6,7,8,9,10])}')
     print(
