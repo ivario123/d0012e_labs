@@ -80,15 +80,18 @@ def max_subarray(L: list) -> list:
     """
     if len(L) == 1:
         return L[0]
+    
     mid = len(L) // 2
+    # Finding side sums
     left = max_subarray(L[:mid])
     right = max_subarray(L[mid:])
-    center = 0
+
+    # Finding center sum
     left_index = 1
     right_index = 0
     left_center = 0
     right_center = 0
-    while left_index < mid and L[mid-left_index] > 0:
+    while left_index <= mid and L[mid-left_index] > 0:
       left_center = left_center + L[mid-left_index]
       left_index+=1
     while right_index < mid and L[mid+right_index] > 0:
@@ -103,7 +106,17 @@ def max_subarray(L: list) -> list:
       return left
     
     
-
+def maxSubArray(nums):
+      """
+      :type nums: List[int]
+      :rtype: int
+      """
+      dp = [0 for i in range(len(nums))]
+      dp[0] = nums[0]
+      for i in range(1,len(nums)):
+         dp[i] = max(dp[i-1]+nums[i],nums[i])
+      #print(dp)
+      return max(dp)
 
 
 
@@ -129,8 +142,9 @@ if __name__ == "__main__":
     """
     Testing the max array
   """
-
+    data = [-2,1,2,3,4,5,-10,6,7,-100,9,90,99,1,2,3,6,1,-100,10,20,3,2]
+    r  = maxSubArray(data)
     print(
-        f'Max subarray gives the output : {max_subarray([-2,1,2,3,4,5,-10,6,7,8,9,10])}')
+        f'Max subarray gives the output : {max_subarray(data)}')
     print(
-        f'Max subarray works : {assert_max_subarray([-2,1,2,3,4,5,-10,6,7,8,9,10], sum([6,7,8,9,10]))}')
+        f'Max subarray works : {assert_max_subarray(data, r)}')
