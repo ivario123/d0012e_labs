@@ -80,7 +80,7 @@ def max_subarray(L: list) -> list:
     """
     if len(L) == 1:
         return L[0]
-    
+
     mid = len(L) // 2
     # Finding side sums
     left = max_subarray(L[:mid])
@@ -92,41 +92,49 @@ def max_subarray(L: list) -> list:
     left_center = 0
     right_center = 0
     while left_index <= mid and L[mid-left_index] > 0:
-      left_center = left_center + L[mid-left_index]
-      left_index+=1
+        left_center = left_center + L[mid-left_index]
+        left_index += 1
     while right_index < mid and L[mid+right_index] > 0:
-      right_center = right_center + L[mid+right_index]
-      right_index+=1
+        right_center = right_center + L[mid+right_index]
+        right_index += 1
     center_sum = right_center+left_center
-    if center_sum>right and center_sum > left:
-      return center_sum
-    elif right>left:
-      return right
-    else :
-      return left
-    
-## Just for testing
-def maxSubArray(nums):
-      """
-      :type nums: List[int]
-      :rtype: int
-      """
-      dp = [0 for i in range(len(nums))]
-      dp[0] = nums[0]
-      for i in range(1,len(nums)):
-         dp[i] = max(dp[i-1]+nums[i],nums[i])
-      #print(dp)
-      return max(dp)
+    if center_sum > right and center_sum > left:
+        return center_sum
+    elif right > left:
+        return right
+    else:
+        return left
 
+# Just for testing
+
+
+def maxSubArray(nums):
+    """
+    :type nums: List[int]
+    :rtype: int
+    """
+    dp = [0 for i in range(len(nums))]
+    dp[0] = nums[0]
+    for i in range(1, len(nums)):
+        dp[i] = max(dp[i-1]+nums[i], nums[i])
+    # print(dp)
+    return max(dp)
 
 
 if __name__ == "__main__":
+    print('-'*50+" STARTED "+'-'*50)
+    print('~'*50+" Defining tests "+'~'*50)
     def assert_three_smallest_incremental(
         L, ans): return smallest_three_incremental(L) == ans
     def assert_smallest_three_divide_and_conquer(
         L, ans): return smallest_three_divide_and_conquer(L) == ans
-
     def assert_max_subarray(L, ans): return max_subarray(L) == ans
+
+    print('~'*50+" Running tests "+'~'*50)
+    """
+    Testing the min array
+    """
+    print("="*50+" smallest three incremental "+"="*50)
     print(
         f'Incremental approch to three smallest gave the ouput : {smallest_three_incremental([11,-2,1,2,3,4,5,6,7,8,9,10])}')
     print(
@@ -134,17 +142,20 @@ if __name__ == "__main__":
     """
     Testing the min array
     """
+    print("="*50+" smallest three divide and conqure "+"="*50)
     print(
         f'Divide and conquer approch to three smallest gave the output : {smallest_three_divide_and_conquer([11,-2,1,2,3,4,5,6,7,8,9,10])}')
     print(
         f'Divide and conquer approch to three smallest works : {assert_smallest_three_divide_and_conquer([11,-2,1,2,3,4,5,6,7,8,9,10], [-2,1,2])}')
-
     """
     Testing the max array
-  """
-    data = [-2,1,2,3,4,5,-10,6,7,-100,9,90,99,1,2,3,6,1,-100,10,20,3,2]
-    r  = maxSubArray(data)
+    """
+    print("="*50+" maximum sub array "+"="*50)
+    data = [-2, 1, 2, 3, 4, 5, -10, 6, 7, -100, 9, 90, 9, 1, 2, 4, 1, 2,
+            2, 4, 5, 6, -100, -2, 1, 2, 9, 1, 2, 3, 6, 1, -100, 10, 20, 3, 2]
+    r = maxSubArray(data)
     print(
         f'Max subarray gives the output : {max_subarray(data)}')
     print(
         f'Max subarray works : {assert_max_subarray(data, r)}')
+    print("-"*50+" DONE "+"-"*50)
