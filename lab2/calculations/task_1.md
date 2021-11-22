@@ -1,6 +1,6 @@
 # Incremental
 ## Algorithm
- - 1. Check if length of the array is less than 3 if so return input array
+ - 1. Check if the length of the array is less than 3 if so return input array
  - 2. Declare a list ret with maximum integer values
  - 3. loop through the array
  - 4. if the current element is smaller than anny element in the ret list then insert it in the ret list at that index

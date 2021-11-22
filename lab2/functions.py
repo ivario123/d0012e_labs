@@ -92,8 +92,15 @@ def max_subarray(L: list) -> list:
       left_center = left_center + L[mid-left_index]
       left_index+=1
     while right_index < mid and L[mid+right_index] > 0:
-      right_center = left_center + L[mid+right_index]
+      right_center = right_center + L[mid+right_index]
       right_index+=1
+    center_sum = right_center+left_center
+    if center_sum>right and center_sum > left:
+      return center_sum
+    elif right>left:
+      return right
+    else :
+      return left
     
     
 
