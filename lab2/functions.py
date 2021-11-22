@@ -79,12 +79,25 @@ def max_subarray(L: list) -> list:
       ### return : sum of largest sublist and wether it chose left, right or middle
     """
     if len(L) == 1:
-        return (L[0], 0)
+        return L[0]
     mid = len(L) // 2
     left = max_subarray(L[:mid])
     right = max_subarray(L[mid:])
-    center = 0;
+    center = 0
+    left_index = 1
+    right_index = 0
+    left_center = 0
+    right_center = 0
+    while left_index < mid and L[mid-left_index] > 0:
+      left_center = left_center + L[mid-left_index]
+      left_index+=1
+    while right_index < mid and L[mid+right_index] > 0:
+      right_center = left_center + L[mid+right_index]
+      right_index+=1
     
+    
+
+
 
 
 if __name__ == "__main__":
