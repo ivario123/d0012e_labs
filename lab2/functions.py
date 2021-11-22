@@ -37,16 +37,17 @@ def smallest_three_divide_and_conquer(L: list) -> list:
       ### param L: list of elements
       ### return: list of three smallest elements
     """
-    if len(L) == 1:       # base case since a list of one element is sorted
+    length = len(L)
+    if length == 1:       # base case since a list of one element is sorted
         return L
-    mid = len(L) // 2
+    mid = length // 2
     left = smallest_three_divide_and_conquer(L[:mid])
     right = smallest_three_divide_and_conquer(L[mid:])
     ret = []
     right_index = 0
     left_index = 0
-    max_value = len(L) if len(L) < 3 else 3
-    while len(ret) < max_value and len(left) > 0 and len (right) > 0:
+    max_value = length if length < 3 else 3
+    while length < max_value and left and right:
       if left[0] < right[0]:
         ret.append(left[0])
         del left[0]
@@ -78,16 +79,18 @@ def max_subarray(L: list) -> int:
       ### param L: list of elements
       ### return : sum of largest sublist
     """
-    if len(L) == 1: # base case since a list of one elements max subsum is the element itself
-        return L[0]
+    if len(L) == 1:
+      return L[0]
+    if len(L) == 2: # base case since a list of one elements max subsum is the element itself
+        return L[0] if L[0] > L[1] else L[1]
     mid = len(L) // 2
     left = max_subarray(L[:mid])
     right = max_subarray(L[mid:])
     
     # Checking if left sum is greater than right sum or if sum of left and right is greater than left and right
-    if left + right> left and left + right > right:
-        return left + right
-    elif right > left:
+    #if left + right> left and left + right > right:
+    #    return left + right
+    if right > left:
         return right
     else:
         return left
