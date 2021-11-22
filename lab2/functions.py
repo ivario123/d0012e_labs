@@ -105,7 +105,7 @@ def max_subarray(L: list) -> list:
     else :
       return left
     
-    
+## Just for testing
 def maxSubArray(nums):
       """
       :type nums: List[int]
