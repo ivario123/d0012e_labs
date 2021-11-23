@@ -71,12 +71,22 @@ used. Your algorithm should run in O(n)time in the worst case. You may assume th
 n=2k for some positive integer k.
 """
 
+"""
 
+    På wikipedia är bästa divide and conqure algoritmen nlogn int n. 
+    På stack overflow är bästa divide and conqure algoritmen nlogn inte n.
+    En divide and conqure algoritm tar som basfall O(log(n)) tid. Eftersom att vi måste
+    kolla en interna summa, med linjär sökning då det inte finns någon garanti om storleksordning.
+    Så måste varje steg i algoritmen söka linjärt, detta ger att vi måste köra log(n) linjära sökningar
+    och därför får vi komplexitet O(nlog(n)) i varje fall
+
+
+"""
 def max_subarray(L: list) -> list:
     """
       Finds the maximum sum of a subarray in the list L
       ### param L: list of elements
-      ### return : sum of largest sublist and wether it chose left, right or middle
+      ### return : sum of largest sublist
     """
     if len(L) == 1:
         return L[0]
@@ -105,11 +115,9 @@ def max_subarray(L: list) -> list:
     else:
         return left
 
-# Just for testing
-
-
 def maxSubArray(nums):
     """
+    Dynamic programing for tests
     :type nums: List[int]
     :rtype: int
     """
