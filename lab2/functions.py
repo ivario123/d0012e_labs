@@ -100,12 +100,6 @@ def max_subarray(L:list) -> list:
         ### return list [sum, left, right, cross sum]
     """
     length = len(L)
-    #if length == 2:                                                                                             
-    #    if L[0]+L[1] > L[0] and L[0]+L[1] > L[1]:
-    #        return [L[0]+L[1],1,1,L[0]+L[1]]
-    #    if L[0] > L[1]:
-    #        return [L[0],1,0,L[0]+L[1]]
-    #    return [L[1],0,1,L[0]+L[1]]
     if length == 1:
         return [L[0],1,1,L[0]]
     mid = len(L) // 2
@@ -228,7 +222,7 @@ def maxSubArray(nums):
 
 
 if __name__ == "__main__":
-    print('-'*50+" STARTED "+'-'*50)
+    print('\\'*50+" STARTED "+'/'*50)
     print('~'*50+" Defining tests "+'~'*50)
     def assert_three_smallest_incremental(
         L, ans): return smallest_three_incremental(L) == ans
