@@ -1,5 +1,4 @@
 import numpy as np
-from numpy.typing import _32Bit
 """
 Given n(n<3) distinct elements, design two algorithms to compute the first three smallest
 elements using an incremental and a divide-and-conquer approach, respectively. Both your
@@ -10,8 +9,6 @@ that n=3×2k31 for some positive integer k. Hint: One can use the induction tech
 to show the correctness. Check Chapter 4 for more examples of performance analyses.
 """
 
-
-from numpy.core.numeric import cross
 
 
 def smallest_three_incremental(L: list) -> list:
@@ -75,22 +72,35 @@ used. Your algorithm should run in O(n)time in the worst case. You may assume th
 n=2k for some positive integer k.
 """
 
-"""
-
-    På wikipedia är bästa divide and conqure algoritmen nlogn int n. 
-    På stack overflow är bästa divide and conqure algoritmen nlogn inte n.
-    En divide and conqure algoritm tar som basfall O(log(n)) tid. Eftersom att vi måste
-    kolla en interna summa, med linjär sökning då det inte finns någon garanti om storleksordning.
-    Så måste varje steg i algoritmen söka linjärt, detta ger att vi måste köra log(n) linjära sökningar
-    och därför får vi komplexitet O(nlog(n)) i varje fall
-
-
-"""
-
 def max_subarray(nums:list,left:int,right:int) -> list :
     """
-    
-        return values: left_max, right_max, max_sum, sum_total
+        ## Breif
+            finds the maximum subvector in a vector, using divide and conqure method.
+        ## Stepwise
+            -  if left == right return value at left
+            -  go to first point with right = middle
+            -  go to first point with left = midle +1
+            -  set left max to the largest alternative
+
+                choosing between the max on the left side or 
+                
+                the entire left side extended with right lists left max sum
+            -  set right max to the largest alternative 
+
+                choosing between the max on the right side or
+
+                the entire right side extended with the left lists max sum
+
+            - Set the max_sum to the largest alternative
+
+                choosing between the maximum of the left and rights
+                max sums or the left sides maximum to the right plus
+                the right sides maximum to the left
+            - Set the total sum equal to the sum of the left and right vector
+        ### Param nums:  the vector we want to find the max subvector in
+        ### Param left: the starting point for the left list
+        ### Param right:  the ending point for the right list
+        ### return values: left_max, right_max, max_sum, sum_total
     """
     # Base case, if left == right, i.e list ha 1 element, return that element at all indecies
     if (left == right): 
@@ -119,135 +129,6 @@ def max_subarray(nums:list,left:int,right:int) -> list :
 
     return [left_max,right_max,max_sum,sum_total]
 
-
-def max_subarray_inte_bruh(L:list,numops) -> list :
-    length = len(L)
-    numops = numops+1
-    if length == 0:
-        return 0
-    if length == 1:
-        numops = numops+1
-        return L[0],numops
-    left = max_subarray(L[0:length-1],numops)
-    numops,left = left[1],left[0]
-    numops = numops+1
-    right = max_subarray(L[1:length],numops)
-    numops,right = right[1],right[0]
-    numops = numops+1
-    ret = max(left,right)
-    numops = numops+1
-    return ret,numops
-
-def bruh(L:list) -> list:
-    """
-        ### return list [sum, left, right, cross sum]
-    """
-    length = len(L)
-    if length == 1:
-        return [L[0],1,1,L[0]]
-    mid = len(L) // 2
-    # Finding side sums
-    left = max_subarray(L[:mid])
-    right = max_subarray(L[mid:])
-
-    """
-        Picking out the values from the arrays so that we can minimize the ammount of times the list is accessed
-    """
-    left_whole_sum = left[3]                                                                                       # Stores the sum of the entire left sub array
-    left_chose_right = left[2]                                                                                     # Store wether the left branch chose to go rigth
-    left_chose_left = left[1]                                                                                      # Stores wether the right brach chose to go left
-    left_sum = left[0]                                                                                             # Stores the max sub array in the left brach
-    right_whole_sum = right[3]                                                                                     # .... right branch ....
-    right_chose_right = right[2]                                                                                   # .... right branch ....
-    right_chose_left = right[1]                                                                                    # .... right branch ....
-    right_sum = right[0]                                                                                           # .... right branch ....
-
-
-    merge_center = [float("-inf"),-1,-1,left_whole_sum+right_whole_sum]                                            # Place holder in case the merge can't be done
-    merge_right_whole_left = [float("-inf"),0,1,right_whole_sum+left_whole_sum]                                    # Place holder in case the merge can't be done 
-    merge_left_whole_right = [float("-inf"),1,0,right_whole_sum+left_whole_sum]                                    # Place holder in case the merge can't be done
-
-
-    if right_chose_left == 1:
-            """
-                If the right brach went left the we can merge the right branch with the entire left bracn
-            """
-            #print(f"Possible merge from part of right half to entire left half with supposed value {right[0]+left_whole_sum}")
-            merge_right_whole_left = [right[0]+left_whole_sum,0,1,right_whole_sum+left_whole_sum]
-    if left_chose_right == 1 :
-        
-        """
-            If the left branch went right then we can merge the left brach with the entire right branch
-        """
-        #print(f"Possible merge from part of left half to entire right half with supposed value {right_whole_sum+left[0]}")
-        merge_left_whole_right = [right_whole_sum+left[0],1,0,right_whole_sum+left_whole_sum]
-        if right_chose_left == 1 :
-            """
-                If both leaves chose the path leading to the center, then we can merge them
-            """
-            crossing_sum  = right_sum+left_sum
-
-            if crossing_sum > left_sum and crossing_sum > right_sum:
-
-                if 0 != left_chose_left and 0 != right_chose_right:
-                    merge_center = [crossing_sum,1,1,left_whole_sum+right_whole_sum]
-                
-                elif 0 != left_chose_left:
-                    merge_center = [crossing_sum,1,0,left_whole_sum+right_whole_sum]
-                
-                elif 0 != right_chose_right:
-                    merge_center = [crossing_sum,0,1,left_whole_sum+right_whole_sum]
-                
-                else :
-                    merge_center = [crossing_sum,0,0,left_whole_sum+right_whole_sum]
-
-    
-    right_max =  [right_sum,0,1,left_whole_sum+right_whole_sum]                                                                 # Holds the right array sum
-    left_max = [left_sum,1,0,left_whole_sum+right_whole_sum]                                                                    # Holds the left array sum 
-    max_sides = right_max if right_sum > left_sum else left_max                                                                 # gets the largest side
-
-    """
-        Finding the maximum value possible from cross sum
-    """
-    max_merge = merge_right_whole_left if merge_right_whole_left[0] > merge_left_whole_right[0] else merge_left_whole_right     # Checks if it's better to merge left and right sums or left and entire right or right and entire left
-    max_merge = max_merge if max_merge[0] > merge_center[0] else merge_center                                                   # ....
-    max_sub = max_sides if max_sides[0] > max_merge[0] else max_merge                                                           # Checks wich sub array is the largest
-
-    print(f"found max array for {L} with value {max_sub}")
-    return max_sub
-
-def max_subarray_old(L: list) -> list:
-    """
-      Finds the maximum sum of a subarray in the list L
-      ### param L: list of elements
-      ### return : sum of largest sublist
-    """
-    if len(L) == 1:
-        return L[0]
-
-    mid = len(L) // 2
-    # Finding side sums
-    left = max_subarray(L[:mid])
-    right = max_subarray(L[mid:])
-
-    # Finding center sum
-    left_index = 1
-    right_index = 0
-    left_center = 0
-    right_center = 0
-    while left_index <= mid and L[mid-left_index] > 0:
-        left_center = left_center + L[mid-left_index]
-        left_index += 1
-    while right_index < mid and L[mid+right_index] > 0:
-        right_center = right_center + L[mid+right_index]
-        right_index += 1
-    center_sum = right_center+left_center
-    if center_sum > right and center_sum > left:
-        return center_sum
-    elif right > left:
-        return right
-    else:
-        return left
 
 def maxSubArray(nums):
     """
