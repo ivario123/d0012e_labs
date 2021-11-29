@@ -86,16 +86,59 @@ n=2k for some positive integer k.
 
 
 """
-    
-def max_subarray_strange(L:list) -> list :
-    length = len(L)
-    if length == 1:
-        return L[0]
-    left = max_subarray(L[0:length-1])
-    right = max_subarray(L[1:length])
-    return max(left,right)
 
-def max_subarray(L:list) -> list:
+def max_subarray(nums:list,left:int,right:int) -> list :
+    """
+    
+        return values: left_max, right_max, max_sum, sum_total
+    """
+    # Base case, if left == right, i.e list ha 1 element, return that element at all indecies
+    if (left == right): 
+        return [nums[left], nums[left], nums[left], nums[left]]
+    
+
+    # ==================================== Divide ====================================
+    # Get the left and right sums, divide
+    middle = (left + right) // 2;
+    left_sums = max_subarray(nums,left, middle);
+    right_sums = max_subarray(nums,middle + 1, right);
+
+    # ==================================== Conqure ====================================
+    # Log the max sum on the left side
+    left_max = max(left_sums[0], left_sums[3] + right_sums[0])
+
+    # Log the max sum om the right side
+    right_max = max(right_sums[1], right_sums[3] + left_sums[1])
+
+    # log the highest sum so far
+    max_sum = max(left_sums[1] + right_sums[0], max(left_sums[2], right_sums[2]))
+
+    # keep track of the entire sum
+    sum_total = left_sums[3] + right_sums[3]
+
+
+    return [left_max,right_max,max_sum,sum_total]
+
+
+def max_subarray_inte_bruh(L:list,numops) -> list :
+    length = len(L)
+    numops = numops+1
+    if length == 0:
+        return 0
+    if length == 1:
+        numops = numops+1
+        return L[0],numops
+    left = max_subarray(L[0:length-1],numops)
+    numops,left = left[1],left[0]
+    numops = numops+1
+    right = max_subarray(L[1:length],numops)
+    numops,right = right[1],right[0]
+    numops = numops+1
+    ret = max(left,right)
+    numops = numops+1
+    return ret,numops
+
+def bruh(L:list) -> list:
     """
         ### return list [sum, left, right, cross sum]
     """
@@ -129,34 +172,33 @@ def max_subarray(L:list) -> list:
             """
                 If the right brach went left the we can merge the right branch with the entire left bracn
             """
-            print(f"Possible merge from part of right half to entire left half with supposed value {right[0]+left_whole_sum}")
+            #print(f"Possible merge from part of right half to entire left half with supposed value {right[0]+left_whole_sum}")
             merge_right_whole_left = [right[0]+left_whole_sum,0,1,right_whole_sum+left_whole_sum]
     if left_chose_right == 1 :
         
         """
             If the left branch went right then we can merge the left brach with the entire right branch
         """
-        print(f"Possible merge from part of left half to entire right half with supposed value {right_whole_sum+left[0]}")
+        #print(f"Possible merge from part of left half to entire right half with supposed value {right_whole_sum+left[0]}")
         merge_left_whole_right = [right_whole_sum+left[0],1,0,right_whole_sum+left_whole_sum]
         if right_chose_left == 1 :
             """
                 If both leaves chose the path leading to the center, then we can merge them
             """
             crossing_sum  = right_sum+left_sum
+
             if crossing_sum > left_sum and crossing_sum > right_sum:
-                print(f"Left side = {left_sum} Right side = {right_sum}")
-                print(f"Crossing the arrays for L = {L} with cross sum = {crossing_sum}")
+
                 if 0 != left_chose_left and 0 != right_chose_right:
-                    print("Merging entire list")
                     merge_center = [crossing_sum,1,1,left_whole_sum+right_whole_sum]
+                
                 elif 0 != left_chose_left:
-                    print("Merging from start of left")
                     merge_center = [crossing_sum,1,0,left_whole_sum+right_whole_sum]
+                
                 elif 0 != right_chose_right:
-                    print("Merging from start of right")
                     merge_center = [crossing_sum,0,1,left_whole_sum+right_whole_sum]
+                
                 else :
-                    print("Merging from other that ends")
                     merge_center = [crossing_sum,0,0,left_whole_sum+right_whole_sum]
 
     
@@ -228,7 +270,7 @@ if __name__ == "__main__":
         L, ans): return smallest_three_incremental(L) == ans
     def assert_smallest_three_divide_and_conquer(
         L, ans): return smallest_three_divide_and_conquer(L) == ans
-    def assert_max_subarray(L, ans): return max_subarray(L) == ans
+    def assert_max_subarray(L, ans): return max_subarray(L,0,len(data)-1)[2] == ans
 
     print('~'*50+" Running tests "+'~'*50)
     """
@@ -251,11 +293,15 @@ if __name__ == "__main__":
     Testing the max array
     """
     print("="*50+" maximum sub array "+"="*50)
-    #data = list([4, -3, 1, -1, 1, 9, 0, -6, -4, 6])                # Exempel på skit som inte funkar
-    data = list(np.random.randint(-10,10,10))                      # Funkar i 99% av fallen
+    #data = list([4, -3, 1, -1, 1, 9, 0, -6, -4, 6])                  # Exempel på skit som inte funkar
+    data = list(np.random.randint(-1000,1000,1000000))                        # Funkar i 99% av fallen
+
+
+
+
     r = maxSubArray(data)
     print(
-        f'Max subarray gives the output : {max_subarray(data)}')
+        f'Max subarray gives the output : {max_subarray(data,0,len(data)-1)}')
     worked = assert_max_subarray(data, r)
     print(
         f'Max subarray works : {worked} exptected {r}')
