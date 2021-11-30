@@ -33,32 +33,62 @@ def smallest_three_incremental(L: list) -> list:
     return ret
 
 
-def smallest_three_divide_and_conquer(L: list) -> list:
+def smallest_three_divide_and_conquer(L: list,start:int,end:int) -> list:
     """
       Finds the three samllest elements in the list L by dividing it in to sub problems
       ### param L: list of elements
+      ### param start: start pointer, points to the first element in the list to look at
+      ### param end: end pointer, points to the last element in the list to look at
       ### return: list of three smallest elements
     """
-    length = len(L)
-    if length == 1:       # base case since a list of one element is sorted
-        return L
-    mid = length // 2
-    left = smallest_three_divide_and_conquer(L[:mid])
-    right = smallest_three_divide_and_conquer(L[mid:])
-    ret = []
-    max_value = length if length < 3 else 3
-    while len(ret) < max_value and left and right:
-        if left[0] < right[0]:
-            ret.append(left[0])
-            del left[0]
-        else:
-            ret.append(right[0])
-            del right[0]
-    if len(ret) < max_value:
-        ret.extend(left)
-        ret.extend(right)
 
-    return ret
+    """
+        T(n) = sum(c_index) + 2*T(n/2) + 3* sum(c first while ) + 3 * sum ( c last if)   = sum(c_index) + 2*T(n/2)
+    """
+    length = end-start+1                                                                    # C
+    if start == end:       # base case since a list of one element is sorted                # C 
+        return [L[start]]                                                                   # C
+    mid = (start+end) // 2                                                                  # C
+    left = smallest_three_divide_and_conquer(L,start,mid)                                   # T(N/2)
+    right = smallest_three_divide_and_conquer(L,mid+1,end)                                  # T(N/2)
+
+    # Since we can't use length
+    if length < 6 :                                                                         # C
+        left_len = mid-start+1                                                              # C
+        right_len = end-mid                                                                 # C
+        max_value = length                                                                  # C
+    else:                                           
+        left_len = 3                                                                        # C
+        right_len = 3                                                                       # C
+        max_value = 3                                                                       # C
+    
+    # Defining itteration variables since we can't use if empty and such
+    ret = []                                                                                # C
+    itter = 0                                                                               # C
+    left_itter = 0                                                                          # C
+    right_itter = 0                                                                         # C
+
+    # Loop through lists, break if the lists are not equal length and one exceeded it's length
+    while itter < max_value and left_itter < left_len and right_itter < right_len:              # T(3) C Maximum number of itterations is 3. Thus this loop is constant time
+        if left[left_itter] < right[right_itter]:                                               # T(3) C
+            ret.append(left[left_itter])                                                        # T(3) C
+            left_itter+=1                                                                       # T(3) C
+        else:                                                                                   # T(3) C
+            ret.append(right[right_itter])                                                      # T(3) C
+            right_itter+=1                                                                      # T(3) C
+        itter+=1                                                                                # T(3) C
+    
+    # Loop through the remaning list if one list ran out of numbers before filling result list
+    if itter < max_value:                                                                       # C Maximum amount of loops is 3
+        while left_itter < left_len:                                                            # T(< 3)
+            ret.append(left[left_itter])                                                        # T(< 3) C
+            left_itter+=1                                                                       # T(< 3) C
+        while right_itter < right_len:                                                          # T(< 3)
+            ret.append(right[right_itter])                                                      # T(< 3)C
+            right_itter+=1                                                                      # T(< 3)C
+
+    # Return the smallest numbers
+    return ret                                                                                  # C
 
 
 """
@@ -103,31 +133,31 @@ def max_subarray(nums:list,left:int,right:int) -> list :
         ### return values: left_max, right_max, max_sum, sum_total
     """
     # Base case, if left == right, i.e list ha 1 element, return that element at all indecies
-    if (left == right): 
-        return [nums[left], nums[left], nums[left], nums[left]]
+    if (left == right):                                                                             # T(1)
+        return [nums[left], nums[left], nums[left], nums[left]]                                     # C
     
 
     # ==================================== Divide ====================================
     # Get the left and right sums, divide
-    middle = (left + right) // 2;
-    left_sums = max_subarray(nums,left, middle);
-    right_sums = max_subarray(nums,middle + 1, right);
+    middle = (left + right) // 2;                                                                   # T(1)
+    left_sums = max_subarray(nums,left, middle);                                                    # T(N/2)
+    right_sums = max_subarray(nums,middle + 1, right);                                              # T(N/2)
 
     # ==================================== Conqure ====================================
     # Log the max sum on the left side
-    left_max = max(left_sums[0], left_sums[3] + right_sums[0])
+    left_max = max(left_sums[0], left_sums[3] + right_sums[0])                                      # C
 
     # Log the max sum om the right side
-    right_max = max(right_sums[1], right_sums[3] + left_sums[1])
+    right_max = max(right_sums[1], right_sums[3] + left_sums[1])                                    # C
 
     # log the highest sum so far
-    max_sum = max(left_sums[1] + right_sums[0], max(left_sums[2], right_sums[2]))
+    max_sum = max(left_sums[1] + right_sums[0], max(left_sums[2], right_sums[2]))                   # C
 
     # keep track of the entire sum
-    sum_total = left_sums[3] + right_sums[3]
+    sum_total = left_sums[3] + right_sums[3]                                                        # C
 
 
-    return [left_max,right_max,max_sum,sum_total]
+    return [left_max,right_max,max_sum,sum_total]                                                   # C
 
 
 def maxSubArray(nums):
@@ -150,10 +180,12 @@ if __name__ == "__main__":
     def assert_three_smallest_incremental(
         L, ans): return smallest_three_incremental(L) == ans
     def assert_smallest_three_divide_and_conquer(
-        L, ans): return smallest_three_divide_and_conquer(L) == ans
+        L, ans): return smallest_three_divide_and_conquer(L,0,len(L)-1) == ans
     def assert_max_subarray(L, ans): return max_subarray(L,0,len(data)-1)[2] == ans
 
     print('~'*50+" Running tests "+'~'*50)
+    data = list(np.random.randint(-1000,1000,1000000))      
+    smallest_three = smallest_three_incremental(data)
     """
     Testing the min array
     """
@@ -167,15 +199,13 @@ if __name__ == "__main__":
     """
     print("="*50+" smallest three divide and conqure "+"="*50)
     print(
-        f'Divide and conquer approach to three smallest gave the output : {smallest_three_divide_and_conquer([11,-2,1,2,3,4,5,6,7,8,9,10])}')
+        f'Divide and conquer approach to three smallest gave the output : {smallest_three_divide_and_conquer(data,0,len(data)-1)}')
     print(
-        f'Divide and conquer approach to three smallest works : {assert_smallest_three_divide_and_conquer([11,-2,1,2,3,4,5,6,7,8,9,10], [-2,1,2])}')
+        f'Divide and conquer approach to three smallest works : {assert_smallest_three_divide_and_conquer(data, smallest_three)}')
     """
     Testing the max array
     """
-    print("="*50+" maximum sub array "+"="*50)
-    #data = list([4, -3, 1, -1, 1, 9, 0, -6, -4, 6])                  # Exempel på skit som inte funkar
-    data = list(np.random.randint(-1000,1000,1000000))                        # Funkar i 99% av fallen
+    print("="*50+" maximum sub array "+"="*50)                  
 
 
 
