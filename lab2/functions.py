@@ -11,21 +11,39 @@ to show the correctness. Check Chapter 4 for more examples of performance analys
 
 
 def smallest_three_incremental(L: list, start: int, end: int) -> list:
+    """
+        Finds the smallest 3 elements in a list using recursion. 
+        #### Param L: 
+        
+        the list in wich we want to find the smallest three elements
+        #### Param start: 
+         
+        where to start looking usually 0
+        #### Param end: 
+         
+        where to stop looking usually len(L)-1
+        #### Return 
+        
+        list of 3 elements in ascending order
+    """
+    """
+        T(n) = C_all + T(N-1)
+        T(n) = 2*C = 
+    """
 
-
-    if start == end:
-        return [L[end], float('inf'), float('inf')]
-    smallest = smallest_three_incremental(L, start+1, end)
-    if L[start] < smallest[0]:
-        smallest = [L[start], smallest[0], smallest[1]]
-        return smallest
-    if L[start] < smallest[1]:
-        smallest = [smallest[0], L[start], smallest[1]]
-        return smallest
-    if L[start] < smallest[2]:
-        smallest = [smallest[0], smallest[1], L[start]]
-        return smallest
-    return smallest
+    if start == end:                                                                                # C
+        return [L[end], float('inf'), float('inf')]                                                 # C
+    smallest = smallest_three_incremental(L, start+1, end)                                          # T(N-1)
+    if L[start] < smallest[0]:                                                                      # C
+        smallest = [L[start], smallest[0], smallest[1]]                                             # C
+        return smallest                                                                             # C
+    if L[start] < smallest[1]:                                                                      # C
+        smallest = [smallest[0], L[start], smallest[1]]                                             # C
+        return smallest                                                                             # C
+    if L[start] < smallest[2]:                                                                      # C
+        smallest = [smallest[0], smallest[1], L[start]]                                             # C
+        return smallest                                                                             # C
+    return smallest                                                                                 # C
 
 
 
@@ -41,6 +59,7 @@ def smallest_three_divide_and_conquer(L: list, start: int, end: int) -> list:
 
     """
         T(n) = sum(c_index) + 2*T(n/2) + 3* sum(c first while ) + 3 * sum ( c last if)   = sum(c_index) + 2*T(n/2)
+        T(1) = 3*c = c = O(1)
     """
     length = end-start+1                                                                    # C
     if start == end:       # base case since a list of one element is sorted                # C
