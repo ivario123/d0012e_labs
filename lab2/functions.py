@@ -1,12 +1,12 @@
 import numpy as np
 """
-Given n(n<3) distinct elements, design two algorithms to compute the first three smallest
-elements using an incremental and a divide-and-conquer approach, respectively. Both your
-algorithms should return a triple (x,y,z)such that x<y<z<(the rest n < 3 input
-elements)and run in linear time in the worst case. Show that your algorithms are correct
-and calculate the exact number of comparisons used by the algorithms. You may assume
-that n=3×2k31 for some positive integer k. Hint: One can use the induction technique
-to show the correctness. Check Chapter 4 for more examples of performance analyses.
+    Given n(n<3) distinct elements, design two algorithms to compute the first three smallest
+    elements using an incremental and a divide-and-conquer approach, respectively. Both your
+    algorithms should return a triple (x,y,z)such that x<y<z<(the rest n < 3 input
+    elements)and run in linear time in the worst case. Show that your algorithms are correct
+    and calculate the exact number of comparisons used by the algorithms. You may assume
+    that n=3×2k31 for some positive integer k. Hint: One can use the induction technique
+    to show the correctness. Check Chapter 4 for more examples of performance analyses.
 """
 
 
@@ -30,7 +30,7 @@ def smallest_three_incremental(L: list, start: int, end: int) -> list:
         T(n) = C_all + T(N-1)
         T(n) = 2*C = 
     """
-
+    print(start,end)
     if start == end:                                                                                # C
         return [L[end], float('inf'), float('inf')]                                                 # C
     smallest = smallest_three_incremental(L, start+1, end)                                          # T(N-1)
@@ -119,17 +119,19 @@ def smallest_three_divide_and_conquer(L: list, start: int, end: int) -> list:
     # C Maximum amount of loops is 3
     if itter < max_value:
         # T(< 3)
-        while left_itter < left_len:
+        while left_itter < left_len and itter < max_value:
             # T(< 3) C
             ret.append(left[left_itter])
             # T(< 3) C
             left_itter += 1
+            itter+=1
         # T(< 3)
-        while right_itter < right_len:
+        while right_itter < right_len and itter < max_value:
             # T(< 3)C
             ret.append(right[right_itter])
             # T(< 3)C
             right_itter += 1
+            itter+=1
 
     # Return the smallest numbers
     # C
@@ -137,14 +139,14 @@ def smallest_three_divide_and_conquer(L: list, start: int, end: int) -> list:
 
 
 """
-Given an array A=a1,a2,···,an of non-zero real numbers, the problem is to find a
-subarray ai,ai+1,···,aj  (of consecutive elements) such that the sum of all the numbers
-in this subarray is maximum over all possible consecutive subarrays. Design a divide and
-conquer algorithm to compute such a maximum sum. You do not need to actually output
-such a subarray; only returning the maximum sum. Write only one recursive function to
-implement your algorithm. Built-in functions or methods for strings or lists must not be
-used. Your algorithm should run in O(n)time in the worst case. You may assume that
-n=2k for some positive integer k.
+    Given an array A=a1,a2,···,an of non-zero real numbers, the problem is to find a
+    subarray ai,ai+1,···,aj  (of consecutive elements) such that the sum of all the numbers
+    in this subarray is maximum over all possible consecutive subarrays. Design a divide and
+    conquer algorithm to compute such a maximum sum. You do not need to actually output
+    such a subarray; only returning the maximum sum. Write only one recursive function to
+    implement your algorithm. Built-in functions or methods for strings or lists must not be
+    used. Your algorithm should run in O(n)time in the worst case. You may assume that
+    n=2k for some positive integer k.
 """
 
 
@@ -195,16 +197,27 @@ def max_subarray(nums: list, left: int, right: int) -> list:
 
     # ==================================== Conqure ====================================
     # Log the max sum on the left side
-    left_max = max(left_sums[0], left_sums[3] + right_sums[0]
-                   )                                      # C
+    if left_sums[0] > left_sums[3]+right_sums[0]:
+        left_max = left_sums[0]
+    else:
+        left_max = left_sums[3]+right_sums[0]
 
     # Log the max sum om the right side
     # C
-    right_max = max(right_sums[1], right_sums[3] + left_sums[1])
+    if right_sums[1] > right_sums[3]+left_sums[1]: 
+        right_max = right_sums[1]
+    else : 
+        right_max = right_sums[3] + left_sums[1]
 
     # log the highest sum so far
-    max_sum = max(left_sums[1] + right_sums[0],
-                  max(left_sums[2], right_sums[2]))                   # C
+    if left_sums[2] > right_sums[2]:
+        max_temp = left_sums[2]
+    else:
+        max_temp = right_sums[2]
+    if left_sums[1]+right_sums[0] > max_temp:
+        max_sum = left_sums[1]+right_sums[0]
+    else:
+        max_sum = max_temp
 
     # keep track of the entire sum
     # C
@@ -233,7 +246,7 @@ if __name__ == "__main__":
     print('~'*50+" Defining tests "+'~'*50)
 
     def assert_three_smallest_incremental(
-        L, ans): return smallest_three_1(L, 0, len(L)-1) == ans
+        L, ans): return smallest_three_incremental(L, 0, len(L)-1) == ans
 
     def assert_smallest_three_divide_and_conquer(
         L, ans): return smallest_three_divide_and_conquer(L, 0, len(L)-1) == ans
@@ -242,14 +255,14 @@ if __name__ == "__main__":
         L, 0, len(data)-1)[2] == ans
 
     print('~'*50+" Running tests "+'~'*50)
-    data = list(np.random.randint(-1000, 1000, 1000000))
-    smallest_three = smallest_three_incremental(data)
+    data = list(np.random.randint(-1000, 1000, 1000))
+    smallest_three = smallest_three_incremental(data,0,len(data)-1)
     """
     Testing the min array
     """
     print("="*50+" smallest three incremental "+"="*50)
     print(
-        f'Incremental approach to three smallest gave the ouput : {smallest_three_1([11,-2,1,2,3,4,5,6,7,8,9,10],0,11)}')
+        f'Incremental approach to three smallest gave the ouput : {smallest_three_incremental([11,-2,1,2,3,4,5,6,7,8,9,10],0,11)}')
     print(
         f'Incremental approach to three smallest works : {assert_three_smallest_incremental([11,-2,1,2,3,4,5,6,7,8,9,10], [-2,1,2])}')
     """
@@ -264,7 +277,7 @@ if __name__ == "__main__":
     Testing the max array
     """
     print("="*50+" maximum sub array "+"="*50)
-
+    data = list(np.random.randint(-100,100,100000000))
     r = maxSubArray(data)
     print(
         f'Max subarray gives the output : {max_subarray(data,0,len(data)-1)}')
