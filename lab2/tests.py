@@ -34,7 +34,7 @@ if __name__ == "__main__":
         L, 0, len(data)-1)[2] == ans
 
     print('~'*50+" Running tests "+'~'*50)
-    data = list(np.random.randint(-1000, 1000, 100))
+    data = list(np.random.randint(-1000, 1000, 118))
     smallest_three = smallest_three_incremental(data,0,len(data)-1)
     """
     Testing the min array
