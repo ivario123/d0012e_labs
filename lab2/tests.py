@@ -1,9 +1,9 @@
 from functions import *
-
+import numpy as np
 
 """
     This function is only for testing, it uses dynamic programming which is beyond the scope 
-    of this course, howerver it is a dynamic programming sollution that runs in linear time,
+    of this course, howerver it is runs in linear time,
     while only needing linear memory. Kinda neat.
 """
 def maxSubArray(nums):
