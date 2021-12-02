@@ -161,6 +161,22 @@ def max_subarray(nums: list, left: int, right: int) -> list:
 
 
     # ==================================== Conqure ====================================
+
+    """
+        Array values are as follows: 
+            [ left max:
+                    either left sides left sum, or the crossing sum with the left hand side of the previous call and the right hand sides left side sum.
+              right max:
+                    either the right sides right sum or the crossing sum with the right hand side of the previous call and the left hand sides right sum.
+              max : 
+                    max(left max, max(right max, left sides right side max+ right sides left side max ´i.e crossing´))
+              sum : 
+                just the sum of the elements in the list, kinda neat, since it's used in two of 3 calculations
+            ]
+            
+    
+    """
+
     # Log the max sum on the left side
     if left_sums[0] > left_sums[3]+right_sums[0]:
         left_max = left_sums[0]                     # Case left left sum is better than merging entire left side with right left sum
@@ -175,14 +191,14 @@ def max_subarray(nums: list, left: int, right: int) -> list:
 
     # log the highest sum so far
     if left_sums[2] > right_sums[2]:
-        max_temp = left_sums[2]     # Case left sum was better than right sum
+        max_temp = left_sums[2]                     # Case left sum was better than right sum
     else:
-        max_temp = right_sums[2]    # Case right sum was better than left sum
+        max_temp = right_sums[2]                    # Case right sum was better than left sum
 
     if left_sums[1]+right_sums[0] > max_temp:
-        max_sum = left_sums[1]+right_sums[0] # Case crossing sum is better than both left and right
+        max_sum = left_sums[1]+right_sums[0]        # Case crossing sum is better than both left and right
     else:
-        max_sum = max_temp                  # Case left or right sum was best
+        max_sum = max_temp                          # Case left or right sum was best
 
     # keep track of the entire sum
     sum_total = left_sums[3] + right_sums[3]
