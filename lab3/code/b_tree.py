@@ -92,7 +92,17 @@ class tree_node:
             else:
               left.parent.left = left
           return left
-
+    def search(self,key):
+      if self.value!=key:
+        if key>self.value:
+          if self.right != None:
+            return self.right.search(key)
+          return -1
+        else:
+          if self.left != None:
+            return self.left.search(key)
+          return -1
+      return 1
 
     def display(self):
         lines, *_ = self._display_aux()
@@ -154,20 +164,7 @@ import numpy as np
 
 if __name__ == "__main__":
   root = tree_node(0)
-  root = root.insert_value(1)
-  print("Diplaying after insert")
-  root.display()
-  root = root.insert_value(2)
-  print("Displaying after insert")
-  root.display()
-  root = root.insert_value(3)
-  print("Displaying after insert")
-  root.display()
-  root = root.insert_value(-2)
-  print("Displaying after insert")
-  root.display()
-  root = root.insert_value(-1)
-  print("Displaying after insert")
+  
   root = root.display()
   #bruh = root.rotate_right()
   #bruh.display()
