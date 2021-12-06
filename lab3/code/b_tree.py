@@ -18,12 +18,10 @@ class tree_node:
                 self.left.insert_value(value)
             else:
                 self.left = tree_node(value, parent=self)
-        # Here we should check if we need to rotate the tree
-        # ...
-        # ...
-        # ...
+        self.inserted_value()
         return
-
+    def inserted_value(self):
+      pass
     def layer(self):
         """
           Worstcase O(log(n)) assuming a balanced tree
@@ -34,8 +32,6 @@ class tree_node:
 
     def rotate_left(self):
           # Keep the useful data
-          left = self.left
-          parent = self.parent
           current = self
           right = self.right
 
@@ -47,15 +43,33 @@ class tree_node:
           right.left = current          # Set the new right sides left side to the old top
 
           # Check if we have a parent node
-          if self.parent != None:
+          if right.parent != None:
             # Check wich side of the parent we are on
-            if self.parent.value < self.value:
-              self.parent.right = right
+            if right.parent.value < right.value:
+              right.parent.right = right
             else:
-              self.parent.left = right
-
-          
+              right.parent.left = right
           return right
+    def rotate_right(self):
+          current = self
+          left = self.left
+
+
+          # Rotate the tree
+          left.parent = self.parent    # Change parent nodes
+          current.parent = left        # ...
+          current.left = left.right    # Set the new left sides right side to the old right sides left side
+          left.right = current          # Set the new right sides left side to the old top
+
+          # Check if we have a parent node
+          if left.parent != None:
+            # Check wich side of the parent we are on
+            if left.parent.value < left.value:
+              left.parent.right = left
+            else:
+              left.parent.left = left
+          return left
+
 
     def display(self):
         lines, *_ = self._display_aux()
@@ -123,5 +137,7 @@ if __name__ == "__main__":
   root.insert_value(-2)
   root.insert_value(-1)
   root.display()
-  root.rotate_left()
-  root.display()
+  bruh = root.rotate_right()
+  bruh.display()
+  bruh.right = bruh.right.rotate_left()
+  bruh.display()
