@@ -1,9 +1,12 @@
+c = 0.6
 class tree_node:
     def __init__(self, value, parent=None, right=None, left=None):
         self.value = value
         self.parent = parent
         self.right = right
         self.left = left
+        self.children_left = 0
+        self.children_right = 0
 
     def insert_value(self, value):
         # Check if we should go right
@@ -18,10 +21,30 @@ class tree_node:
                 self.left.insert_value(value)
             else:
                 self.left = tree_node(value, parent=self)
-        self.inserted_value()
-        return
-    def inserted_value(self):
-      pass
+        self = self.added_child()
+        return self
+
+    def added_child(self):
+
+        if self.left is not None:
+            self.children_left = self.left.children_left + self.left.children_right+1
+        else:
+            self.children_left = 0
+        if self.right is not None:
+            self.children_right = self.right.children_right +  self.right.children_left+1
+        else:
+            self.children_right = 0
+        sum_children = self.children_left+self.children_right
+        #self.display()
+        if self.children_left > c*sum_children and sum_children>2:
+          self = self.rotate_right()
+          print("Rotating right")
+        if self.children_right > c*sum_children and sum_children > 2:
+          self =  self.rotate_left()
+          print("Rotating left")
+        if self.parent!=None:
+          return self.parent.added_child()
+        return self
     def layer(self):
         """
           Worstcase O(log(n)) assuming a balanced tree
@@ -131,13 +154,22 @@ import numpy as np
 
 if __name__ == "__main__":
   root = tree_node(0)
-  root.insert_value(1)
-  root.insert_value(2)
-  root.insert_value(3)
-  root.insert_value(-2)
-  root.insert_value(-1)
+  root = root.insert_value(1)
+  print("Diplaying after insert")
   root.display()
-  bruh = root.rotate_right()
-  bruh.display()
-  bruh.right = bruh.right.rotate_left()
-  bruh.display()
+  root = root.insert_value(2)
+  print("Displaying after insert")
+  root.display()
+  root = root.insert_value(3)
+  print("Displaying after insert")
+  root.display()
+  root = root.insert_value(-2)
+  print("Displaying after insert")
+  root.display()
+  root = root.insert_value(-1)
+  print("Displaying after insert")
+  root = root.display()
+  #bruh = root.rotate_right()
+  #bruh.display()
+  #bruh.right = bruh.right.rotate_left()
+  #bruh.display()
