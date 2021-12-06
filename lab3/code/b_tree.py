@@ -1,4 +1,5 @@
-c = 0.6
+c = 0.8
+counter = 0
 class tree_node:
     def __init__(self, value, parent=None, right=None, left=None):
         self.value = value
@@ -9,23 +10,28 @@ class tree_node:
         self.children_right = 0
 
     def insert_value(self, value):
+        if self.value == value:
+          print("Duplicates")
+          return self
         # Check if we should go right
         if self.value < value:
             # Check if we have a right child
             if self.right != None:
-                self.right.insert_value(value)
+                self = self.right.insert_value(value)
+                return self
             else:
                 self.right = tree_node(value, parent=self)
         else:
             if self.left != None:
-                self.left.insert_value(value)
+                self = self.left.insert_value(value)
+                return self
             else:
                 self.left = tree_node(value, parent=self)
         self = self.added_child()
         return self
 
     def added_child(self):
-
+        
         if self.left is not None:
             self.children_left = self.left.children_left + self.left.children_right+1
         else:
@@ -35,13 +41,19 @@ class tree_node:
         else:
             self.children_right = 0
         sum_children = self.children_left+self.children_right
-        #self.display()
-        if self.children_left > c*sum_children and sum_children>2:
-          self = self.rotate_right()
-          print("Rotating right")
-        if self.children_right > c*sum_children and sum_children > 2:
+        if self.children_right > c*sum_children and sum_children > 1:
           self =  self.rotate_left()
-          print("Rotating left")
+        if self.children_left > c*sum_children and sum_children>1:
+          self.display()
+          print("Rotaded right")
+          self = self.rotate_right()
+          self.display()
+        if self.children_right > c*sum_children and sum_children > 1:
+          # self.display()
+          # print("Rotaded left")
+          self =  self.rotate_left()
+          # self.display()
+        print("*"*100)
         if self.parent!=None:
           return self.parent.added_child()
         return self
@@ -63,7 +75,12 @@ class tree_node:
           right.parent = self.parent    # Change parent nodes
           current.parent = right        # ...
           current.right = right.left    # Set the new left sides right side to the old right sides left side
+          # Change the child counters
+          current.children_right = right.children_left
+          right.children_left = current.children_left+current.children_right+1
+          
           right.left = current          # Set the new right sides left side to the old top
+
 
           # Check if we have a parent node
           if right.parent != None:
@@ -81,6 +98,9 @@ class tree_node:
           # Rotate the tree
           left.parent = self.parent    # Change parent nodes
           current.parent = left        # ...
+          # Change the child counters
+          current.children_left = left.children_right
+          left.children_right = left.children_right+current.children_left+1
           current.left = left.right    # Set the new left sides right side to the old right sides left side
           left.right = current          # Set the new right sides left side to the old top
 
@@ -165,8 +185,12 @@ import numpy as np
 if __name__ == "__main__":
   root = tree_node(0)
   
-  root = root.display()
-  #bruh = root.rotate_right()
-  #bruh.display()
-  #bruh.right = bruh.right.rotate_left()
-  #bruh.display()
+  root.display()
+
+  nums = list(np.random.randint(-100,100,20))
+  for el in nums:
+    if root == None:
+      print("Bruh")
+    root = root.insert_value(el)
+  print(f"Duplicates : {counter}")
+  root.display()
