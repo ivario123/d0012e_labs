@@ -55,33 +55,18 @@ class tree_node:
 
 
     def balance(self):
-        bf = self.get_balance()
-        if bf < 2 and bf > -2: 
+        balancing_factor = self.get_balance()
+        if balancing_factor < 2 and balancing_factor > -2: 
             return self
-        if bf < -1:
-            if self.left.get_balance() < 0:
-                new_root = self.rotate_right()
-            else:
+        if balancing_factor < -1:
+            if not self.left.get_balance() < 0:
                 self.left = self.left.rotate_left()
-                new_root = self.rotate_right()
+            new_root = self.rotate_right()
         else:
-            if self.right.get_balance() > 0:
-                new_root = self.rotate_left()
-            else:
+            if not self.right.get_balance() > 0:
                 self.right = self.right.rotate_right()
-                new_root = self.rotate_left()
+            new_root = self.rotate_left()
         return new_root
-        # if balance > 0:
-        #     if self.right != None and self.right.get_balance() == -1:
-        #         self.right = self.right.rotate_right()
-        #         self.display()
-        #     self = self.rotate_left()
-        # else :
-        #     if self.left != None and self.left.get_balance() == 1:
-        #         self.left = self.left.rotate_left()
-        #         self.display()
-        #     self = self.rotate_right()
-        # self.display()
 
     def get_balance(self):
         if self.children_right== 0 == self.children_left:
@@ -92,14 +77,6 @@ class tree_node:
             return self.children_right
         else:
             return self.children_right - self.children_left
-        # sum_children = self.children_left+self.children_right
-        # if sum_children == 0:
-        #     return 0
-        # if self.children_left > (1-c)*sum_children:
-        #     return -1
-        # if self.children_right > c*sum_children:
-        #     return 1
-        # return 0
 
     def added_child(self):
         """
