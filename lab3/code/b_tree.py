@@ -13,7 +13,22 @@ class tree_node:
         self.children_right = 0
         self.sort_method = sort_method
         self.sorting_threshold = sorting_threshold
-
+    def delete_key(self,key):
+        """
+            Really naive way to delete element from list
+        """
+        root = self.search(key)
+        arr = root.in_order_walk()
+        arr.remove(key)
+        new_root, bruh = tree_node.sorted_array_to_bst(arr)
+        root.key = new_root.key
+        root.right = new_root.right
+        root.left = new_root.left
+        if root.left and root.left.left:
+            root.left.left.parent = root
+        if root.right and root.right.right:
+            root.right.right.parent = root
+        return
     def insert_key(self, key):
         parent = self.search(key)
         if key == parent.key:
@@ -37,161 +52,12 @@ class tree_node:
         node.added_child()
         return
 
-    def new_threshold_check(self):
-        sum_child = self.children_right+self.children_left
-        if self.children_left > c*sum_child:
-            return -1
-        if self.children_right > c*sum_child:
-            return 1
-        return 0
-
-    def new_needs_sorting(leaf):
-
-        balance = leaf.new_threshold_check()
-
-        if balance != 0:
-            leaf.balance_rotation()
-        if leaf.parent == None:
-            return leaf
-
-        pass
-
-    def rotate_left(self):
-        if self.right == None:
-            return
-        # Temporary storage variables
-        current = {"key": self.key, "parent": self.parent, "right": self.right, "left": self.left,
-                   "children_left": self.children_left, "children_right": self.children_right}
-        el = self.right
-        right = {"key": el.key, "parent": el.parent, "right": el.right, "left": el.left,
-                 "children_left": el.children_left, "children_right": el.children_right}
-        el = self.left
-        if el:
-            left = {"key": el.key, "parent": el.parent, "right": el.right, "left": el.left,
-                    "children_left": el.children_left, "children_right": el.children_right}
-
-        rotation_data = {"right_left": self.right.left, "right_children_left":
-                         self.right.children_left, "right_children_right": self.right.children_right}
+    def threshold_check(self):
         """
-                Move the right one up
-                Move the top one to the left
-                Move the right left to the left
-        """
-        self.key = right["key"]
-        if self.right.right != None:
-            self.right.right.parent = self              # Pop from the right side
-            # move the right pointer one index down
-            self.right = right["right"]
-        else:
-            self.right = None
-        # Adding a new left node
-        self.left = tree_node(current["key"], parent=self, right=rotation_data["right_left"], left=current["left"],
-                              sorting_threshold=self.sorting_threshold, sort_method=self.sort_method)
-
-        if self.left.right:
-            self.left.right.parent = self.left
-        if self.left.left:
-            self.left.left.parent = self.left
-        self.left.children_left = current["children_left"]
-        self.left.children_right = right["children_left"]
-
-        # Shifting the child values
-        self.children_left = right["children_left"]+current["children_left"]+1
-        self.children_right = right["children_right"]
-        if self.parent:
-            if self.parent.right == self:
-                self.parent.children_right = self.children_left+self.children_right+1
-            else:
-                self.parent.children_left = self.children_left+self.children_right+1
-
-        return
-
-    def new_insertion_builder(self):
-        arr = self.in_order_walk()
-        new_root,bruh = tree_node.sorted_array_to_bst(arr)
-        self.key = new_root.key
-        self.right = new_root.right
-        self.left = new_root.left
-        if self.left and self.left.left:
-            self.left.left.parent = self
-        if self.right and self.right.right:
-            self.right.right.parent = self
-        return
-
-    def sorted_array_to_bst(arr):
-
-        if not arr:
-            return None,0
-
-        # find middle
-        mid = (len(arr)) // 2
-
-        # make the middle element the root
-        root = tree_node(arr[mid], sort_method="insertion")
-
-        # left subtree of root has all
-        # values <arr[mid]
-        root.left,root.children_left = tree_node.sorted_array_to_bst(arr[:mid])
-        
-        # right subtree of root has all
-        # values >arr[mid]
-        root.right,root.children_right = tree_node.sorted_array_to_bst(arr[mid+1:])
-        return root,root.children_left+root.children_right+1
-
-    def rotate_right(self):
-        if self.left == None:
-            return
-        # Temporary storage variables
-        current = {"key": self.key, "parent": self.parent, "right": self.right, "left": self.left,
-                   "children_left": self.children_left, "children_right": self.children_right}
-        el = self.left
-        if el:
-            left = {"key": el.key, "parent": el.parent, "right": el.right, "left": el.left,
-                    "children_left": el.children_left, "children_right": el.children_right}
-        rotation_data = {"left_right": self.left.right, "left_children_right":
-                         self.left.children_right, "left_children_left": self.left.children_left}
-        """
-                Move the right one up
-                Move the top one to the left
-                Move the right left to the left
-        """
-        self.key = self.left.key
-        if self.left.left != None:
-            self.left.left.parent = self              # Pop from the left side
-            self.left = self.left.left               # move the right pointer one index down
-        else:
-            self.left = None
-        self.right = tree_node(current["key"], parent=self, left=rotation_data["left_right"], right=self.right,
-                               sorting_threshold=self.sorting_threshold, sort_method=self.sort_method)
-        if self.right.right:
-            self.right.right.parent = self.right
-        if self.right.left:
-            self.right.left.parent = self.right
-        # Log the new child values
-        self.right.children_right = current["children_right"]
-        self.right.children_left = left["children_right"]
-        self.children_right = current["children_right"] + \
-            left["children_right"]+1
-        self.children_left = left["children_left"]
-        if self.parent:
-            if self.parent.right == self:
-                self.parent.children_right = self.children_left+self.children_right+1
-            else:
-                self.parent.children_left = self.children_left+self.children_right+1
-
-        return
-
-    """
-        Balancing helper functions
-    """
-
-    def needs_balancing(self):
-        """Checks if a tree needs to be rebalanced, by using the types sort_method variable.
-            I think that this works tho.
+            Checks if a node needs to be balanced
         """
         balance = None
         sum_children = self.children_right+self.children_left
-        # This should work.
         if self.sort_method == "absolute":
             balance = self.get_balance()
         else:
@@ -204,18 +70,143 @@ class tree_node:
                     balance = 1
                 else:
                     balance = None
+        return balance
+
+    def rotate_left(self):
+        """
+            Rotates a BST to the left around the root self
+        """
+        if self.right == None:
+            return
+        # Temporary storage variables
+        current = {"key": self.key, "left": self.left,
+                   "children_left": self.children_left}
+        el = self.right
+        right = {"key": el.key, "right": el.right, "left": el.left,
+                 "children_left": el.children_left, "children_right": el.children_right}
+
+        rotation_data = {"right_left": self.right.left}
+        # Overwrite the top element
+        self.key = right["key"]
+        # Check if we have to reoder the parent pointers
+        if self.right.right != None:
+            self.right.right.parent = self              # Pop from the right side
+            # move the right pointer one index down
+            self.right = right["right"]
+        else:
+            self.right = None
+        # Adding a new left node
+        self.left = tree_node(current["key"], parent=self, right=rotation_data["right_left"], left=current["left"],
+                              sorting_threshold=self.sorting_threshold, sort_method=self.sort_method)
+        # Reoder parent pointers if needed
+        if self.left.right:
+            self.left.right.parent = self.left
+        if self.left.left:
+            self.left.left.parent = self.left
+        # Reoder child counters
+        self.left.children_left = current["children_left"]
+        self.left.children_right = right["children_left"]
+        self.children_left = right["children_left"]+current["children_left"]+1
+        self.children_right = right["children_right"]
+
+        return
+
+    def rotate_right(self):
+        """
+            Rotates a BST to the right around the root self
+        """
+        if self.left == None:
+            return
+        # Temporary storage variables
+
+        current = {"key": self.key, "left": self.left,
+                   "children_right": self.children_right}
+        el = self.left
+        if el:
+            left = {"key": el.key, "right": el.right, "left": el.left,
+                    "children_left": el.children_left, "children_right": el.children_right}
+        rotation_data = {"left_right": self.left.right}
+
+        # Overwrite the top key
+        self.key = self.left.key
+        if self.left.left != None:
+            self.left.left.parent = self              # Pop from the left side
+            self.left = self.left.left               # move the right pointer one index down
+        else:
+            self.left = None
+        # Owerwrite the right node
+        self.right = tree_node(current["key"], parent=self, left=rotation_data["left_right"], right=self.right,
+                               sorting_threshold=self.sorting_threshold, sort_method=self.sort_method)
+        # Overwrite the parent pointers if needed
+        if self.right.right:
+            self.right.right.parent = self.right
+        if self.right.left:
+            self.right.left.parent = self.right
+        # Log the new child values
+        self.right.children_right = current["children_right"]
+        self.right.children_left = left["children_right"]
+        self.children_right = current["children_right"] + \
+            left["children_right"]+1
+        self.children_left = left["children_left"]
+
+    def balance_insert(self):
+        """
+            Balances a BST using insertion of a balanced binary search tree
+        """
+        arr = self.in_order_walk()
+        new_root, bruh = tree_node.sorted_array_to_bst(arr)
+        self.key = new_root.key
+        self.right = new_root.right
+        self.left = new_root.left
+        if self.left and self.left.left:
+            self.left.left.parent = self
+        if self.right and self.right.right:
+            self.right.right.parent = self
+        return
+
+    def sorted_array_to_bst(arr):
+
+        if not arr:
+            return None, 0
+
+        # find middle
+        mid = (len(arr)) // 2
+
+        # make the middle element the root
+        root = tree_node(arr[mid], sort_method="insertion")
+
+        # left subtree of root has all
+        # values <arr[mid]
+        root.left, root.children_left = tree_node.sorted_array_to_bst(
+            arr[:mid])
+
+        # right subtree of root has all
+        # values >arr[mid]
+        root.right, root.children_right = tree_node.sorted_array_to_bst(
+            arr[mid+1:])
+        return root, root.children_left+root.children_right+1
+
+        return
+
+    """
+        Balancing helper functions
+    """
+
+    def needs_balancing(self):
+        """Checks if a tree needs to be rebalanced, by using the types sort_method variable.
+            I think that this works tho.
+        """
+        balance = self.threshold_check()
+        # This should work.
 
         if balance:
-
-            if sum_children > 4:
-                print("Large my guy")
             print("*"*100)
             main_root.display()
             self.display()
             if self.sort_method == "rotation":
                 self.balance_rotation()
             else:
-                self.new_insertion_builder()
+                self.balance_insert()
             self.display()
             print("*"*100)
         if self.parent == None:
@@ -224,23 +215,6 @@ class tree_node:
             self.parent.needs_balancing()
 
         return
-
-    def balance_insert(self, start=None, end=None, orderd=None):
-        """
-            Balance thru insertion of elements in sertain order
-        """
-        if orderd == None:
-            orderd = self.in_order_walk()
-            start = 0
-            end = len(orderd)-1
-        if start > end:
-            return self
-        mid = (start+end)//2
-        root = tree_node(orderd[mid], parent=self.parent,
-                         sort_method=self.sort_method, sorting_threshold=self.sorting_threshold)
-        root.left = root.balance_insert(start, mid-1, orderd)
-        root.right = root.balance_insert(mid+1, end, orderd)
-        return root
 
     def balance_rotation(self):
         """
@@ -503,16 +477,17 @@ class binary_tree:
 
 """
 
-c = .99
+c = .3
 counter = 0
 main_root = None
 if __name__ == "__main__":
-    nums = list(np.random.randint(-100, 100, 50+1))
+    nums = list(np.random.randint(-100, 100, 50))
     main_root = tree_node(nums[0],sort_method="insertion")
 
     for el in nums[1:]:
         main_root.insert_key(el)
     _sorted = main_root.in_order_walk()
+    main_root.display()
     print(len(_sorted))
     print(main_root.children_left, main_root.children_right,
           c*(main_root.children_right+main_root.children_left))
@@ -521,12 +496,11 @@ if __name__ == "__main__":
     if main_root.is_valid():
         print("this shit worked")
     else:
-        main_root.display()
         print("Still a strong nope")
     if sorted(_sorted) == _sorted:
         print("In order walk works")
     else:
         print("In order walk is wack")
-        
+
     if _sorted != sorted(nums):
         print("Something went wrong, check log")
