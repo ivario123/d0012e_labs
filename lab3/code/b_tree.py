@@ -36,7 +36,9 @@ class tree_node:
         return root
 
     def needs_balancing(self):
-        """Returns the root node, expects a leaf"""
+        """Checks if a tree needs to be rebalanced, by using the types sort_method variable.
+            I think that this works tho.
+        """
         root = self.parent ==  None
         balance = 0
         # This should work.
@@ -77,7 +79,9 @@ class tree_node:
         return root
 
     def balance_insert(self,start = None,end = None,orderd= None):
-
+        """
+            Balance thru insertion of elements in sertain order
+        """
         if orderd == None:
           orderd = self.in_order_walk()
           print(orderd)
@@ -109,6 +113,11 @@ class tree_node:
         return
 
     def balance_rotation(self):
+        """
+            Balance through rotation
+            This one might miss a case, don't think so but it seems like it for unbalanced lists. 
+            We might have to itterate down the list for very unbalanced lists. So sorting from the base up.
+        """
         balancing_factor = self.get_balance()
         if self.sorting_threshold == "absolute":
             if balancing_factor < 2 and balancing_factor > -2:
@@ -124,6 +133,9 @@ class tree_node:
         return new_root
 
     def get_balance(self):
+        """
+            Get how unblanced a tree is
+        """
         if self.children_right == 0 == self.children_left:
             return 0
         elif self.children_right == 0:
