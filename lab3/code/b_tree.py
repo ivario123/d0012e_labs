@@ -164,6 +164,9 @@ class tree_node:
         return self
 
     def get_nodes(self):
+        """
+            Returns the number of nodes under this root.
+        """
         if self.left == None:
             ret = 0
         else:
