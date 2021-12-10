@@ -42,6 +42,10 @@ class tree_node:
             
         node.added_child()
         #self.needs_balancing(key)
+
+        """
+            Balance if needed
+        """
         el = self
         while el.right or el.left:
             balance = el.threshold_check()
