@@ -14,23 +14,6 @@ class tree_node:
         self.sort_method = sort_method
         self.sorting_threshold = sorting_threshold
 
-    def delete_key(self, key):
-        """
-            Really naive way to delete element from list
-        """
-        root = self.search(key)
-        arr = root.in_order_walk()
-        arr.remove(key)
-        new_root, bruh = tree_node.sorted_array_to_bst(arr)
-        root.key = new_root.key
-        root.right = new_root.right
-        root.left = new_root.left
-        if root.left and root.left.left:
-            root.left.left.parent = root
-        if root.right and root.right.right:
-            root.right.right.parent = root
-        return
-
     def update_child_counter(self):
         if self.left is not None:
             self.children_left = self.left.children_left + self.left.children_right+1
@@ -52,8 +35,6 @@ class tree_node:
         else:
             parent.left = node
 
-        #node.added_child()
-
         """
             Balance if needed
         """
@@ -63,12 +44,8 @@ class tree_node:
             el.update_child_counter()
             balance = el.threshold_check()
             if balance:
-                if el.sort_method == "rotation":
-                    el.balance_rotation()
-                else:
-                    el.balance_insert()
+                el.balance_insert()
                 self.display()
-
                 sorted = True
             if key < el.key:
                 if not el.left:
@@ -78,6 +55,7 @@ class tree_node:
                 if not el.right:
                     break
                 el = el.right
+        
         if el.parent:
             sum_children = el.children_right+el.children_left+1
             if el.key > el.parent.key:
@@ -100,18 +78,16 @@ class tree_node:
             return None
         balance = None
         sum_children = self.children_right+self.children_left
-        if self.sort_method == "absolute":
-            balance = self.get_balance()
+
+        if sum_children < 2:
+            balance = None
         else:
-            if sum_children < 2:
-                balance = None
+            if self.children_left and self.children_left > c*sum_children:
+                balance = -1
+            elif self.children_right and self.children_right > (c)*sum_children:
+                balance = 1
             else:
-                if self.children_left and self.children_left > c*sum_children:
-                    balance = -1
-                elif self.children_right and self.children_right > (c)*sum_children:
-                    balance = 1
-                else:
-                    balance = None
+                balance = None
         return balance
 
     def balance_insert(self):
@@ -125,7 +101,7 @@ class tree_node:
         self.left = new_root.left
         self.children_right = new_root.children_right
         self.children_left = new_root.children_left
-        assert self.children_left +self.children_right+1 == bruh
+        assert self.children_left + self.children_right+1 == bruh
         if self.parent and self.key > self.parent.key:
             self.parent.right = self
         elif self.parent:
@@ -136,89 +112,17 @@ class tree_node:
 
         if not arr:
             return None, 0
-
-        # find middle
         mid = (len(arr)) // 2
-
-        # make the middle element the root
         root = tree_node(arr[mid], sort_method="insertion")
-
-        # left subtree of root has all
-        # values <arr[mid]
         root.left, root.children_left = tree_node.sorted_array_to_bst(
             arr[:mid])
-
-        # right subtree of root has all
-        # values >arr[mid]
         root.right, root.children_right = tree_node.sorted_array_to_bst(
             arr[mid+1:])
         if root.right != None:
             root.right.parent = root
         if root.left != None:
             root.left.parent = root
-
         return root, root.children_left+root.children_right+1
-
-    """
-        Balancing helper functions
-    """
-
-    def needs_balancing(self, key):
-        """Checks if a tree needs to be rebalanced, by using the types sort_method variable.
-            I think that this works tho.
-        """
-        el = self
-        print("*"*100)
-        while el.right or el.left:
-            balance = el.threshold_check()
-            el.display()
-            if balance:
-                if el.sort_method == "rotation":
-                    el.balance_rotation()
-                else:
-                    el.balance_insert()
-                return el.parent, el
-            if key < el.key:
-                if not el.left:
-                    return
-                el = el.left
-            else:
-                if not el.right:
-                    return
-                el = el.right
-        return None, None
-
-    def balance_rotation(self):
-        """
-            Balance through rotation
-            This one might miss a case, don't think so but it seems like it for unbalanced lists. 
-            We might have to itterate down the list for very unbalanced lists. So sorting from the base up.
-        """
-        balancing_factor = self.get_balance()
-        if balancing_factor >= -1 and balancing_factor <= 1:
-            return
-        if balancing_factor <= -1:
-            if self.left != None and not self.left.get_balance() < 0:
-                self.left.rotate_left()
-            self.rotate_right()
-        else:
-            if self.right != None and not self.right.get_balance() > 0:
-                self.right.rotate_right()
-            self.rotate_left()
-        return
-
-    def get_balance(self):
-        """
-            Get how unblanced a tree is
-        """
-        if self.children_right == 0 == self.children_left:
-            return 0
-        elif self.children_right == 0:
-            return-self.children_left
-        elif self.children_left == 0:
-            return self.children_right
-        else:
-            return self.children_right - self.children_left
     """
         Recount the number of children that a parent has
     """
@@ -233,46 +137,6 @@ class tree_node:
         if self.parent != None:
             self.parent.added_child()
         return
-    """
-        Helper functions, to check the number of nodes under or over a node
-    """
-
-    def get_nodes(self):
-        """
-            Returns the number of nodes under this root.
-        """
-        if self.left == None:
-            ret = 0
-        else:
-            ret = self.left.get_nodes()
-        if self.right != None:
-            ret += self.right.get_nodes()
-        return ret+1
-
-    def is_valid(self):
-        """
-            returns wether a tree is valid or not
-        """
-        sum_children = self.children_left+self.children_right
-        if sum_children < 2:
-            return True
-        ret = self.children_left <= c*sum_children and self.children_right <= c*sum_children
-        if self.left != None:
-            ret = ret == self.left.get_nodes() == True or sum_children <= 2
-        if self.right != None:
-            ret = ret == self.right.get_nodes() == True or sum_children <= 2
-        return ret
-
-    def layer(self):
-        """
-          Worstcase O(log(n)) assuming a balanced tree
-        """
-        if self.parent == None:
-            return 0
-        return self.parent.layer()+1
-    """
-        Search and to sorted list functions
-    """
 
     def in_order_walk(self):
         """
@@ -304,22 +168,7 @@ class tree_node:
                     return self.left.search(key)
         return self
 
-    def in_list(self, key):
-        """
-          Checks if a key is in the tree
-          # Complexity O(h) where h is the height of the tree
-          # Returns 1 if in list -1 in all other cases 
-        """
-        if self.key != key:
-            if key > self.key:
-                if self.right != None:
-                    return self.right.in_list(key)
-                return False
-            else:
-                if self.left != None:
-                    return self.left.in_list(key)
-                return False
-        return True
+   
 
     """
       Some display code joinked from stack overflow, modernized a bit but still the same
@@ -404,8 +253,6 @@ if __name__ == "__main__":
           c*(main_root.children_right+main_root.children_left))
     if(len(_sorted) != main_root.children_right+main_root.children_left+1):
         print(nums)
-    if main_root.is_valid():
-        print("this shit worked")
     else:
         print("Still a strong nope")
     if sorted(_sorted) == _sorted:
