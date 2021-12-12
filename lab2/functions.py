@@ -39,18 +39,16 @@ def smallest_three_divide_and_conquer(L: list, start: int, end: int) -> list:
     
     max_value = 3
     ret = []
-    itter = 0
     left_itter = 0
     right_itter = 0
 
-    while itter < max_value:  # This is equivalent to a number of if statements
+    while right_itter+left < max_value:  # This is equivalent to a number of if statements
         if left[left_itter] < right[right_itter]:
             ret.append(left[left_itter])
             left_itter += 1
         else:
             ret.append(right[right_itter])
             right_itter += 1
-        itter += 1
 
     return ret
 
