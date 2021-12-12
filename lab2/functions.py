@@ -28,19 +28,14 @@ def smallest_three_divide_and_conquer(L: list, start: int, end: int) -> list:
     mid = (start+end) // 2
     left = smallest_three_divide_and_conquer(L, start, mid)
     right = smallest_three_divide_and_conquer(L, mid+1, end)
-    if length < 6:
-        left_len = mid-start+1              
-        right_len = end-mid                 
-    else:
-        left_len = 3
-        right_len = 3
+    
     max_value = 3
     ret = []
     itter = 0
     left_itter = 0
     right_itter = 0
 
-    while itter < max_value and left_itter < left_len and right_itter < right_len:  # This is equivalent to a number of if statements
+    while itter < max_value:  # This is equivalent to a number of if statements
         if left[left_itter] < right[right_itter]:
             ret.append(left[left_itter])
             left_itter += 1
@@ -48,16 +43,6 @@ def smallest_three_divide_and_conquer(L: list, start: int, end: int) -> list:
             ret.append(right[right_itter])
             right_itter += 1
         itter += 1
-
-    if itter < max_value:                                                           # Since we didn't think ahead and use if statements and basecase of 3 we have to use this
-        while left_itter < left_len and itter < max_value:          
-            ret.append(left[left_itter])
-            left_itter += 1
-            itter += 1
-        while right_itter < right_len and itter < max_value:
-            ret.append(right[right_itter])
-            right_itter += 1
-            itter += 1
 
     return ret
 
