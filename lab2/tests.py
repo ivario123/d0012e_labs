@@ -34,7 +34,7 @@ if __name__ == "__main__":
         L, 0, len(data)-1)[2] == ans
 
     print('~'*50+" Running tests "+'~'*50)
-    data = list(np.random.randint(-1000, 1000, 118))
+    data = list(np.random.randint(-1000, 1000, 3*2^2))
     smallest_three = smallest_three_incremental(data,0,len(data)-1)
     """
     Testing the min array
@@ -52,6 +52,7 @@ if __name__ == "__main__":
         f'Divide and conquer approach to three smallest gave the output : {smallest_three_divide_and_conquer(data,0,len(data)-1)}')
     print(
         f'Divide and conquer approach to three smallest works : {assert_smallest_three_divide_and_conquer(data, smallest_three)}')
+    print(smallest_three[0], smallest_three[1], smallest_three[2])
     """
     Testing the max array
     """
