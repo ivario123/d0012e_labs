@@ -141,15 +141,15 @@ class binary_tree:
         
         if child.unbalanced(self.c):
           child = binary_tree.balanced(self.c,child)
-        if current_node:
-          if child.value > current_node.value:
-            current_node.right = child
+          if current_node:
+            if child.value > current_node.value:
+              current_node.right = child
+            else:
+              current_node.left = child
+            
           else:
-            current_node.left = child
-          
-        else:
-          self.root = child
-          return
+            self.root = child
+            return
       
   def in_order_walk(self):
     return self.root.in_order_walk()
