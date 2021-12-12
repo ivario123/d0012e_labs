@@ -22,8 +22,8 @@ def smallest_three_incremental(L: list, start: int, end: int) -> list:
 
 
 def smallest_three_divide_and_conquer(L: list, start: int, end: int) -> list:
-    if start == end-3:
-        smallest = L[start:end]
+    if start == end-2:
+        smallest = L[start:end+1]
 
         if smallest[0] > smallest[1]:
             smallest[0],smallest[1] = smallest[1],smallest[0]
