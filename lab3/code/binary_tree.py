@@ -1,10 +1,11 @@
-#from code.b_tree import tree_node
-
-
+import numpy as np
 class binary_tree_node:
-    def __init__(self,value:int=None,number_of_children:list = [0,0,0],parent = None,left = None,right = None) -> None:
+    def __init__(self,value:int=None,number_of_children:list = None,parent = None,left = None,right = None) -> None:
         self.value = value
-        self.number_of_children = number_of_children
+        if number_of_children:
+          self.number_of_children = number_of_children
+        else:
+          self.number_of_children = [0,0,0]
         self.parent = parent
         self.right = right
         self.left = left
@@ -20,19 +21,15 @@ class binary_tree_node:
       return
 
     def update_child_counter(self):
-      self.display()
       if self.right:
         self.number_of_children[1] = self.right.number_of_children[2]+1
       else:
         self.number_of_children[1] = 0
-      self.display()
       if self.left:
         self.number_of_children[0] = self.left.number_of_children[2]+1
       else:
         self.number_of_children[0] = 0
-      self.display()
       self.number_of_children[2] = self.number_of_children[1]+self.number_of_children[0]
-      self.display()
       return
     def unbalanced(self,c):
       if self.number_of_children[0] > c*self.number_of_children[2]:
@@ -65,8 +62,8 @@ class binary_tree_node:
         """Returns list of strings, width, height, and horizontal coordinate of the root."""
         # No child.
         if self.right is None and self.left is None:
-            # line = f"{self.value}"
-            line = f"0,0,{self.value}"
+            line = f"{self.value}"
+            # line = f"0,0,{self.value}"
             width = len(line)
             height = 1
             middle = width // 2
@@ -75,8 +72,8 @@ class binary_tree_node:
         # Only left child.
         if self.right is None:
             lines, n, p, x = self.left._display_aux()
-            # s = f"{self.value}"
-            s = f"{self.number_of_children[0]},{self.number_of_children[1]},{self.value}"
+            s = f"{self.value}"
+            # s = f"{self.number_of_children[0]},{self.number_of_children[1]},{self.value}"
             u = len(s)
             first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s
             second_line = x * ' ' + '/' + (n - x - 1 + u) * ' '
@@ -86,8 +83,8 @@ class binary_tree_node:
         # Only right child.
         if self.left is None:
             lines, n, p, x = self.right._display_aux()
-            # s = f"{self.value}"
-            s = f"{self.number_of_children[0]},{self.number_of_children[1]},{self.value}"
+            s = f"{self.value}"
+            # s = f"{self.number_of_children[0]},{self.number_of_children[1]},{self.value}"
             u = len(s)
             first_line = s + x * '_' + (n - x) * ' '
             second_line = (u + x) * ' ' + '\\' + (n - x - 1) * ' '
@@ -97,8 +94,8 @@ class binary_tree_node:
         # Two children.
         left, n, p, x = self.left._display_aux()
         right, m, q, y = self.right._display_aux()
-        # s = f"{self.value}"
-        s = f"{self.number_of_children[0]},{self.number_of_children[1]},{self.value}"
+        s = f"{self.value}"
+        # s = f"{self.number_of_children[0]},{self.number_of_children[1]},{self.value}"
         u = len(s)
         first_line = (x + 1) * ' ' + (n - x - 1) * \
             '_' + s + y * '_' + (m - y) * ' '
@@ -139,7 +136,6 @@ class binary_tree:
       node.update_child_counter()
       while current_node:
         current_node.update_child_counter()
-        #current_node.display()
         child = current_node
         current_node = current_node.parent
         
@@ -164,7 +160,6 @@ class binary_tree:
         arr = node.in_order_walk()
         new_root = binary_tree.sorted_array_to_bst(arr)
         tree = binary_tree(c,new_root)
-        #tree.display()
         tree.root.parent = node.parent
         if return_type == "node":
           return tree.root
@@ -193,15 +188,8 @@ class binary_tree:
 
 
 if __name__ == "__main__":
-  tree = binary_tree(.6)
-  tree.display()
-  tree.insert(0)
-  tree.display()
-  tree.insert(-1)
-  tree.display()
-  tree.insert(2)
-  tree.display()
-  tree.insert(3)
-  tree.display()
-  tree.insert(5)
+  tree = binary_tree(0.5)
+  data = list(np.random.randint(-100,100,50))
+  for el in data:
+    tree.insert(el)
   tree.display()
