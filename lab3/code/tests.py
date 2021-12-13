@@ -26,13 +26,13 @@ class tests:
       tree.displaying = True
       tree.insert_list(self.input_data)
       tree.display()
-    def plot(self, x: list, y: list, x_label: str, y_label: str, plot_header: str,lables: list = None):
+    def plot(self, x: list, y: list, x_label: str, y_label: str, plot_header: str,labels: list = None):
         fig = plt.figure()
         plt.title(plot_header, fontsize='16')
 
         if type(y[0]) == list:
-          plt.plot(x,y[0],label =lables[0])
-          plt.plot(x,y[1],lable=lables[1])
+          plt.plot(x,y[0],label =labels[0])
+          plt.plot(x,y[1],label=labels[1])
         else:
           plt.plot(x, y, label="")
         plt.legend(loc="upper right")
@@ -97,7 +97,7 @@ class tests:
                   "c value", "Execution time [s]", f"Search time for a balanced bst as a function of unbalance ")
     """
 
-    def test_validate_functions(self):
+    def validate_functions(self):
         """
           Verifies that the functions work for a c in the range
         """
@@ -115,7 +115,7 @@ class tests:
       print("*"*100)
       results_sorting = []
       results_not_sorting = []
-      length = int(average(self.length_range))
+      length = self.length_range[0]
       data = list(np.random.randint(-length, length, length))
       data = sorted(data)
       countLoops = 0
@@ -135,14 +135,14 @@ class tests:
       x = list(np.arange(self.c_range[0], self.c_range[1], self.c_interval))
       y = [results_sorting, results_not_sorting]
       self.plot(x, y,
-                "c value", "Execution time [s]", f"Execution time as a function of c for a preorderd list",lables=["Sorted","Not sorted"])
+                "c value", "Execution time [s]", f"Execution time as a function of c for a preorderd list",labels=["Sorted","Not sorted"])
     def test_semi_sorted_list(self):
       print("*"*100)
       print("Testing semi sorted list")
       print("*"*100)
       results_sorting = []
       results_not_sorting = []
-      length = int(average(self.length_range))
+      length = self.length_range[0]
       data = sorted(list(np.random.randint(-length, length, length)))
       data = data[len(data)//2:]+data[:len(data)//2]
       countLoops = 0
@@ -162,14 +162,14 @@ class tests:
       x = list(np.arange(self.c_range[0], self.c_range[1], self.c_interval))
       y = [results_sorting, results_not_sorting]
       self.plot(x, y,
-                "c value", "Execution time [s]", f"Execution time as a function of c for a semi sorted list",lables=["Sorted","Not sorted"])
+                "c value", "Execution time [s]", f"Execution time as a function of c for a semi sorted list",labels=["Sorted","Not sorted"])
     def test_reverse_sorted_list(self):
       print("*"*100)
       print("Testing reverse sorted list")
       print("*"*100)
       results_sorting = []
       results_not_sorting = []
-      length = int(average(self.length_range))
+      length = self.length_range[0]
       data = sorted(list(np.random.randint(-length, length, length)))
       data = data[::-1]
       countLoops = 0
@@ -189,14 +189,14 @@ class tests:
       x = list(np.arange(self.c_range[0], self.c_range[1], self.c_interval))
       y = [results_sorting, results_not_sorting]
       self.plot(x, y,
-                "c value", "Execution time [s]", f"Execution time as a function of c for a reverse sorted list",lables=["Sorted","Not sorted"])
+                "c value", "Execution time [s]", f"Execution time as a function of c for a reverse sorted list",labels=["Sorted","Not sorted"])
     def test_random_list(self):
       print("*"*100)
       print("Testing random list")
       print("*"*100)
       results_sorting = []
       results_not_sorting = []
-      length = int(average(self.length_range))
+      length = self.length_range[0]
       data = sorted(list(np.random.randint(-length, length, length)))
       countLoops = 0
       for c in list(np.arange(self.c_range[0], self.c_range[1], self.c_interval)):
@@ -215,7 +215,7 @@ class tests:
       x = list(np.arange(self.c_range[0], self.c_range[1], self.c_interval))
       y = [results_sorting, results_not_sorting]
       self.plot(x, y,
-                "c value", "Execution time [s]", f"Execution time as a function of c for a random list",lables=["Sorted","Not sorted"])
+                "c value", "Execution time [s]", f"Execution time as a function of c for a random list",labels=["Sorted","Not sorted"])
     def test_constant_c_varying_length(self):
         print("*"*100)
         c = self.c_range[1]+self.c_range[0]
@@ -258,8 +258,9 @@ class tests:
 
 if __name__ == "__main__":
     test = tests()
-    test.test_validate_functions()
+    test.validate_functions()
     assert test.results["validate_functions"][0]
+    #test.test_semi_sorted_list()
     test.run_all_tests()
     print(test.results)
     #test.show_for_average_c()
