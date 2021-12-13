@@ -1,6 +1,5 @@
 
 
-
 class binary_tree_node:
     def __init__(self, value: int = None, number_of_children: list = None, parent=None, left=None, right=None) -> None:
         self.value = value
@@ -60,33 +59,33 @@ class binary_tree_node:
         if self.right:
             ret = ret == self.right.is_valid(c) == True
         return ret
-    
-    def search(self,value):
-      if self.value == value:
-        return self
-      if value > self.value:
-        if self.right:
-          return self.right.search(value)
+
+    def search(self, value):
+        if self.value == value:
+            return self
+        if value > self.value:
+            if self.right:
+                return self.right.search(value)
+            return None
+        if self.left:
+            return self.left.search(value)
         return None
-      if self.left:
-        return self.left.search(value)
-      return None
-    
+
     def find_extreme(self):
         if self == None:
-          print("Bruh")
+            print("Bruh")
         if self.left == self.right == None:
             return self, 0
         left_best, left_depth, right_best, right_depth = None, 0, None, 0
-        if self.left!=None:
+        if self.left != None:
             left_best, left_depth = self.left.find_extreme()
-        if self.right!=None:
+        if self.right != None:
             right_best, right_depth = self.right.find_extreme()
         if not left_best or not right_best:
-          if left_best:
-            return left_best,left_depth+1
-          else:
-            return right_best,right_depth+1
+            if left_best:
+                return left_best, left_depth+1
+            else:
+                return right_best, right_depth+1
         if left_depth > right_depth:
             best = left_best
             best_depth = left_depth+1
@@ -241,10 +240,6 @@ class binary_tree:
     def in_order_walk(self):
         return self.root.in_order_walk()
 
-
-
-
-
     def rebalance_tree(c, node, return_type="node"):
         """
             Balances a BST using insertion of a balanced binary search tree
@@ -277,6 +272,32 @@ class binary_tree:
     def display(self):
         if self.root:
             self.root.display()
-
-
+class standard_bst:
+  def __init__(self) -> None:
+    self.root = None
+  def insert(self, value):
+    if not self.root:
+      self.root = binary_tree_node(value)
+      return
+    current_node = self.root
+    while 1:
+      if value > current_node.value:
+        if not current_node.right:
+          break
+        current_node = current_node.right
+      else:
+        if not current_node.left:
+          break
+        current_node = current_node.left
+    node = binary_tree_node(value, parent=current_node)
+    if value > current_node.value:
+      current_node.right = node
+    else:
+      current_node.left = node
+  def display(self):
+    if self.root:
+      self.root.display()
+  def insert_list(self,l):
+    for el in l:
+      self.insert(el)
 

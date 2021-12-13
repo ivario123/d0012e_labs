@@ -26,15 +26,16 @@ class tests:
       tree.displaying = True
       tree.insert_list(self.input_data)
       tree.display()
-    def plot(self, x: list, y: list, x_label: str, y_label: str, plot_header: str):
+    def plot(self, x: list, y: list, x_label: str, y_label: str, plot_header: str,lables: list = None):
         fig = plt.figure()
         plt.title(plot_header, fontsize='16')
 
         if type(y[0]) == list:
-          plt.plot(x,y[0])
-          plt.plot(x,y[1])
+          plt.plot(x,y[0],label =lables[0])
+          plt.plot(x,y[1],lable=lables[1])
         else:
-          plt.plot(x, y)
+          plt.plot(x, y, label="")
+        plt.legend(loc="upper right")
         plt.xlabel(x_label)
         plt.ylabel(y_label)
         plt.grid()
@@ -47,7 +48,7 @@ class tests:
         print("Testing a normal bst with varying input length")
         for length in range(self.length_range[0], self.length_range[1], self.length_interval):
             print(f"Testing for a normal BST with input length {length}")
-            tree = binary_tree(0.5)
+            tree = standard_bst()
             tree.uses_balance = False
             data = list(np.random.randint(-length, length, length))
             time_1 = time.time()
@@ -119,14 +120,13 @@ class tests:
       data = sorted(data)
       countLoops = 0
       for c in list(np.arange(self.c_range[0], self.c_range[1], self.c_interval)):
-        print(f"Loop {countLoops}")
+        print(f"Testing for c = {c}")
         tree = binary_tree(c)
         time_1 = time.time()
         tree.insert_list(data)
         time_2 = time.time()
         results_sorting.append(time_2-time_1)
-        tree = binary_tree(c)
-        tree.uses_balance = False
+        tree = standard_bst()
         time_1 = time.time()
         tree.insert_list(data)
         time_2 = time.time()
@@ -135,7 +135,7 @@ class tests:
       x = list(np.arange(self.c_range[0], self.c_range[1], self.c_interval))
       y = [results_sorting, results_not_sorting]
       self.plot(x, y,
-                "c value", "Execution time [s]", f"Execution time as a function of c for a preorderd list")
+                "c value", "Execution time [s]", f"Execution time as a function of c for a preorderd list",lables=["Sorted","Not sorted"])
     def test_semi_sorted_list(self):
       print("*"*100)
       print("Testing semi sorted list")
@@ -147,14 +147,13 @@ class tests:
       data = data[len(data)//2:]+data[:len(data)//2]
       countLoops = 0
       for c in list(np.arange(self.c_range[0], self.c_range[1], self.c_interval)):
-        print(f"Loop {countLoops}")
+        print(f"Testing for c = {c}")
         tree = binary_tree(c)
         time_1 = time.time()
         tree.insert_list(data)
         time_2 = time.time()
         results_sorting.append(time_2-time_1)
-        tree = binary_tree(c)
-        tree.uses_balance = False
+        tree = standard_bst()
         time_1 = time.time()
         tree.insert_list(data)
         time_2 = time.time()
@@ -163,7 +162,7 @@ class tests:
       x = list(np.arange(self.c_range[0], self.c_range[1], self.c_interval))
       y = [results_sorting, results_not_sorting]
       self.plot(x, y,
-                "c value", "Execution time [s]", f"Execution time as a function of c for a semi sorted list")
+                "c value", "Execution time [s]", f"Execution time as a function of c for a semi sorted list",lables=["Sorted","Not sorted"])
     def test_reverse_sorted_list(self):
       print("*"*100)
       print("Testing reverse sorted list")
@@ -175,14 +174,13 @@ class tests:
       data = data[::-1]
       countLoops = 0
       for c in list(np.arange(self.c_range[0], self.c_range[1], self.c_interval)):
-        print(f"Loop {countLoops}")
+        print(f"Testing for c = {c}")
         tree = binary_tree(c)
         time_1 = time.time()
         tree.insert_list(data)
         time_2 = time.time()
         results_sorting.append(time_2-time_1)
-        tree = binary_tree(c)
-        tree.uses_balance = False
+        tree = standard_bst()
         time_1 = time.time()
         tree.insert_list(data)
         time_2 = time.time()
@@ -191,7 +189,7 @@ class tests:
       x = list(np.arange(self.c_range[0], self.c_range[1], self.c_interval))
       y = [results_sorting, results_not_sorting]
       self.plot(x, y,
-                "c value", "Execution time [s]", f"Execution time as a function of c for a reverse sorted list")
+                "c value", "Execution time [s]", f"Execution time as a function of c for a reverse sorted list",lables=["Sorted","Not sorted"])
     def test_random_list(self):
       print("*"*100)
       print("Testing random list")
@@ -202,14 +200,13 @@ class tests:
       data = sorted(list(np.random.randint(-length, length, length)))
       countLoops = 0
       for c in list(np.arange(self.c_range[0], self.c_range[1], self.c_interval)):
-        print(f"Loop {countLoops}")
+        print(f"Testing for c = {c}")
         tree = binary_tree(c)
         time_1 = time.time()
         tree.insert_list(data)
         time_2 = time.time()
         results_sorting.append(time_2-time_1)
-        tree = binary_tree(c)
-        tree.uses_balance = False
+        tree = standard_bst()
         time_1 = time.time()
         tree.insert_list(data)
         time_2 = time.time()
@@ -218,7 +215,7 @@ class tests:
       x = list(np.arange(self.c_range[0], self.c_range[1], self.c_interval))
       y = [results_sorting, results_not_sorting]
       self.plot(x, y,
-                "c value", "Execution time [s]", f"Execution time as a function of c for a random list")
+                "c value", "Execution time [s]", f"Execution time as a function of c for a random list",lables=["Sorted","Not sorted"])
     def test_constant_c_varying_length(self):
         print("*"*100)
         c = self.c_range[1]+self.c_range[0]
