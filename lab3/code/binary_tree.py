@@ -49,7 +49,6 @@ class binary_tree_node:
         if self.right:
             ret.extend(self.right.in_order_walk())
         return ret
-
     """
       Only used to validate that large trees are balanced too
     """
@@ -241,6 +240,10 @@ class binary_tree:
 
     def in_order_walk(self):
         return self.root.in_order_walk()
+
+
+
+
 
     def rebalance_tree(c, node, return_type="node"):
         """

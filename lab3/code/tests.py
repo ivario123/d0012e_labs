@@ -1,3 +1,4 @@
+from numpy.lib.function_base import average
 from  binary_tree import *
 import numpy as np
 import pandas as pd
@@ -28,7 +29,8 @@ class tests:
     def plot(self, x: list, y: list, x_label: str, y_label: str, plot_header: str):
         fig = plt.figure()
         plt.title(plot_header, fontsize='16')
-        if len(y[0])> 1:
+
+        if type(y[0]) == list:
           plt.plot(x,y[0])
           plt.plot(x,y[1])
         else:
@@ -45,7 +47,7 @@ class tests:
         print("Testing a normal bst with varying input length")
         for length in range(self.length_range[0], self.length_range[1], self.length_interval):
             print(f"Testing for a normal BST with input length {length}")
-            tree = binary_tree()
+            tree = binary_tree(0.5)
             tree.uses_balance = False
             data = list(np.random.randint(-length, length, length))
             time_1 = time.time()
@@ -105,7 +107,93 @@ class tests:
         tree.insert_list(self.input_data)
         self.results["validate_functions"].append(tree.is_valid())
         return self.results["validate_functions"]
-
+    def test_preorderd_list(self):
+      results_sorting = []
+      results_not_sorting = []
+      length = int(average(self.length_range))
+      data = list(np.random.randint(-length, length, length))
+      data = sorted(data)
+      for c in list(np.arange(self.c_range[0], self.c_range[1], self.c_interval)):
+        tree = binary_tree(c)
+        time_1 = time.time()
+        tree.insert_list(data)
+        time_2 = time.time()
+        results_sorting.append(time_2-time_1)
+        tree = binary_tree(c)
+        tree.uses_balance = False
+        time_1 = time.time()
+        tree.insert_list(data)
+        time_2 = time.time()
+        results_not_sorting.append(time_2-time_1)
+      x = list(np.arange(self.c_range[0], self.c_range[1], self.c_interval))
+      y = [results_sorting, results_not_sorting]
+      self.plot(x, y,
+                "c value", "Execution time [s]", f"Execution time as a function of c for a preorderd list")
+    def test_semi_sorted_list(self):
+      results_sorting = []
+      results_not_sorting = []
+      length = int(average(self.length_range))
+      data = sorted(list(np.random.randint(-length, length, length)))
+      data = data[len(data/2):]+data[:len(data/2)]
+      for c in list(np.arange(self.c_range[0], self.c_range[1], self.c_interval)):
+        tree = binary_tree(c)
+        time_1 = time.time()
+        tree.insert_list(data)
+        time_2 = time.time()
+        results_sorting.append(time_2-time_1)
+        tree = binary_tree(c)
+        tree.uses_balance = False
+        time_1 = time.time()
+        tree.insert_list(data)
+        time_2 = time.time()
+        results_not_sorting.append(time_2-time_1)
+      x = list(np.arange(self.c_range[0], self.c_range[1], self.c_interval))
+      y = [results_sorting, results_not_sorting]
+      self.plot(x, y,
+                "c value", "Execution time [s]", f"Execution time as a function of c for a semi sorted list")
+    def test_reverse_sorted_list(self):
+      results_sorting = []
+      results_not_sorting = []
+      length = int(average(self.length_range))
+      data = sorted(list(np.random.randint(-length, length, length)))
+      data = data[::-1]
+      for c in list(np.arange(self.c_range[0], self.c_range[1], self.c_interval)):
+        tree = binary_tree(c)
+        time_1 = time.time()
+        tree.insert_list(data)
+        time_2 = time.time()
+        results_sorting.append(time_2-time_1)
+        tree = binary_tree(c)
+        tree.uses_balance = False
+        time_1 = time.time()
+        tree.insert_list(data)
+        time_2 = time.time()
+        results_not_sorting.append(time_2-time_1)
+      x = list(np.arange(self.c_range[0], self.c_range[1], self.c_interval))
+      y = [results_sorting, results_not_sorting]
+      self.plot(x, y,
+                "c value", "Execution time [s]", f"Execution time as a function of c for a reverse sorted list")
+    def test_random_list(self):
+      results_sorting = []
+      results_not_sorting = []
+      length = int(average(self.length_range))
+      data = sorted(list(np.random.randint(-length, length, length)))
+      for c in list(np.arange(self.c_range[0], self.c_range[1], self.c_interval)):
+        tree = binary_tree(c)
+        time_1 = time.time()
+        tree.insert_list(data)
+        time_2 = time.time()
+        results_sorting.append(time_2-time_1)
+        tree = binary_tree(c)
+        tree.uses_balance = False
+        time_1 = time.time()
+        tree.insert_list(data)
+        time_2 = time.time()
+        results_not_sorting.append(time_2-time_1)
+      x = list(np.arange(self.c_range[0], self.c_range[1], self.c_interval))
+      y = [results_sorting, results_not_sorting]
+      self.plot(x, y,
+                "c value", "Execution time [s]", f"Execution time as a function of c for a random list")
     def test_constant_c_varying_length(self):
         print("*"*100)
         c = self.c_range[1]+self.c_range[0]
@@ -126,40 +214,13 @@ class tests:
         y = list(self.results["constant_c_varying_length"])
         self.plot(x, y,
                   "Input_length", "Execution time [s]", f"Execution time as a function of input length for c = {(self.c_range[1]+self.c_range[0])/2} ")
-
-    def test_constant_length_varying_c(self):
-        print("*"*100)
-        print("Running tests for constant_length_varying_c")
-        length = 10**4
-        
-        if self.results["c_values_tested"] == []:
-          log_c = True
-        else:
-          log_c = False
-        self.input_data = list(np.random.randint(-length, length, length))
-        for c in list(np.arange(self.c_range[0], self.c_range[1], self.c_interval)):
-            print(f"Testing with c = {c} for length = {length}")
-            tree = binary_tree(c)
-            time_1 = time.time()
-            tree.insert_list(self.input_data)
-            time_2 = time.time()
-            self.results["constant_length_varying_c"].append(time_2-time_1)
-            if log_c:
-              self.results["c_values_tested"].append(c)
-            print(f"Run took {time_2-time_1} s")
-            print("- - "*25)
-        x = list(self.results["c_values_tested"])
-        y = list(self.results["constant_length_varying_c"])
-        self.plot(x, y,
-                  "c value", "Execution time [s]", f"Execution time as a function of c for input length =  {length} ")
-
     def run_all_tests(self):
         functions = inspect.getmembers(self, predicate=inspect.ismethod)
         for key, value in functions:
             if 'test' in key and key != "run_all_tests":
                 value()
         test.dump_to_csv("latest_run")
-
+    
     def dump_to_csv(self, csv_name):
         df = [pd.DataFrame({k: v}) for k, v in self.results.items()]
 
@@ -177,6 +238,6 @@ if __name__ == "__main__":
     test = tests()
     test.test_validate_functions()
     assert test.results["validate_functions"][0]
-    #test.run_all_tests()
-    #print(test.results)
-    test.show_for_average_c()
+    test.run_all_tests()
+    print(test.results)
+    #test.show_for_average_c()
