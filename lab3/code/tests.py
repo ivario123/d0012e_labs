@@ -258,6 +258,7 @@ class tests:
 
 if __name__ == "__main__":
     test = tests()
+    test.c_interval = 0.001
     test.validate_functions()
     assert test.results["validate_functions"][0]
     #test.test_semi_sorted_list()
