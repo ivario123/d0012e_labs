@@ -107,13 +107,19 @@ class tests:
         tree.insert_list(self.input_data)
         self.results["validate_functions"].append(tree.is_valid())
         return self.results["validate_functions"]
+
     def test_preorderd_list(self):
+      print("*"*100)
+      print("Testing preorder list")
+      print("*"*100)
       results_sorting = []
       results_not_sorting = []
       length = int(average(self.length_range))
       data = list(np.random.randint(-length, length, length))
       data = sorted(data)
+      countLoops = 0
       for c in list(np.arange(self.c_range[0], self.c_range[1], self.c_interval)):
+        print(f"Loop {countLoops}")
         tree = binary_tree(c)
         time_1 = time.time()
         tree.insert_list(data)
@@ -125,17 +131,23 @@ class tests:
         tree.insert_list(data)
         time_2 = time.time()
         results_not_sorting.append(time_2-time_1)
+        countLoops = countLoops+1
       x = list(np.arange(self.c_range[0], self.c_range[1], self.c_interval))
       y = [results_sorting, results_not_sorting]
       self.plot(x, y,
                 "c value", "Execution time [s]", f"Execution time as a function of c for a preorderd list")
     def test_semi_sorted_list(self):
+      print("*"*100)
+      print("Testing semi sorted list")
+      print("*"*100)
       results_sorting = []
       results_not_sorting = []
       length = int(average(self.length_range))
       data = sorted(list(np.random.randint(-length, length, length)))
-      data = data[len(data/2):]+data[:len(data/2)]
+      data = data[len(data)//2:]+data[:len(data)//2]
+      countLoops = 0
       for c in list(np.arange(self.c_range[0], self.c_range[1], self.c_interval)):
+        print(f"Loop {countLoops}")
         tree = binary_tree(c)
         time_1 = time.time()
         tree.insert_list(data)
@@ -147,17 +159,23 @@ class tests:
         tree.insert_list(data)
         time_2 = time.time()
         results_not_sorting.append(time_2-time_1)
+        countLoops = countLoops+1
       x = list(np.arange(self.c_range[0], self.c_range[1], self.c_interval))
       y = [results_sorting, results_not_sorting]
       self.plot(x, y,
                 "c value", "Execution time [s]", f"Execution time as a function of c for a semi sorted list")
     def test_reverse_sorted_list(self):
+      print("*"*100)
+      print("Testing reverse sorted list")
+      print("*"*100)
       results_sorting = []
       results_not_sorting = []
       length = int(average(self.length_range))
       data = sorted(list(np.random.randint(-length, length, length)))
       data = data[::-1]
+      countLoops = 0
       for c in list(np.arange(self.c_range[0], self.c_range[1], self.c_interval)):
+        print(f"Loop {countLoops}")
         tree = binary_tree(c)
         time_1 = time.time()
         tree.insert_list(data)
@@ -169,16 +187,22 @@ class tests:
         tree.insert_list(data)
         time_2 = time.time()
         results_not_sorting.append(time_2-time_1)
+        countLoops = countLoops+1
       x = list(np.arange(self.c_range[0], self.c_range[1], self.c_interval))
       y = [results_sorting, results_not_sorting]
       self.plot(x, y,
                 "c value", "Execution time [s]", f"Execution time as a function of c for a reverse sorted list")
     def test_random_list(self):
+      print("*"*100)
+      print("Testing random list")
+      print("*"*100)
       results_sorting = []
       results_not_sorting = []
       length = int(average(self.length_range))
       data = sorted(list(np.random.randint(-length, length, length)))
+      countLoops = 0
       for c in list(np.arange(self.c_range[0], self.c_range[1], self.c_interval)):
+        print(f"Loop {countLoops}")
         tree = binary_tree(c)
         time_1 = time.time()
         tree.insert_list(data)
@@ -190,6 +214,7 @@ class tests:
         tree.insert_list(data)
         time_2 = time.time()
         results_not_sorting.append(time_2-time_1)
+        countLoops = countLoops+1
       x = list(np.arange(self.c_range[0], self.c_range[1], self.c_interval))
       y = [results_sorting, results_not_sorting]
       self.plot(x, y,
