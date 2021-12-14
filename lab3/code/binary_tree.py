@@ -52,14 +52,6 @@ class binary_tree_node:
       Only used to validate that large trees are balanced too
     """
 
-    def is_valid(self, c):
-        ret = self.unbalanced(c) == 0
-        if self.left:
-            ret = ret == self.left.is_valid(c) == True
-        if self.right:
-            ret = ret == self.right.is_valid(c) == True
-        return ret
-
     def search(self, value):
         if self.value == value:
             return self
@@ -70,29 +62,6 @@ class binary_tree_node:
         if self.left:
             return self.left.search(value)
         return None
-
-    def find_extreme(self):
-        if self == None:
-            print("Bruh")
-        if self.left == self.right == None:
-            return self, 0
-        left_best, left_depth, right_best, right_depth = None, 0, None, 0
-        if self.left != None:
-            left_best, left_depth = self.left.find_extreme()
-        if self.right != None:
-            right_best, right_depth = self.right.find_extreme()
-        if not left_best or not right_best:
-            if left_best:
-                return left_best, left_depth+1
-            else:
-                return right_best, right_depth+1
-        if left_depth > right_depth:
-            best = left_best
-            best_depth = left_depth+1
-        else:
-            best = right_best
-            best_depth = right_depth+1
-        return best, best_depth
 
     """
       Some display code joinked from stack overflow, modernized a bit but still the same
@@ -234,8 +203,6 @@ class binary_tree:
     def search(self, value):
         return self.root.search(value)
 
-    def is_valid(self):
-        return self.root.is_valid(self.c)
 
     def in_order_walk(self):
         return self.root.in_order_walk()
