@@ -52,6 +52,14 @@ class binary_tree_node:
       Only used to validate that large trees are balanced too
     """
 
+    def is_valid(self, c):
+        ret = self.unbalanced(c) == 0
+        if self.left:
+            ret = ret == self.left.is_valid(c) == True
+        if self.right:
+            ret = ret == self.right.is_valid(c) == True
+        return ret
+
     def search(self, value):
         if self.value == value:
             return self
@@ -203,6 +211,8 @@ class binary_tree:
     def search(self, value):
         return self.root.search(value)
 
+    def is_valid(self):
+        return self.root.is_valid(self.c)
 
     def in_order_walk(self):
         return self.root.in_order_walk()
@@ -239,6 +249,11 @@ class binary_tree:
     def display(self):
         if self.root:
             self.root.display()
+
+
+
+
+
 class standard_bst:
   def __init__(self) -> None:
     self.root = None

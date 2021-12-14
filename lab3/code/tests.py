@@ -20,12 +20,18 @@ class tests:
         return
     def show_for_average_c(self):
       print("...___...___"*(100//12))
+      print(self.input_data)
       c = self.c_range[0]+self.c_range[1]
       c/=2
       tree = binary_tree(c)
       tree.displaying = True
       tree.insert_list(self.input_data)
       tree.display()
+      if tree.is_valid():
+        print("The final tree is valid")
+      else: 
+        print("The final tree is not valid")
+      print(tree.root.number_of_children,c*tree.root.number_of_children[2])
     def plot(self, x: list, y: list, x_label: str, y_label: str, plot_header: str,labels: list = None):
         fig = plt.figure()
         plt.title(plot_header, fontsize='16')
@@ -106,8 +112,7 @@ class tests:
         tree = binary_tree(self.c_range[0])
         tree.displaying = True
         tree.insert_list(self.input_data)
-        self.results["validate_functions"].append(tree.is_valid())
-        return self.results["validate_functions"]
+        return tree.root.is_valid(self.c_range[0])
 
     def test_preorderd_list(self):
       print("*"*100)
@@ -258,16 +263,17 @@ class tests:
 
 if __name__ == "__main__":
     test = tests()
-<<<<<<< HEAD
     test.c_interval = 0.01
     test.length_range[0] = 10**4
-=======
-    test.c_interval = 0.005
-    test.length_range[0] = 1*10**3
->>>>>>> ca976bf3df397c639d496ab8a7a47ed0b441008a
-    test.validate_functions()
-    assert test.results["validate_functions"][0]
+    valid = test.validate_functions()
+    assert valid
+    print("Still works")
+    c = 0.8
+    test.c_range[0] = c
+    test.c_range[1] = c
+    test.show_for_average_c()
+    
     #test.test_semi_sorted_list()
-    test.run_all_tests()
+    #test.run_all_tests()
     print(test.results)
     #test.show_for_average_c()
