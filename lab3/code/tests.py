@@ -258,8 +258,13 @@ class tests:
 
 if __name__ == "__main__":
     test = tests()
+<<<<<<< HEAD
     test.c_interval = 0.01
     test.length_range[0] = 10**4
+=======
+    test.c_interval = 0.005
+    test.length_range[0] = 1*10**3
+>>>>>>> ca976bf3df397c639d496ab8a7a47ed0b441008a
     test.validate_functions()
     assert test.results["validate_functions"][0]
     #test.test_semi_sorted_list()
